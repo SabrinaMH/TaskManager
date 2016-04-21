@@ -234,3 +234,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+Krav til task manager.docx
+TaskManager/.nuget/NuGet.targets
+TaskManager/.nuget/NuGet.Config
+*.exe
+todo.txt
