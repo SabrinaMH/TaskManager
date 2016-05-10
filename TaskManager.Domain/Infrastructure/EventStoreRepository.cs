@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using EventStore.ClientAPI;
@@ -35,22 +36,12 @@ namespace TaskManager.Domain.Infrastructure
             if (eventStoreConnection == null) throw new ArgumentNullException("eventStoreConnection");
             _mediator = mediator;
             _connection = eventStoreConnection;
-            _connection.ConnectAsync().Wait();
-        }
-
-        public EventStoreRepository()
-        {
-            var mediate = new Mediate();
-            _mediator = mediate.Bootstrap();
-
-            _connection = UseInMemoryEventStore();  //EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
-            _connection.ConnectAsync().Wait();
         }
 
         private IEventStoreConnection UseInMemoryEventStore()
         {
             ClusterVNode node = EmbeddedVNodeBuilder.AsSingleNode().RunInMemory().OnDefaultEndpoints().Build();
-
+            
             bool isNodeMaster = false;
             node.NodeStatusChanged += (sender, args) => isNodeMaster = args.NewVNodeState == VNodeState.Master;
             node.Start();
@@ -71,8 +62,9 @@ namespace TaskManager.Domain.Infrastructure
             return eventStoreConnection;
         }
 
-        public TAggregate GetById(string id) 
+        public TAggregate GetById(string id)
         {
+            _connection.ConnectAsync().Wait();
             var events = new List<Event>();
             StreamEventsSlice currentSlice;
             var nextSliceStart = StreamPosition.Start;
@@ -93,6 +85,7 @@ namespace TaskManager.Domain.Infrastructure
 
             var constructor = typeof(TAggregate).GetConstructor(new Type[] { typeof(IList<Event>) });
             var aggregate = (TAggregate) constructor.Invoke(new object[] { events });
+            _connection.Close();
             return aggregate;
         }
 
@@ -113,6 +106,7 @@ namespace TaskManager.Domain.Infrastructure
 
         public void Save(AggregateRoot aggregate)
         {
+            _connection.ConnectAsync().Wait();
             string streamName = GetStreamName(aggregate.GetType(), aggregate.Id);
             List<Event> newEvents = aggregate.GetUncommittedEvents().ToList();
             int originalVersion = aggregate.Version - newEvents.Count;
@@ -127,7 +121,7 @@ namespace TaskManager.Domain.Infrastructure
             
             List<EventData> eventsToSave = newEvents.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
             _connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
-
+            _connection.Close();
             foreach (var eventToPublish in newEvents)
             {
                 _mediator.Publish(eventToPublish);

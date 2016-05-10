@@ -1,0 +1,50 @@
+﻿using MediatR;
+using TaskManager.Domain.Infrastructure;
+using TaskManager.Domain.Models.Common;
+using TaskManager.Domain.Models.Project;
+using TaskManager.Domain.Models.Task;
+
+namespace TaskManager.Domain.Features.RegisterTask
+{
+    public class RegisterTaskCommandHandler : RequestHandler<RegisterTask>
+    {
+        private readonly EventStoreRepository<Task> _eventStoreRepository;
+        private readonly TaskQueryHandler _taskQueryHandler;
+
+        public RegisterTaskCommandHandler(EventStoreRepository<Task> eventStoreRepository)
+        {
+            _eventStoreRepository = eventStoreRepository;
+            _taskQueryHandler = new TaskQueryHandler();
+        }
+
+        /// <exception cref="UnknownPriorityException">Condition.</exception>
+        /// <exception cref="TaskWithSameTitleExistsInProjectException">Condition.</exception>
+        protected override void HandleCore(RegisterTask command)
+        {
+            var title = new Title(command.Title);
+            var projectId = new ProjectId(command.ProjectId);
+            TaskPriority priority;
+            if (!TaskPriority.TryParse(command.Priority, out priority))
+                throw new UnknownPriorityException(command.Priority);
+
+            Task task;
+            if (command.Deadline.HasValue)
+            {
+                var deadline = new Deadline(command.Deadline.Value);
+                task = new Task(projectId, title, priority, deadline);
+            }
+            else
+            {
+                task = new Task(projectId, title, priority);
+            }
+
+            var query = new DoesTaskWithTitleAlreadyExistUnderSameProjectQuery(title);
+            bool taskWithSameTitleExists = _taskQueryHandler.Handle(query);
+
+            if (taskWithSameTitleExists)
+                throw new TaskWithSameTitleExistsInProjectException();
+
+            _eventStoreRepository.Save(task);
+        }
+    }
+}

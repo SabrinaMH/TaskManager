@@ -1,20 +1,26 @@
-﻿using System.Configuration;
-using Couchbase;
-using TaskManager.Domain.Features.ViewProjectTree;
+﻿using System;
+using System.Linq;
+using Raven.Client;
+using TaskManager.Domain.Features.ProjectTreeView;
+using TaskManager.Domain.Infrastructure;
 
 namespace TaskManager.Domain.Features.RegisterProject
 {
     public class ProjectQueryHandler
     {
+        private readonly IDocumentStore _documentStore;
+
+        public ProjectQueryHandler()
+        {
+            _documentStore = new RavenDbStore().Instance;
+        }
+
         public bool Handle(DoesProjectWithTitleExistQuery query)
         {
-            var cluster = new Cluster();
-            string projectTreeNodeBucket = ConfigurationManager.AppSettings.Get("couchbase.bucket.projectTreeNode");
-            using (var bucket = cluster.OpenBucket(projectTreeNodeBucket))
+            using (var session = _documentStore.OpenSession())
             {
-                var databaseQuery = string.Format("select count(*) from {0} where title = '{1}'", bucket.Name, query.Title);
-                var result = bucket.Query<ProjectTreeNode>(databaseQuery);
-                return result.Rows.Count > 0;
+                bool doesProjectExist = session.Query<ProjectTreeNode>().Any(x => x.Title == query.Title);
+                return doesProjectExist;
             }
         }
     }

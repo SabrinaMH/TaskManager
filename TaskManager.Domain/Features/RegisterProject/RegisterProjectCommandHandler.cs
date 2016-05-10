@@ -1,11 +1,21 @@
 ﻿using MediatR;
 using TaskManager.Domain.Infrastructure;
+using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.RegisterProject
 {
     public class RegisterProjectCommandHandler : RequestHandler<RegisterProject>
     {
+        private readonly EventStoreRepository<Project> _eventStoreRepository;
+        private readonly ProjectQueryHandler _projectQueryHandler;
+
+        public RegisterProjectCommandHandler(EventStoreRepository<Project> eventStoreRepository)
+        {
+            _eventStoreRepository = eventStoreRepository;
+            _projectQueryHandler = new ProjectQueryHandler();
+        }
+
         /// <exception cref="ProjectWithSameTitleExistsException">Condition.</exception>
         protected override void HandleCore(RegisterProject command)
         {
@@ -22,14 +32,12 @@ namespace TaskManager.Domain.Features.RegisterProject
             }
 
             var doesProjectWithTitleExistQuery = new DoesProjectWithTitleExistQuery(title);
-            var projectQueryHandler = new ProjectQueryHandler();
-            bool projectWithSameTitleExists = projectQueryHandler.Handle(doesProjectWithTitleExistQuery);
+            bool projectWithSameTitleExists = _projectQueryHandler.Handle(doesProjectWithTitleExistQuery);
 
             if (projectWithSameTitleExists)
                 throw new ProjectWithSameTitleExistsException();
 
-            var eventStoreRepository = new EventStoreRepository<Project>();
-            eventStoreRepository.Save(project);
+            _eventStoreRepository.Save(project);
         }
     }
 }

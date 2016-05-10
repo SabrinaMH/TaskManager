@@ -33,18 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Couchbase.NetClient, Version=2.2.7.0, Culture=neutral, PublicKeyToken=05e9c6b5a9ec94c2, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\CouchbaseNetClient.2.2.7\lib\net45\Couchbase.NetClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\TaskManager\packages\EventStore.Client.3.5.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
@@ -69,7 +57,28 @@
       <HintPath>..\TaskManager\packages\AutoFixture.3.44.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Client.3.0.30115\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Database.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Server, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Server.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Tests.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -80,19 +89,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration Tests\BaseIntegrationTest.cs" />
+    <Compile Include="Integration Tests\PrioritizeProject\PrioritizeProjectTest.cs" />
+    <Compile Include="Integration Tests\RavenDbStoreTest.cs" />
+    <Compile Include="Integration Tests\RegisterProject\ProjectQueryHandlerTest.cs" />
     <Compile Include="Integration Tests\RegisterProject\RegisterProjectTest.cs" />
+    <Compile Include="Integration Tests\RegisterTask\TaskQueryHandlerTest.cs" />
+    <Compile Include="Integration Tests\RegisterTask\RegisterTaskTest.cs" />
+    <Compile Include="Integration Tests\TasksInGridViewTest\TaskInGridViewQueryHandlerTest.cs" />
     <Compile Include="Integration Tests\ViewProjectTreeTest\ProjectTreeViewQueryHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration Tests\InMemoryEventStore.cs" />
+    <Compile Include="Unit Tests\SorterTest.cs" />
+    <Compile Include="Unit Tests\TaskTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Raven.Studio.Html5.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj">
       <Project>{f1e78ce4-cb06-48c2-9380-64a42099002b}</Project>
       <Name>TaskManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskManager\TaskManager.UI.csproj">
+      <Project>{4dcd7717-3aa1-48a9-9be1-3932979c4de5}</Project>
+      <Name>TaskManager.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

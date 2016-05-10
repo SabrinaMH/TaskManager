@@ -14,7 +14,7 @@ namespace TaskManager.Test
     public class InMemoryEventStore
     {
         public static IEventStoreConnection Connection { get; private set; }
-
+        
         [SetUp]
         public static void SetupInMemoryEventStore()
         {

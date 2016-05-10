@@ -11,12 +11,11 @@ namespace TaskManager
         private readonly IMediator _mediator;
         public event EventHandler ProjectRegistered;
 
-        public AddProjectForm()
+        public AddProjectForm(IMediator mediator)
         {
+            _mediator = mediator;
             InitializeComponent();
             deadlineDateTimePicker.Visible = false;
-            var mediate = new Mediate();
-            _mediator = mediate.Bootstrap();
         }
 
         private void addProjectButton_Click(object sender, EventArgs e)
@@ -35,6 +34,7 @@ namespace TaskManager
                 {
                     ProjectRegistered(this, EventArgs.Empty);
                 }
+                Close();
             }
             catch (ProjectWithSameTitleExistsException ex)
             {

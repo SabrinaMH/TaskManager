@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using TaskManager.Domain.Common;
 using TaskManager.Domain.Features.RegisterProject;
+using TaskManager.Domain.Features.ReprioritizeProject;
+using TaskManager.Domain.Models.Common;
 
 namespace TaskManager.Domain.Models.Project
 {
@@ -9,45 +11,46 @@ namespace TaskManager.Domain.Models.Project
     {
         private Deadline _deadline;
         private Title _title;
+        private ProjectPriority _priority;
 
         public Project(IList<Event> history) : base(history) { }
 
         public Project(Title title) : base(new ProjectId(Guid.NewGuid()))
         {
             if (title == null) throw new ArgumentNullException("title");
-            ApplyChange(new ProjectRegistered(Id, title));
+            ApplyChange(new ProjectRegistered(Id, title, ProjectPriority.None.DisplayName));
         }
 
         public Project(Title title, Deadline deadline) : base(new ProjectId(Guid.NewGuid()))
         {
             if (title == null) throw new ArgumentNullException("title");
             if (deadline == null) throw new ArgumentNullException("deadline");
-            _title = title;
-            _deadline = deadline;
-            ApplyChange(new ProjectRegistered(Id, title, deadline));
+            ApplyChange(new ProjectRegistered(Id, title, ProjectPriority.None.DisplayName, deadline));
         }
 
-        public void Prioritize(Priority priority)
+        public void Reprioritize(ProjectPriority newPriority)
         {
-            if (priority == null) throw new ArgumentNullException("priority");
-            ApplyChange(new ProjectPrioritized(Id, priority.DisplayName));
+            if (newPriority == null) throw new ArgumentNullException("newPriority");
+            if (newPriority.Equals(_priority)) return;
+
+            ApplyChange(new ProjectReprioritized(Id, _priority.DisplayName, newPriority.DisplayName));
         }
 
         private void Apply(ProjectRegistered @event)
         {
             Id = new ProjectId(@event.ProjectId);
             _title = new Title(@event.Title);
+            _priority = ProjectPriority.Parse(@event.Priority);
             if (!string.IsNullOrWhiteSpace(@event.Deadline))
             {
                 _deadline = new Deadline(DateTime.Parse(@event.Deadline));
             }
         }
 
-        private void Apply(ProjectPrioritized @event)
+        private void Apply(ProjectReprioritized @event)
         {
             Id = new ProjectId(@event.ProjectId);
-            Priority priority;
-            Priority.TryParse(@event.Priority, out priority);
+            ProjectPriority.TryParse(@event.NewPriority, out _priority);
         }
     }
 }

@@ -33,18 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Couchbase.NetClient, Version=2.2.7.0, Culture=neutral, PublicKeyToken=05e9c6b5a9ec94c2, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\CouchbaseNetClient.2.2.7\lib\net45\Couchbase.NetClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EventStore.ClientAPI, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\TaskManager\packages\EventStore.Client.3.5.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
@@ -61,11 +49,37 @@
       <HintPath>..\TaskManager\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight">
+      <HintPath>..\TaskManager\packages\RavenDB.Client.3.0.30115\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Database.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\Serilog.1.5.14\lib\net45\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Exceptions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\Serilog.Exceptions.1.1.0\lib\net45\Serilog.Exceptions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\TaskManager\packages\Serilog.1.5.14\lib\net45\Serilog.FullNetFx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -76,39 +90,66 @@
     <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Identity.cs" />
     <Compile Include="Common\AggregateRoot.cs" />
-    <Compile Include="Features\PrioritizeProject\AllPrioritiesQuery.cs" />
-    <Compile Include="Features\PrioritizeProject\PrioritizeProject.cs" />
-    <Compile Include="Features\PrioritizeProject\PrioritizeProjectCommandHandler.cs" />
-    <Compile Include="Features\PrioritizeProject\PriorityQueryHandler.cs" />
-    <Compile Include="Features\PrioritizeProject\ProjectDoesNotExistException.cs" />
-    <Compile Include="Features\PrioritizeProject\UnknownPriorityException.cs" />
+    <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDone.cs" />
+    <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDoneCommandHandler.cs" />
+    <Compile Include="Features\ChangeTaskStatus\ReopenTask.cs" />
+    <Compile Include="Features\ChangeTaskStatus\ReopenTaskCommandHandler.cs" />
+    <Compile Include="Features\ChangeTaskStatus\TaskReopened.cs" />
+    <Compile Include="Features\RegisterTask\AllTaskPrioritiesQuery.cs" />
+    <Compile Include="Features\RegisterTask\DoesTaskWithTitleAlreadyExistUnderSameProjectQuery.cs" />
+    <Compile Include="Features\RegisterTask\ProjectPriorityQueryHandler.cs" />
+    <Compile Include="Features\RegisterTask\TaskQueryHandler.cs" />
+    <Compile Include="Features\RegisterTask\TaskWithSameTitleExistsInProjectException.cs" />
+    <Compile Include="Features\ReprioritizeProject\AllProjectPrioritiesQuery.cs" />
+    <Compile Include="Features\ReprioritizeProject\ReprioritizeProject.cs" />
+    <Compile Include="Features\ReprioritizeProject\ReprioritizeProjectCommandHandler.cs" />
+    <Compile Include="Features\ReprioritizeProject\ProjectPriorityQueryHandler.cs" />
+    <Compile Include="Features\ReprioritizeProject\ProjectDoesNotExistException.cs" />
+    <Compile Include="Features\TaskGridView\TaskRegisteredEventHandler.cs" />
+    <Compile Include="Infrastructure\Logging.cs" />
+    <Compile Include="Infrastructure\RavenDbStore.cs" />
+    <Compile Include="Models\Common\UnknownPriorityException.cs" />
     <Compile Include="Features\RegisterProject\DoesProjectWithTitleExistQuery.cs" />
     <Compile Include="Features\RegisterProject\ProjectQueryHandler.cs" />
     <Compile Include="Features\RegisterProject\ProjectWithSameTitleExistsException.cs" />
-    <Compile Include="Models\Project\Deadline.cs" />
+    <Compile Include="Features\RegisterTask\RegisterTaskCommandHandler.cs" />
+    <Compile Include="Features\RegisterTask\RegisterTask.cs" />
+    <Compile Include="Features\RegisterTask\TaskRegistered.cs" />
+    <Compile Include="Features\ChangeTaskStatus\TaskDone.cs" />
+    <Compile Include="Features\ProjectTreeView\ProjectPrioritizedEventHandler.cs" />
+    <Compile Include="Features\TaskGridView\AllTasksInProjectQuery.cs" />
+    <Compile Include="Features\TaskGridView\TaskInGridViewQueryHandler.cs" />
+    <Compile Include="Features\TaskGridView\TaskInGridView.cs" />
+    <Compile Include="Models\Common\Deadline.cs" />
     <Compile Include="Features\RegisterProject\RegisterProject.cs" />
     <Compile Include="Features\RegisterProject\RegisterProjectCommandHandler.cs" />
-    <Compile Include="Features\ViewProjectTree\AllProjectTreeNodesQuery.cs" />
-    <Compile Include="Features\ViewProjectTree\ProjectTreeNode.cs" />
-    <Compile Include="Features\ViewProjectTree\ProjectTreeViewQueryHandler.cs" />
-    <Compile Include="Infrastructure\CouchbaseRestClient.cs" />
+    <Compile Include="Features\ProjectTreeView\AllProjectTreeNodesQuery.cs" />
+    <Compile Include="Features\ProjectTreeView\ProjectTreeNode.cs" />
+    <Compile Include="Features\ProjectTreeView\ProjectTreeViewQueryHandler.cs" />
     <Compile Include="Infrastructure\EventStoreRepository.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\Event.cs" />
-    <Compile Include="Models\Project\Priority.cs" />
+    <Compile Include="Models\Project\ProjectPriority.cs" />
     <Compile Include="Models\Project\Project.cs" />
     <Compile Include="Models\Project\ProjectId.cs" />
-    <Compile Include="Features\ViewProjectTree\ProjectRegisteredEventHandler.cs" />
+    <Compile Include="Features\ProjectTreeView\ProjectRegisteredEventHandler.cs" />
     <Compile Include="Features\RegisterProject\ProjectRegistered.cs" />
-    <Compile Include="Models\Project\ProjectPrioritized.cs" />
-    <Compile Include="Models\Project\Title.cs" />
+    <Compile Include="Features\ReprioritizeProject\ProjectReprioritized.cs" />
+    <Compile Include="Models\Common\Title.cs" />
     <Compile Include="Infrastructure\HelperMethods.cs" />
     <Compile Include="Infrastructure\Mediate.cs" />
+    <Compile Include="Features\ReprioritizeTask\TaskReprioritized.cs" />
+    <Compile Include="Models\Task\TaskPriority.cs" />
+    <Compile Include="Models\Task\TaskId.cs" />
+    <Compile Include="Models\Task\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Raven.Studio.Html5.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
