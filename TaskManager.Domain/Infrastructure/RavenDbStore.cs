@@ -5,7 +5,9 @@ using Raven.Abstractions.Util;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Client.Linq.Indexing;
+using Raven.Client.Listeners;
 using Raven.Database.Server;
+using Raven.Json.Linq;
 
 namespace TaskManager.Domain.Infrastructure
 {
@@ -14,21 +16,20 @@ namespace TaskManager.Domain.Infrastructure
         private static IDocumentStore _documentStore;
         private readonly EmbeddableDocumentStore _embeddableDocumentStore;
 
-        public RavenDbStore()
+        public RavenDbStore(bool runInMemory = false, bool allowStaleQueries = true)
         {
             string dataDirectory = ConfigurationManager.GetAppSetting("ravendb.data.directory");
             _embeddableDocumentStore = new EmbeddableDocumentStore
             {
-                RunInMemory = true,
+                RunInMemory = runInMemory,
                 UseEmbeddedHttpServer = true,
-                DataDirectory = @"c:\temp\ravendb",
+                DataDirectory =dataDirectory
             };
 
-            //int port = 8080;
-            //_embeddableDocumentStore.Configuration.Port = port;
-            //_embeddableDocumentStore.Configuration.HostName = "localhost";
-            _embeddableDocumentStore.Configuration.AnonymousUserAccessMode = AnonymousUserAccessMode.Admin;
-            //NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(port);
+            if (!allowStaleQueries)
+            {
+                _embeddableDocumentStore.RegisterListener(new NoStaleQueriesAllowedListener());
+            }
         }
 
         public IDocumentStore Instance
@@ -49,5 +50,14 @@ namespace TaskManager.Domain.Infrastructure
                 return _documentStore;
             }
         }
+
+        private class NoStaleQueriesAllowedListener : IDocumentQueryListener
+        {
+            public void BeforeQueryExecuted(IDocumentQueryCustomization queryCustomization)
+            {
+                queryCustomization.WaitForNonStaleResults();
+            }
+        }
+
     }
 }

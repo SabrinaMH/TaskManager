@@ -12,23 +12,21 @@ using TaskManager.Domain.Models.Project;
 namespace TaskManager.Test.RegisterProject
 {
     [TestFixture]
-    public class RegisterProjectTest
+    public class RegisterProjectTest : BaseIntegrationTest
     {
-        IMediator _mediator;
-            EventStoreRepository<Project> _eventStoreRepository;
+        EventStoreRepository<Project> _eventStoreRepository;
 
         [SetUp]
         public void SetUp()
         {
-            var mediate = new Mediate(InMemoryEventStore.Connection);
-            _mediator = mediate.Mediator;
-            _eventStoreRepository = new EventStoreRepository<Project>(_mediator, InMemoryEventStore.Connection);
+            _eventStoreRepository = new EventStoreRepository<Project>(Mediator, InMemoryEventStoreConnectionBuilder);
         }
 
         [Test]
         public void Register_Project_Is_Saved_In_Event_Store()
         {
-            var project = new Project(new Title("my title"));
+            var title = Fixture.Create<string>();
+            var project = new Project(new Title(title));
             _eventStoreRepository.Save(project);
 
             Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
@@ -38,7 +36,8 @@ namespace TaskManager.Test.RegisterProject
         [Test]
         public void Register_Project_With_Deadline_Is_Saved_In_Event_Store()
         {
-            var project = new Project(new Title("my title"), new Deadline(DateTime.UtcNow));
+            var title = Fixture.Create<string>();
+            var project = new Project(new Title(title), new Deadline(DateTime.UtcNow));
             _eventStoreRepository.Save(project);
 
             Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
@@ -48,11 +47,10 @@ namespace TaskManager.Test.RegisterProject
         [Test]
         public void Project_Is_Added_To_Project_Tree_View()
         {
-            var fixture = new Fixture();
-            var title = fixture.Create<string>();
+            var title = Fixture.Create<string>();
             var registerProject = new Domain.Features.RegisterProject.RegisterProject(title, null);
 
-            _mediator.Send(registerProject);
+            Mediator.Send(registerProject);
             var projectTreeViewQueryHandler = new ProjectTreeViewQueryHandler();
             var allProjectTreeNodesQuery = new AllProjectTreeNodesQuery();
             List<ProjectTreeNode> projectTreeNodes = projectTreeViewQueryHandler.Handle(allProjectTreeNodesQuery);
@@ -63,12 +61,11 @@ namespace TaskManager.Test.RegisterProject
         [Test]
         public void Project_With_Deadline_Is_Added_To_Project_Tree_View()
         {
-            var fixture = new Fixture();
-            var title = fixture.Create<string>();
+            var title = Fixture.Create<string>();
             DateTime deadline = DateTime.UtcNow;
             var registerProject = new Domain.Features.RegisterProject.RegisterProject(title, deadline);
 
-            _mediator.Send(registerProject);
+            Mediator.Send(registerProject);
             var projectTreeViewQueryHandler = new ProjectTreeViewQueryHandler();
             var allProjectTreeNodesQuery = new AllProjectTreeNodesQuery();
             List<ProjectTreeNode> projectTreeNodes = projectTreeViewQueryHandler.Handle(allProjectTreeNodesQuery);

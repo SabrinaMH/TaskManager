@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ProjectTreeView;
 using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Models.Project;
+using Raven.Tests.Helpers;
 
 namespace TaskManager.Test.RegisterProject
 {

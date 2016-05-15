@@ -15,13 +15,13 @@ namespace TaskManager.Domain.Models.Project
 
         public Project(IList<Event> history) : base(history) { }
 
-        public Project(Title title) : base(new ProjectId(Guid.NewGuid()))
+        public Project(Title title) : base(ProjectId.Create(title))
         {
             if (title == null) throw new ArgumentNullException("title");
             ApplyChange(new ProjectRegistered(Id, title, ProjectPriority.None.DisplayName));
         }
 
-        public Project(Title title, Deadline deadline) : base(new ProjectId(Guid.NewGuid()))
+        public Project(Title title, Deadline deadline) : base(ProjectId.Create(title))
         {
             if (title == null) throw new ArgumentNullException("title");
             if (deadline == null) throw new ArgumentNullException("deadline");

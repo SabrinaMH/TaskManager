@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using MediatR;
+using Serilog;
 using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Infrastructure;
 
@@ -9,11 +10,13 @@ namespace TaskManager
     public partial class AddProjectForm : Form
     {
         private readonly IMediator _mediator;
-        public event EventHandler ProjectRegistered;
+        private ILogger _logger;
+        public event EventHandler<ProjectEventArgs> ProjectRegistered;
 
         public AddProjectForm(IMediator mediator)
         {
             _mediator = mediator;
+            _logger = Logging.Logger;
             InitializeComponent();
             deadlineDateTimePicker.Visible = false;
         }
@@ -25,19 +28,22 @@ namespace TaskManager
             {
                 deadline = deadlineDateTimePicker.Value;
             }
-            var registerProject = new RegisterProject(titleTextBox.Text, deadline);
+            string title = titleTextBox.Text;
+            var registerProject = new RegisterProject(title, deadline);
             try
             {
                 _mediator.Send(registerProject);
 
                 if (ProjectRegistered != null)
                 {
-                    ProjectRegistered(this, EventArgs.Empty);
+                    var eventArgs = new ProjectEventArgs(title, deadline);
+                    ProjectRegistered(this, eventArgs);
                 }
                 Close();
             }
             catch (ProjectWithSameTitleExistsException ex)
             {
+                _logger.Error(ex, "A project with title {title} already exists", registerProject.Title);
                 MessageBox.Show("A project with this title already exists", "Error", MessageBoxButtons.OK);
             }
         }

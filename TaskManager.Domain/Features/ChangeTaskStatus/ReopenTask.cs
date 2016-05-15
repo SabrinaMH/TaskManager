@@ -5,9 +5,9 @@ namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
     public class ReopenTask : Command
     {
-        public Guid Id { get; private set; }
+        public string Id { get; private set; }
 
-        public ReopenTask(Guid id)
+        public ReopenTask(string id)
         {
             Id = id;
         }

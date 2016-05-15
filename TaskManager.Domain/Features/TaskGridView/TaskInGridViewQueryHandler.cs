@@ -19,9 +19,20 @@ namespace TaskManager.Domain.Features.TaskGridView
         {
             using (var session = _documentStore.OpenSession())
             {
-                List<TaskInGridView> tasksInGridView = session.Query<TaskInGridView>().ToList();
+                List<TaskInGridView> tasksInGridView = session.Query<TaskInGridView>().Where(x => x.ProjectId == query.ProjectId).ToList();
                 return tasksInGridView;
             }
-        } 
+        }
+
+        public string Handle(TaskIdByTitleQuery query)
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                TaskInGridView taskInGridView = session.Query<TaskInGridView>().FirstOrDefault(x => x.Title == query.Title);
+
+                if (taskInGridView == null) return null;
+                return taskInGridView.Id;
+            }
+        }
     }
 }

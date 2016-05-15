@@ -5,9 +5,9 @@ namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
     public class TaskReopened : Event
     {
-        public Guid TaskId { get; private set; }
+        public string TaskId { get; private set; }
 
-        public TaskReopened(Guid taskId)
+        public TaskReopened(string taskId)
         {
             TaskId = taskId;
         }

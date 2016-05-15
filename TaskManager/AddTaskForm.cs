@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using MediatR;
+using Serilog;
 using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Task;
@@ -10,15 +11,16 @@ namespace TaskManager
 {
     public partial class AddTaskForm : Form
     {
-        private readonly Guid _projectId;
+        private readonly string _projectId;
         private readonly IMediator _mediator;
-        public event EventHandler TaskRegistered;
+        private ILogger _logger;
+        public event EventHandler<TaskEventArgs> TaskRegistered;
 
-        public AddTaskForm(Guid projectId, IMediator mediator)
+        public AddTaskForm(string projectId, IMediator mediator)
         {
             InitializeComponent();
             PopulatePriorityDropDown();
-
+            _logger = Logging.Logger;
             _projectId = projectId;
             _mediator = mediator;
             deadlineDateTimePicker.Visible = false;
@@ -42,18 +44,21 @@ namespace TaskManager
             }
 
             string priority = taskPriorityComboBox.SelectedItem.ToString();
-            var registerTask = new RegisterTask(_projectId, titleTextBox.Text, priority, deadline);
+            string title = titleTextBox.Text;
+            var registerTask = new RegisterTask(_projectId, title, priority, deadline);
             try
             {
                 _mediator.Send(registerTask);
                 if (TaskRegistered != null)
                 {
-                    TaskRegistered(this, EventArgs.Empty);
+                    var eventArgs = new TaskEventArgs(_projectId, title, priority, deadline);
+                    TaskRegistered(this, eventArgs);
                 }
                 Close();
             }
             catch (TaskWithSameTitleExistsInProjectException ex)
             {
+                _logger.Error(ex, "A task with title {title} already exists in project {projectId}", registerTask.Title, _projectId);
                 MessageBox.Show("A task with this title already exists in the project", "Error", MessageBoxButtons.OK);
             }
         }

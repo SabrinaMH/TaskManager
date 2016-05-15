@@ -15,13 +15,13 @@ namespace TaskManager.Domain.Infrastructure
 {
     public class Mediate
     {
-        private readonly IEventStoreConnection _eventStoreConnection;
+        private readonly IEventStoreConnectionBuilder _eventStoreConnectionBuilder;
         private IMediator _mediator;
 
-        public Mediate(IEventStoreConnection eventStoreConnection)
+        public Mediate(IEventStoreConnectionBuilder eventStoreConnectionBuilder)
         {
-            if (eventStoreConnection == null) throw new ArgumentNullException("eventStoreConnection");
-            _eventStoreConnection = eventStoreConnection;
+            if (eventStoreConnectionBuilder == null) throw new ArgumentNullException("eventStoreConnectionBuilder");
+            _eventStoreConnectionBuilder = eventStoreConnectionBuilder;
             _mediator = new Mediator(SingleInstanceFactory, MultiInstanceFactory);
         }
 
@@ -47,13 +47,21 @@ namespace TaskManager.Domain.Infrastructure
             {
                 instances.Add(new TaskRegisteredEventHandler(documentStore));
             }
+            if (serviceType.IsAssignableFrom(typeof(TaskDoneEventHandler)))
+            {
+                instances.Add(new TaskDoneEventHandler(documentStore));
+            }
+            if (serviceType.IsAssignableFrom(typeof(TaskReopenedEventHandler)))
+            {
+                instances.Add(new TaskReopenedEventHandler(documentStore));
+            }
             return instances;
         }
 
         private object SingleInstanceFactory(Type serviceType)
         {
-            var taskEventStoreRepository = new EventStoreRepository<Task>(_mediator, _eventStoreConnection);
-            var projectEventStoreRepository = new EventStoreRepository<Project>(_mediator, _eventStoreConnection);
+            var taskEventStoreRepository = new EventStoreRepository<Task>(_mediator, _eventStoreConnectionBuilder);
+            var projectEventStoreRepository = new EventStoreRepository<Project>(_mediator, _eventStoreConnectionBuilder);
 
             if (serviceType.IsAssignableFrom(typeof (RegisterTaskCommandHandler)))
             {

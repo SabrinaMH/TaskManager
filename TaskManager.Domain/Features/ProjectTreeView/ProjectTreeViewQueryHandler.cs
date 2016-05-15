@@ -23,5 +23,16 @@ namespace TaskManager.Domain.Features.ProjectTreeView
                 return projectTreeNodes;
             }
         }
+
+        public string Handle(ProjectIdByTitleQuery query)
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                ProjectTreeNode projectTreeNode = session.Query<ProjectTreeNode>().FirstOrDefault(x => x.Title == query.Title);
+
+                if (projectTreeNode == null) return null;
+                return projectTreeNode.Id;
+            }
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace TaskManager.Domain.Infrastructure
         private static void Bootstrap()
         {
             var logfile = "log-{Date}.txt";
-            var rollingFile = Path.Combine(Environment.CurrentDirectory, logfile);
+            var rollingFile = Path.Combine(Environment.CurrentDirectory, "logs", logfile);
             var logger = new LoggerConfiguration()
                 .ReadFrom.AppSettings()
                 .WriteTo.RollingFile(rollingFile, retainedFileCountLimit: 7, fileSizeLimitBytes: 104857600)

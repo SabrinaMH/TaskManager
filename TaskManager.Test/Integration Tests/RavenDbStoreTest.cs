@@ -20,10 +20,10 @@ namespace TaskManager.Test
             var fixture = new Fixture();
             var title = fixture.Create<string>();
             IDocumentStore documentStore = new RavenDbStore().Instance;
-                Guid id = fixture.Create<Guid>();
+            string id = fixture.Create<string>();
             using (var session = documentStore.OpenSession())
             {
-                Guid projectId = fixture.Create<Guid>();
+                string projectId = fixture.Create<string>();
                 var taskInGridView = new TaskInGridView(id, projectId, title,
                     fixture.Create<DateTime>().ToShortDateString(), ProjectPriority.Low.DisplayName, true);
                 session.Store(taskInGridView);
@@ -33,9 +33,10 @@ namespace TaskManager.Test
             using (var session = documentStore.OpenSession())
             {
                 var taskInGridView = session.Load<TaskInGridView>(id);
-                WaitForUserToContinueTheTest(documentStore, true, 8079);
+                // WaitForUserToContinueTheTest(documentStore, true, 8079);
                 Assert.That(taskInGridView, Is.Not.Null);
             }
+            documentStore.Dispose();
         }
     }
 }

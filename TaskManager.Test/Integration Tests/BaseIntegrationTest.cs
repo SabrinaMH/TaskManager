@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using MediatR;
+using NUnit.Framework;
+using Ploeh.AutoFixture;
 using Raven.Client;
 using TaskManager.Domain.Infrastructure;
 
@@ -8,15 +10,21 @@ namespace TaskManager.Test
     public class BaseIntegrationTest
     {
         protected IDocumentStore DocumentStore;
+        protected IMediator Mediator;
+        protected IEventStoreConnectionBuilder InMemoryEventStoreConnectionBuilder;
+        protected Fixture Fixture;
 
         [SetUp]
-        public void SetUp()
+        public void BaseSetUp()
         {
-            DocumentStore = new RavenDbStore().Instance;
+            DocumentStore = new RavenDbStore(true, false).Instance;
+            InMemoryEventStoreConnectionBuilder = new InMemoryEventStoreConnectionBuilder();
+            Mediator = new Mediate(InMemoryEventStoreConnectionBuilder).Mediator;
+            Fixture = new Fixture();
         }
 
         [TearDown]
-        public void TearDown()
+        public void BaseTearDown()
         {
             DocumentStore.Dispose();
         }

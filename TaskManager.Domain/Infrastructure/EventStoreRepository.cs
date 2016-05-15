@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using EventStore.ClientAPI;
-using EventStore.ClientAPI.Embedded;
-using EventStore.ClientAPI.Exceptions;
-using EventStore.Core;
-using EventStore.Core.Data;
 using MediatR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,70 +17,47 @@ namespace TaskManager.Domain.Infrastructure
     public class EventStoreRepository<TAggregate> where TAggregate : AggregateRoot
     {
         private readonly IMediator _mediator;
+        private readonly IEventStoreConnectionBuilder _eventStoreConnectionBuilder;
         private const string EventClrTypeHeader = "EventClrTypeName";
         private const string AggregateClrTypeHeader = "AggregateClrTypeName";
         private const string CommitIdHeader = "CommitId";
         private const int ReadPageSize = 200;
 
-        private readonly IEventStoreConnection _connection;
-
-        public EventStoreRepository(IMediator mediator, IEventStoreConnection eventStoreConnection)
+        public EventStoreRepository(IMediator mediator, IEventStoreConnectionBuilder eventStoreConnectionBuilder)
         {
             if (mediator == null) throw new ArgumentNullException("mediator");
-            if (eventStoreConnection == null) throw new ArgumentNullException("eventStoreConnection");
+            if (eventStoreConnectionBuilder == null) throw new ArgumentNullException("eventStoreConnectionBuilder");
+            _eventStoreConnectionBuilder = eventStoreConnectionBuilder;
             _mediator = mediator;
-            _connection = eventStoreConnection;
         }
-
-        private IEventStoreConnection UseInMemoryEventStore()
-        {
-            ClusterVNode node = EmbeddedVNodeBuilder.AsSingleNode().RunInMemory().OnDefaultEndpoints().Build();
-            
-            bool isNodeMaster = false;
-            node.NodeStatusChanged += (sender, args) => isNodeMaster = args.NewVNodeState == VNodeState.Master;
-            node.Start();
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            while (!isNodeMaster)
-            {
-                if (stopwatch.Elapsed.Seconds > 20)
-                {
-                    throw new EventStoreConnectionException("In memory node failed to become master within the time limit");
-                }
-                Thread.Sleep(1);
-            }
-            stopwatch.Stop();
-
-            IEventStoreConnection eventStoreConnection = EmbeddedEventStoreConnection.Create(node);
-            return eventStoreConnection;
-        }
-
+        
         public TAggregate GetById(string id)
         {
-            _connection.ConnectAsync().Wait();
-            var events = new List<Event>();
-            StreamEventsSlice currentSlice;
-            var nextSliceStart = StreamPosition.Start;
-            var streamName = GetStreamName(typeof(TAggregate), id);
+            using (var connection = _eventStoreConnectionBuilder.Build())
+            {
+                connection.ConnectAsync().Wait();
+                var events = new List<Event>();
+                StreamEventsSlice currentSlice;
+                var nextSliceStart = StreamPosition.Start;
+                var streamName = GetStreamName(typeof (TAggregate), id);
 
-            do
-            {
-                currentSlice = _connection
-                    .ReadStreamEventsForwardAsync(streamName, nextSliceStart, ReadPageSize, false)
-                    .Result;
-                nextSliceStart = currentSlice.NextEventNumber;
-                events.AddRange(currentSlice.Events.Select(x => DeserializeEvent(x)));
-            } while (!currentSlice.IsEndOfStream);
-            if (!events.Any())
-            {
-                return null;
+                do
+                {
+                    currentSlice = connection
+                        .ReadStreamEventsForwardAsync(streamName, nextSliceStart, ReadPageSize, false)
+                        .Result;
+                    nextSliceStart = currentSlice.NextEventNumber;
+                    events.AddRange(currentSlice.Events.Select(x => DeserializeEvent(x)));
+                } while (!currentSlice.IsEndOfStream);
+                if (!events.Any())
+                {
+                    return null;
+                }
+
+                var constructor = typeof (TAggregate).GetConstructor(new Type[] {typeof (IList<Event>)});
+                var aggregate = (TAggregate) constructor.Invoke(new object[] {events});
+                return aggregate;
             }
-
-            var constructor = typeof(TAggregate).GetConstructor(new Type[] { typeof(IList<Event>) });
-            var aggregate = (TAggregate) constructor.Invoke(new object[] { events });
-            _connection.Close();
-            return aggregate;
         }
 
         private string GetStreamName(Type type, string id)
@@ -106,22 +77,25 @@ namespace TaskManager.Domain.Infrastructure
 
         public void Save(AggregateRoot aggregate)
         {
-            _connection.ConnectAsync().Wait();
-            string streamName = GetStreamName(aggregate.GetType(), aggregate.Id);
             List<Event> newEvents = aggregate.GetUncommittedEvents().ToList();
-            int originalVersion = aggregate.Version - newEvents.Count;
-            int expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;
-            
-            var commitId = Guid.NewGuid();
-            var commitHeaders = new Dictionary<string, object>
+            using (var connection = _eventStoreConnectionBuilder.Build())
             {
-                {CommitIdHeader, commitId},
-                {AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName}
-            };
-            
-            List<EventData> eventsToSave = newEvents.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
-            _connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
-            _connection.Close();
+                connection.ConnectAsync().Wait();
+                string streamName = GetStreamName(aggregate.GetType(), aggregate.Id);
+                int originalVersion = aggregate.Version - newEvents.Count;
+                int expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;
+
+                var commitId = Guid.NewGuid();
+                var commitHeaders = new Dictionary<string, object>
+                {
+                    {CommitIdHeader, commitId},
+                    {AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName}
+                };
+
+                List<EventData> eventsToSave =
+                    newEvents.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
+                connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
+            }
             foreach (var eventToPublish in newEvents)
             {
                 _mediator.Publish(eventToPublish);
@@ -145,12 +119,6 @@ namespace TaskManager.Domain.Infrastructure
             string typeName = evnt.GetType().Name;
 
             return new EventData(eventId, typeName, true, data, metadata);
-        }
-
-        public void Dispose()
-        {
-            _connection.Close();
-            _connection.Dispose();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace TaskManager.Domain.Features.ProjectTreeView
         {
             using (var session = _documentStore.OpenSession())
             {
-                var projectTreeNode = new ProjectTreeNode(@event.ProjectId.ToString(), @event.Title, @event.Deadline,
+                var projectTreeNode = new ProjectTreeNode(@event.ProjectId, @event.Title, @event.Deadline,
                     @event.Priority);
                 session.Store(projectTreeNode);
                 session.SaveChanges();

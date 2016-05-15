@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration Tests\BaseIntegrationTest.cs" />
+    <Compile Include="Integration Tests\InMemoryEventStoreConnectionBuilder.cs" />
     <Compile Include="Integration Tests\PrioritizeProject\PrioritizeProjectTest.cs" />
     <Compile Include="Integration Tests\RavenDbStoreTest.cs" />
     <Compile Include="Integration Tests\RegisterProject\ProjectQueryHandlerTest.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Integration Tests\RegisterTask\TaskQueryHandlerTest.cs" />
     <Compile Include="Integration Tests\RegisterTask\RegisterTaskTest.cs" />
     <Compile Include="Integration Tests\TasksInGridViewTest\TaskInGridViewQueryHandlerTest.cs" />
+    <Compile Include="Integration Tests\TasksInGridViewTest\TaskStatusChangesTest.cs" />
     <Compile Include="Integration Tests\ViewProjectTreeTest\ProjectTreeViewQueryHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration Tests\InMemoryEventStore.cs" />

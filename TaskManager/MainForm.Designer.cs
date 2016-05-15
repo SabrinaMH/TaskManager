@@ -63,7 +63,7 @@
             this.projectTreeView.Name = "projectTreeView";
             this.projectTreeView.Size = new System.Drawing.Size(304, 544);
             this.projectTreeView.TabIndex = 0;
-            this.projectTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.projectTreeView_NodeMouseClick);
+            this.projectTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projectTreeView_AfterSelect);
             // 
             // projectTreeContextMenuStrip
             // 
@@ -90,7 +90,6 @@
             this.taskGridView.Size = new System.Drawing.Size(612, 173);
             this.taskGridView.TabIndex = 3;
             this.taskGridView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.taskGridView_CellMouseUp);
-            this.taskGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.taskGridView_CellValueChanged);
             // 
             // taskInGridViewContextMenuStrip
             // 

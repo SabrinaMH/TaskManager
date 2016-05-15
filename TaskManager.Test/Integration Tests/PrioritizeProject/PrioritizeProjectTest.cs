@@ -8,15 +8,14 @@ using TaskManager.Domain.Models.Project;
 namespace TaskManager.Test.PrioritizeProject
 {
     [TestFixture]
-    public class PrioritizeProjectTest
+    public class PrioritizeProjectTest : BaseIntegrationTest
     {
         [Test]
         public void Can_Prioritize_Project()
         {
-            var mediate = new Mediate(InMemoryEventStore.Connection);
-            var eventStoreRepository = new EventStoreRepository<Project>(mediate.Mediator, InMemoryEventStore.Connection);
             var project = new Project(new Title("my project"), new Deadline(DateTime.UtcNow));
             project.Reprioritize(ProjectPriority.Medium);
+            var eventStoreRepository = new EventStoreRepository<Project>(Mediator, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(project);
 
             Project projectFromEventStore = eventStoreRepository.GetById(project.Id);

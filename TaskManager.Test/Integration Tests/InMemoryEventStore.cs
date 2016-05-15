@@ -1,28 +1,44 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Threading;
-using EventStore.ClientAPI;
 using EventStore.ClientAPI.Embedded;
 using EventStore.ClientAPI.Exceptions;
 using EventStore.Core;
 using EventStore.Core.Data;
-using NUnit.Framework;
 
 namespace TaskManager.Test
 {
-    [SetUpFixture]
     public class InMemoryEventStore
     {
-        public static IEventStoreConnection Connection { get; private set; }
-        
-        [SetUp]
-        public static void SetupInMemoryEventStore()
+        private static ClusterVNode _node;
+
+        public ClusterVNode Instance
         {
-            ClusterVNode node = EmbeddedVNodeBuilder.AsSingleNode().RunInMemory().OnDefaultEndpoints().Build();
+            get
+            {
+                if (_node == null)
+                {
+                    Bootstrap();
+                }
+                return _node;
+            }
+        }
+
+        private void Bootstrap()
+        {
+            // GetEventStore runs on the client on default tcp port 1113. Thus, the in memory cannot run on the same.
+            _node =
+                EmbeddedVNodeBuilder.AsSingleNode()
+                    .RunInMemory()
+                    .WithInternalTcpOn(new IPEndPoint(IPAddress.Loopback, 1114))
+                    .WithExternalTcpOn(new IPEndPoint(IPAddress.Loopback, 1115))
+                    .WithInternalHttpOn(new IPEndPoint(IPAddress.Loopback, 2114))
+                    .WithExternalHttpOn(new IPEndPoint(IPAddress.Loopback, 2115))
+                    .Build();
 
             bool isNodeMaster = false;
-            node.NodeStatusChanged += (sender, args) => isNodeMaster = args.NewVNodeState == VNodeState.Master;
-            node.Start();
+            _node.NodeStatusChanged += (sender, args) => isNodeMaster = args.NewVNodeState == VNodeState.Master;
+            _node.Start();
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -35,16 +51,6 @@ namespace TaskManager.Test
                 Thread.Sleep(1);
             }
             stopwatch.Stop();
-
-            IEventStoreConnection eventStoreConnection = EmbeddedEventStoreConnection.Create(node);
-            Connection = eventStoreConnection;
-        }
-
-        [TearDown]
-        public static void TeardownInMemoryEventStore()
-        {
-            Connection.Close();
-            Connection.Dispose();
         }
     }
 }

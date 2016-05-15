@@ -26,8 +26,8 @@ namespace TaskManager.Test.RegisterTask
             var title = fixture.Create<string>();
             using (var session = DocumentStore.OpenSession())
             {
-                Guid id = fixture.Create<Guid>();
-                Guid projectId = fixture.Create<Guid>();
+                string id = fixture.Create<string>();
+                string projectId = fixture.Create<string>();
                 var taskInGridView = new TaskInGridView(id, projectId, title,
                     fixture.Create<DateTime>().ToShortDateString(), ProjectPriority.Low.DisplayName, true);
                 session.Store(taskInGridView);

@@ -79,6 +79,7 @@
     <Compile Include="AddProjectForm.Designer.cs">
       <DependentUpon>AddProjectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventStoreConnectionBuilder.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,10 +87,12 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="SortFailedException.cs" />
     <Compile Include="StringFormatter.cs" />
+    <Compile Include="TaskEventArgs.cs" />
     <EmbeddedResource Include="AddTaskForm.resx">
       <DependentUpon>AddTaskForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,7 +104,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
