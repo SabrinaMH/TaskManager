@@ -5,7 +5,7 @@ using MediatR;
 using Serilog;
 using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Infrastructure;
-using TaskManager.Domain.Models.Task;
+using TaskManager.TasksInGridViewUI;
 
 namespace TaskManager
 {

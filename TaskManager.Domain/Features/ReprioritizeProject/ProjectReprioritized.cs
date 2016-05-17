@@ -1,5 +1,4 @@
-﻿using System;
-using TaskManager.Domain.Common;
+﻿using TaskManager.Domain.Common;
 
 namespace TaskManager.Domain.Features.ReprioritizeProject
 {

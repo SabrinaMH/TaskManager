@@ -1,8 +1,6 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Raven.Client;
 using TaskManager.Domain.Features.ReprioritizeProject;
-using TaskManager.Domain.Infrastructure;
 
 namespace TaskManager.Domain.Features.ProjectTreeView
 {

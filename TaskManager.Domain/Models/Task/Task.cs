@@ -45,10 +45,10 @@ namespace TaskManager.Domain.Models.Task
             ApplyChange(new TaskReprioritized(Id, _priority.DisplayName, newPriority.DisplayName));
         }
 
-        public void Done()
+        public void Close()
         {
             if (!_isDone)
-                ApplyChange(new TaskDone(Id));
+                ApplyChange(new TaskClosed(Id));
         }
 
         public void Reopen()
@@ -62,7 +62,7 @@ namespace TaskManager.Domain.Models.Task
             _isDone = false;
         }
 
-        private void Apply(TaskDone @event)
+        private void Apply(TaskClosed @event)
         {
             _isDone = true;
         }

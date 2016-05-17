@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TaskManager.Domain.Features.ProjectTreeView;
 
-namespace TaskManager
+namespace TaskManager.ProjectTreeViewUI
 {
     public class Sorter
     {

@@ -90,8 +90,8 @@
     <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Identity.cs" />
     <Compile Include="Common\AggregateRoot.cs" />
-    <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDone.cs" />
-    <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDoneCommandHandler.cs" />
+    <Compile Include="Features\ChangeTaskStatus\CloseTask.cs" />
+    <Compile Include="Features\ChangeTaskStatus\CloseTaskCommandHandler.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTask.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTaskCommandHandler.cs" />
     <Compile Include="Features\ChangeTaskStatus\TaskReopened.cs" />
@@ -106,10 +106,11 @@
     <Compile Include="Features\ReprioritizeProject\ReprioritizeProjectCommandHandler.cs" />
     <Compile Include="Features\ReprioritizeProject\ProjectPriorityQueryHandler.cs" />
     <Compile Include="Features\ReprioritizeProject\ProjectDoesNotExistException.cs" />
-    <Compile Include="Features\TaskGridView\TaskDoneEventHandler.cs" />
+    <Compile Include="Features\TaskGridView\TaskClosedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskIdByTitleQuery.cs" />
     <Compile Include="Features\TaskGridView\TaskRegisteredEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskReopenedEventHandler.cs" />
+    <Compile Include="Infrastructure\EventStoreConnectionBuilder.cs" />
     <Compile Include="Infrastructure\IEventStoreConnectionBuilder.cs" />
     <Compile Include="Infrastructure\Logging.cs" />
     <Compile Include="Infrastructure\RavenDbStore.cs" />
@@ -120,7 +121,7 @@
     <Compile Include="Features\RegisterTask\RegisterTaskCommandHandler.cs" />
     <Compile Include="Features\RegisterTask\RegisterTask.cs" />
     <Compile Include="Features\RegisterTask\TaskRegistered.cs" />
-    <Compile Include="Features\ChangeTaskStatus\TaskDone.cs" />
+    <Compile Include="Features\ChangeTaskStatus\TaskClosed.cs" />
     <Compile Include="Features\ProjectTreeView\ProjectPrioritizedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\AllTasksInProjectQuery.cs" />
     <Compile Include="Features\TaskGridView\TaskInGridViewQueryHandler.cs" />

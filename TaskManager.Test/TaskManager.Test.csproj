@@ -82,6 +82,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -104,6 +105,7 @@
     <Compile Include="Integration Tests\InMemoryEventStore.cs" />
     <Compile Include="Unit Tests\SorterTest.cs" />
     <Compile Include="Unit Tests\TaskTest.cs" />
+    <Compile Include="Unit Tests\TreeUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

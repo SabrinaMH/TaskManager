@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TaskManager
+namespace TaskManager.ProjectTreeViewUI
 {
     [Serializable]
     public class SortFailedException : Exception

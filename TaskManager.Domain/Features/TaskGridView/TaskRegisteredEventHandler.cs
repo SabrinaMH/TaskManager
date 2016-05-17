@@ -1,9 +1,6 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Raven.Client;
-using Raven.Database.Server.Controllers;
 using TaskManager.Domain.Features.RegisterTask;
-using TaskManager.Domain.Infrastructure;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {

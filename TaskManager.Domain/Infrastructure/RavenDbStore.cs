@@ -1,13 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Raven.Abstractions.Util;
 using Raven.Client;
 using Raven.Client.Embedded;
-using Raven.Client.Linq.Indexing;
 using Raven.Client.Listeners;
-using Raven.Database.Server;
-using Raven.Json.Linq;
 
 namespace TaskManager.Domain.Infrastructure
 {

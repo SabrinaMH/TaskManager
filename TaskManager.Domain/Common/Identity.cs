@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TaskManager.Domain.Common
+﻿namespace TaskManager.Domain.Common
 {
     public class Identity
     {

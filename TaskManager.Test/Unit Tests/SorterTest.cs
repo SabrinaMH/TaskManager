@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;   
+using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ProjectTreeView;
-using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
+using TaskManager.ProjectTreeViewUI;
 
 namespace TaskManager.Test
 {
@@ -19,8 +19,8 @@ namespace TaskManager.Test
             string deadline = DateTime.UtcNow.ToString();
             var title = fixture.Create<string>();
             var node1 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.None.DisplayName);
-            var node2 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.Medium.DisplayName);
-            var node3 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.High.DisplayName);
+            var node2 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.High.DisplayName);
+            var node3 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.Medium.DisplayName);
             var treeNodes = new List<ProjectTreeNode> {node1, node2, node3};
 
             var sortedTreeNodes = sorter.ByPriority(treeNodes);

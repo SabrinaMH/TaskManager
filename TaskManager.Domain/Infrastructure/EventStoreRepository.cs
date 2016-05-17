@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using EventStore.ClientAPI;
 using MediatR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TaskManager.Domain.Common;
-using Event = TaskManager.Domain.Common.Event;
-using ExpectedVersion = EventStore.ClientAPI.ExpectedVersion;
-using ResolvedEvent = EventStore.ClientAPI.ResolvedEvent;
 
 namespace TaskManager.Domain.Infrastructure
 {

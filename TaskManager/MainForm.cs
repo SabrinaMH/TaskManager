@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using MediatR;
+using Serilog;
 using TaskManager.Domain.Features.ChangeTaskStatus;
 using TaskManager.Domain.Features.ProjectTreeView;
 using TaskManager.Domain.Features.ReprioritizeProject;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Infrastructure;
-using ILogger = Serilog.ILogger;
+using TaskManager.ProjectTreeViewUI;
+using TaskManager.TasksInGridViewUI;
 
 namespace TaskManager
 {
@@ -20,35 +21,41 @@ namespace TaskManager
         private List<ProjectTreeNode> _projects;
         private BindingList<TaskInGridView> _allTasksInProject;
         private ILogger _logger;
+        ProjectUtils _projectUtils;
+        private TaskUtils _taskUtils;
+        private GridUtils _gridUtils;
+        private TreeUtils _treeUtils;
 
         public MainForm()
         {
+            InitializeComponent();
             var eventStoreConnectionBuilder = new EventStoreConnectionBuilder();
             var mediate = new Mediate(eventStoreConnectionBuilder);
             _logger = Logging.Logger;
             _mediator = mediate.Mediator;
             _projects = new List<ProjectTreeNode>();
-            InitializeComponent();
+            _projectUtils = new ProjectUtils();
+            _treeUtils = new TreeUtils(projectTreeView);
+            _taskUtils = new TaskUtils();
+            _gridUtils = new GridUtils(taskGridView);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _projects = RetrieveAllProjects();
-            PopulateProjectTreeView(_projects);
-            InitializeContextMenuForEachProjectNodeInTreeView();
+            _projects = _projectUtils.RetrieveAllProjects();
+            _treeUtils.PopulateTreeByProjectPriority(_projects);
+            InitializeContextMenuForEachProjectNode();
             if (projectTreeView.Nodes.Count > 0)
             {
                 var selectedNode = projectTreeView.Nodes[0];
                 projectTreeView.SelectedNode = selectedNode;
-                //string projectId = GetProjectIdBasedOnTitle(selectedNode.Text);
-                //PopulateTasksInGridView(projectId);
             }
         }
-         
-        private void RearrangeColumnsInTaskGridView()
+
+        public void RearrangeColumnsInTasksGridView()
         {
-            RemoveColumnInTaskGridView("Id");
-            RemoveColumnInTaskGridView("ProjectId");
+            _gridUtils.RemoveColumn("Id");
+            _gridUtils.RemoveColumn("ProjectId");
             if (taskGridView.Columns.Contains("IsDone"))
             {
                 taskGridView.Columns["IsDone"].HeaderText = "Done";
@@ -56,15 +63,25 @@ namespace TaskManager
             }
         }
 
-        private void RemoveColumnInTaskGridView(string columnName)
+        private void projectTreeNodeContextMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (taskGridView.Columns.Contains(columnName))
+            try
             {
-                taskGridView.Columns.Remove(columnName);
+                var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
+                var prioritizeProject = new ReprioritizeProject(selectedProjectId, e.ClickedItem.Text);
+                _mediator.Send(prioritizeProject);
+                ProjectTreeNode projectTreeNode = _projects.Find(x => x.Id == selectedProjectId);
+                projectTreeNode.Priority = e.ClickedItem.Text;
+                _treeUtils.PopulateTreeByProjectPriority(_projects);
+            }
+            catch (ProjectDoesNotExistException ex)
+            {
+                _logger.Error(ex, "Could not find project with title {title}", projectTreeView.SelectedNode.Text);
+                MessageBox.Show("Could not find the selected project", "Error", MessageBoxButtons.OK);
             }
         }
 
-        private void InitializeContextMenuForEachProjectNodeInTreeView()
+        public void InitializeContextMenuForEachProjectNode()
         {
             var allPrioritiesQuery = new AllProjectPrioritiesQuery();
             var priorityQueryHandler = new ProjectPriorityQueryHandler();
@@ -79,61 +96,8 @@ namespace TaskManager
 
             foreach (var node in projectTreeView.Nodes)
             {
-                ((TreeNode) node).ContextMenuStrip = projectTreeNodeContextMenuStrip;
+                ((TreeNode)node).ContextMenuStrip = projectTreeNodeContextMenuStrip;
             }
-        }
-
-        private void projectTreeNodeContextMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            try
-            {
-                var selectedProjectId = GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
-                var prioritizeProject = new ReprioritizeProject(selectedProjectId, e.ClickedItem.Text);
-                _mediator.Send(prioritizeProject);
-            }
-            catch (ProjectDoesNotExistException ex)
-            {
-                _logger.Error(ex, "Could not find project with title {title}", projectTreeView.SelectedNode.Text);
-                MessageBox.Show("Could not find the selected project", "Error", MessageBoxButtons.OK);
-            }
-        }
-
-        private string GetProjectIdBasedOnTitle(string title)
-        {
-            try
-            {
-                var projectTreeNode = _projects.FirstOrDefault(x => x.Title == title);
-                var projectIdByTitleQuery = new ProjectIdByTitleQuery(title);
-                var queryHandler = new ProjectTreeViewQueryHandler();
-                string projectId = queryHandler.Handle(projectIdByTitleQuery);
-                if (string.IsNullOrEmpty(projectId))
-                {
-                    _logger.Error("Could not find project id for project with title {title}", title);
-                    throw new ProjectDoesNotExistException(title);
-                }
-                return projectTreeNode.Id;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "A project with title {title} does not exist", title);
-                throw new ProjectDoesNotExistException(title, ex);
-            }
-        }
-
-        private List<ProjectTreeNode> RetrieveAllProjects()
-        {
-            var allProjectTreeNodesQuery = new AllProjectTreeNodesQuery();
-            var projectTreeViewQueryHandler = new ProjectTreeViewQueryHandler();
-            List<ProjectTreeNode> allProjects = projectTreeViewQueryHandler.Handle(allProjectTreeNodesQuery);
-            return allProjects;
-        }
-
-        private List<TaskInGridView> RetrieveAllTasksInProject(string projectId)
-        {
-            var allTasksInProjectQuery = new AllTasksInProjectQuery(projectId);
-            var taskInGridViewQueryHandler = new TaskInGridViewQueryHandler();
-            List<TaskInGridView> tasksInProject = taskInGridViewQueryHandler.Handle(allTasksInProjectQuery);
-            return tasksInProject;
         }
 
         private void AddProjectToTreeView(string title, string deadline)
@@ -143,20 +107,7 @@ namespace TaskManager
             projectTreeView.Nodes.Add(node);
             node.ContextMenuStrip = projectTreeNodeContextMenuStrip;
         }
-
-        private void PopulateProjectTreeView(List<ProjectTreeNode> projects)
-        {
-            projectTreeView.Nodes.Clear();
-            var sorter = new Sorter();
-            var sortedByPriority = sorter.ByPriority(projects);
-            foreach (var projectTreeNode in sortedByPriority)
-            {
-                string title = projectTreeNode.Title;
-                var treeNode = new TreeNode(title);
-                projectTreeView.Nodes.Add(treeNode);
-            }
-        }
-
+        
         private void addProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var addProjectForm = new AddProjectForm(_mediator);
@@ -184,47 +135,32 @@ namespace TaskManager
 
         private void PopulateTasksInGridView(string projectId)
         {
-            _allTasksInProject = new BindingList<TaskInGridView>(RetrieveAllTasksInProject(projectId));
+            _allTasksInProject = new BindingList<TaskInGridView>(_taskUtils.RetrieveAllTasksInProject(projectId));
             taskGridView.DataSource = _allTasksInProject;
-            RearrangeColumnsInTaskGridView();
+            RearrangeColumnsInTasksGridView();
             for (int i = 0; i < taskGridView.RowCount; i++)
             {
                 var task = (TaskInGridView) taskGridView.Rows[i].DataBoundItem;
                 if (task != null && task.IsDone)
                 {
-                    FadeOut(i);
+                    _gridUtils.FadeOut(i);
                 }
             }
         }
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selectedProjectId = GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
+            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
             var addTaskForm = new AddTaskForm(selectedProjectId, _mediator);
             addTaskForm.TaskRegistered += addTaskForm_TaskRegistered;
             addTaskForm.StartPosition = FormStartPosition.CenterParent;
             addTaskForm.ShowDialog(this);
         }
 
-        private void FadeOut(int rowIndex)
-        {
-            for (int i = 0; i < taskGridView.Columns.Count; i++)
-            {
-                taskGridView.Rows[rowIndex].Cells[i].Style.ForeColor = Color.DarkGray;
-            }
-        }
-
-        private void FadeIn(int rowIndex)
-        {
-            for (int i = 0; i < taskGridView.Columns.Count; i++)
-            {
-                taskGridView.Rows[rowIndex].Cells[i].Style.ForeColor = Color.Black;
-            }
-        }
 
         private void taskGridView_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (TouchesDoneColumn(e.ColumnIndex, e.RowIndex))
+            if (_gridUtils.TouchesColumn("Done", e.ColumnIndex, e.RowIndex))
             {
                 bool previousValue;
                 if (Boolean.TryParse(taskGridView.CurrentRow.Cells["Done"].Value.ToString(), out previousValue))
@@ -246,30 +182,25 @@ namespace TaskManager
                     var isTaskDone = !previousValue;
                     if (isTaskDone)
                     {
-                        var markTaskAsDone = new MarkTaskAsDone(id);
+                        var markTaskAsDone = new CloseTask(id);
                         _mediator.Send(markTaskAsDone);
                         taskInGridView.IsDone = true;
-                        FadeOut(e.RowIndex);
+                        _gridUtils.FadeOut(e.RowIndex);
                     }
                     else
                     {
                         var reopenTask = new ReopenTask(task.Id);
                         _mediator.Send(reopenTask);
                         taskInGridView.IsDone = false;
-                        FadeIn(e.RowIndex);
+                        _gridUtils.FadeIn(e.RowIndex);
                     }
                 }
             }
         }
 
-        private bool TouchesDoneColumn(int columnIndex, int rowIndex)
-        {
-            return columnIndex == taskGridView.Columns["Done"].Index && rowIndex != -1;
-        }
-
         private void projectTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var selectedProjectId = GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
+            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
             PopulateTasksInGridView(selectedProjectId);
         }
     }

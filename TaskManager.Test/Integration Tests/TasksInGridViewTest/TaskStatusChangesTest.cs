@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.TaskGridView;
@@ -20,7 +19,7 @@ namespace TaskManager.Test.TasksInGridViewTest
             var title = new Title(Fixture.Create<string>());
             var deadline = new Deadline(DateTime.UtcNow);
             var task = new Task(projectId, title, TaskPriority.Low, deadline);
-            task.Done();
+            task.Close();
             var eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(task);
 
@@ -37,7 +36,7 @@ namespace TaskManager.Test.TasksInGridViewTest
             var title = new Title(Fixture.Create<string>());
             var deadline = new Deadline(DateTime.UtcNow);
             var task = new Task(projectId, title, TaskPriority.Low, deadline);
-            task.Done();
+            task.Close();
             task.Reopen();
             var eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(task);

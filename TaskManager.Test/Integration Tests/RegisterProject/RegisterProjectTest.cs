@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MediatR;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ProjectTreeView;

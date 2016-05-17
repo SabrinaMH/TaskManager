@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.ReprioritizeProject

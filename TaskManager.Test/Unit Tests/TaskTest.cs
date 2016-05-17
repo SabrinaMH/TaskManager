@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TaskManager.Domain.Common;
 using TaskManager.Domain.Features.ChangeTaskStatus;
@@ -16,7 +15,7 @@ namespace TaskManager.Test
         public void Can_Reopen_Task()
         {
             var task = new Task(new ProjectId("my project"), new Title("my task"), TaskPriority.Low);
-            task.Done();
+            task.Close();
             task.Reopen();
             IList<Event> uncommittedEvents = task.GetUncommittedEvents();
             Assert.IsTrue(uncommittedEvents.Contains(new TaskReopened(task.Id)));

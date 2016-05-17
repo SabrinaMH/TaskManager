@@ -1,5 +1,4 @@
 ﻿using System;
-using MediatR;
 using NUnit.Framework;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;

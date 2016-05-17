@@ -4,6 +4,7 @@ using MediatR;
 using Serilog;
 using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Infrastructure;
+using TaskManager.ProjectTreeViewUI;
 
 namespace TaskManager
 {

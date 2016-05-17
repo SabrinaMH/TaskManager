@@ -1,5 +1,4 @@
 ﻿using System;
-using EventStore.Core.Index;
 using TaskManager.Domain.Common;
 
 namespace TaskManager.Domain.Features.RegisterTask

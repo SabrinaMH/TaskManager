@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EventStore.ClientAPI;
 using MediatR;
 using TaskManager.Domain.Features.ChangeTaskStatus;
 using TaskManager.Domain.Features.ProjectTreeView;
@@ -47,9 +46,9 @@ namespace TaskManager.Domain.Infrastructure
             {
                 instances.Add(new TaskRegisteredEventHandler(documentStore));
             }
-            if (serviceType.IsAssignableFrom(typeof(TaskDoneEventHandler)))
+            if (serviceType.IsAssignableFrom(typeof(TaskClosedEventHandler)))
             {
-                instances.Add(new TaskDoneEventHandler(documentStore));
+                instances.Add(new TaskClosedEventHandler(documentStore));
             }
             if (serviceType.IsAssignableFrom(typeof(TaskReopenedEventHandler)))
             {
@@ -75,9 +74,9 @@ namespace TaskManager.Domain.Infrastructure
             {
                 return new ReprioritizeProjectCommandHandler(projectEventStoreRepository);
             }
-            if (serviceType.IsAssignableFrom(typeof(MarkTaskAsDoneCommandHandler)))
+            if (serviceType.IsAssignableFrom(typeof(CloseTaskCommandHandler)))
             {
-                return new MarkTaskAsDoneCommandHandler(taskEventStoreRepository);
+                return new CloseTaskCommandHandler(taskEventStoreRepository);
             }
             if (serviceType.IsAssignableFrom(typeof(ReopenTaskCommandHandler)))
             {

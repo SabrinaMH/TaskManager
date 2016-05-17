@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using TaskManager.Domain.Common;
 
 namespace TaskManager.Domain.Features.RegisterProject

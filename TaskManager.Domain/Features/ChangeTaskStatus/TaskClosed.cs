@@ -1,13 +1,12 @@
-﻿using System;
-using TaskManager.Domain.Common;
+﻿using TaskManager.Domain.Common;
 
 namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
-    public class TaskDone : Event
+    public class TaskClosed : Event
     {
         public string TaskId { get; private set; }
 
-        public TaskDone(string taskId)
+        public TaskClosed(string taskId)
         {
             TaskId = taskId;
         }

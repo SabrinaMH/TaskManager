@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TaskManager.Domain.Features.TaskGridView
+﻿namespace TaskManager.Domain.Features.TaskGridView
 {
     public class TaskInGridView
     {

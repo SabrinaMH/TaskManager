@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskManager
+namespace TaskManager.TasksInGridViewUI
 {
     public class TaskEventArgs : EventArgs
     {

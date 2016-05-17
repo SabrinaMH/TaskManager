@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using Raven.Client;
-using Raven.Client.Linq;
 using Raven.Tests.Helpers;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Infrastructure;

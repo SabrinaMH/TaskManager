@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using EventStore.ClientAPI;
-using TaskManager.Domain.Infrastructure;
 
-namespace TaskManager
+namespace TaskManager.Domain.Infrastructure
 {
     public class EventStoreConnectionBuilder : IEventStoreConnectionBuilder
     {

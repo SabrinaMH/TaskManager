@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TaskManager.Domain.Features.ReprioritizeProject;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.RegisterTask
