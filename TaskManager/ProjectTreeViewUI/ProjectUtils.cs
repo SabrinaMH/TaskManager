@@ -26,26 +26,18 @@ namespace TaskManager.ProjectTreeViewUI
             return allProjects;
         }
 
-        public string GetProjectIdBasedOnTitle(List<ProjectTreeNode> projects, string title)
+        /// <exception cref="ProjectDoesNotExistException">Condition.</exception>
+        public string GetProjectIdBasedOnTitle(string title)
         {
-            try
+            var projectIdByTitleQuery = new ProjectIdByTitleQuery(title);
+            var queryHandler = new ProjectTreeViewQueryHandler();
+            string projectId = queryHandler.Handle(projectIdByTitleQuery);
+            if (string.IsNullOrEmpty(projectId))
             {
-                var projectTreeNode = projects.FirstOrDefault(x => x.Title == title);
-                var projectIdByTitleQuery = new ProjectIdByTitleQuery(title);
-                var queryHandler = new ProjectTreeViewQueryHandler();
-                string projectId = queryHandler.Handle(projectIdByTitleQuery);
-                if (string.IsNullOrEmpty(projectId))
-                {
-                    _logger.Error("Could not find project id for project with title {title}", title);
-                    throw new ProjectDoesNotExistException(title);
-                }
-                return projectTreeNode.Id;
+                _logger.Error("Could not find project id for project with title {title}", title);
+                throw new ProjectDoesNotExistException(title);
             }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "A project with title {title} does not exist", title);
-                throw new ProjectDoesNotExistException(title, ex);
-            }
+            return projectId;
         }
     }
 }

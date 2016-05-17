@@ -67,7 +67,7 @@ namespace TaskManager
         {
             try
             {
-                var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
+                var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
                 var prioritizeProject = new ReprioritizeProject(selectedProjectId, e.ClickedItem.Text);
                 _mediator.Send(prioritizeProject);
                 ProjectTreeNode projectTreeNode = _projects.Find(x => x.Id == selectedProjectId);
@@ -150,7 +150,7 @@ namespace TaskManager
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
+            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
             var addTaskForm = new AddTaskForm(selectedProjectId, _mediator);
             addTaskForm.TaskRegistered += addTaskForm_TaskRegistered;
             addTaskForm.StartPosition = FormStartPosition.CenterParent;
@@ -200,7 +200,7 @@ namespace TaskManager
 
         private void projectTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(_projects, projectTreeView.SelectedNode.Text);
+            var selectedProjectId = _projectUtils.GetProjectIdBasedOnTitle(projectTreeView.SelectedNode.Text);
             PopulateTasksInGridView(selectedProjectId);
         }
     }
