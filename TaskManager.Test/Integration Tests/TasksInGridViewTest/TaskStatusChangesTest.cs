@@ -19,7 +19,7 @@ namespace TaskManager.Test.TasksInGridViewTest
             var title = new Title(Fixture.Create<string>());
             var deadline = new Deadline(DateTime.UtcNow);
             var task = new Task(projectId, title, TaskPriority.Low, deadline);
-            task.Close();
+            task.Done();
             var eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(task);
 
@@ -36,7 +36,7 @@ namespace TaskManager.Test.TasksInGridViewTest
             var title = new Title(Fixture.Create<string>());
             var deadline = new Deadline(DateTime.UtcNow);
             var task = new Task(projectId, title, TaskPriority.Low, deadline);
-            task.Close();
+            task.Done();
             task.Reopen();
             var eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(task);

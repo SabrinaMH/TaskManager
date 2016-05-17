@@ -46,9 +46,9 @@ namespace TaskManager.Domain.Infrastructure
             {
                 instances.Add(new TaskRegisteredEventHandler(documentStore));
             }
-            if (serviceType.IsAssignableFrom(typeof(TaskClosedEventHandler)))
+            if (serviceType.IsAssignableFrom(typeof(TaskDoneEventHandler)))
             {
-                instances.Add(new TaskClosedEventHandler(documentStore));
+                instances.Add(new TaskDoneEventHandler(documentStore));
             }
             if (serviceType.IsAssignableFrom(typeof(TaskReopenedEventHandler)))
             {
@@ -74,9 +74,9 @@ namespace TaskManager.Domain.Infrastructure
             {
                 return new ReprioritizeProjectCommandHandler(projectEventStoreRepository);
             }
-            if (serviceType.IsAssignableFrom(typeof(CloseTaskCommandHandler)))
+            if (serviceType.IsAssignableFrom(typeof(MarkTaskAsDoneCommandHandler)))
             {
-                return new CloseTaskCommandHandler(taskEventStoreRepository);
+                return new MarkTaskAsDoneCommandHandler(taskEventStoreRepository);
             }
             if (serviceType.IsAssignableFrom(typeof(ReopenTaskCommandHandler)))
             {

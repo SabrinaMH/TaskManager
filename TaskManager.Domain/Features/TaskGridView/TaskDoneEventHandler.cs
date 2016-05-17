@@ -4,16 +4,16 @@ using TaskManager.Domain.Features.ChangeTaskStatus;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {
-    public class TaskClosedEventHandler : INotificationHandler<TaskClosed>
+    public class TaskDoneEventHandler : INotificationHandler<TaskDone>
     {
         private readonly IDocumentStore _documentStore;
 
-        public TaskClosedEventHandler(IDocumentStore documentStore)
+        public TaskDoneEventHandler(IDocumentStore documentStore)
         {
             _documentStore = documentStore;
         }
 
-        public void Handle(TaskClosed @event)
+        public void Handle(TaskDone @event)
         {
             using (var session = _documentStore.OpenSession())
             {

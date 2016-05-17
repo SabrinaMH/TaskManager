@@ -2,11 +2,11 @@
 
 namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
-    public class CloseTask : Command
+    public class MarkTaskAsDone : Command
     {
         public string Id { get; private set; }
 
-        public CloseTask(string id)
+        public MarkTaskAsDone(string id)
         {
             Id = id;
         }

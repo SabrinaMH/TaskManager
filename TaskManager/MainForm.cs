@@ -182,7 +182,7 @@ namespace TaskManager
                     var isTaskDone = !previousValue;
                     if (isTaskDone)
                     {
-                        var markTaskAsDone = new CloseTask(id);
+                        var markTaskAsDone = new MarkTaskAsDone(id);
                         _mediator.Send(markTaskAsDone);
                         taskInGridView.IsDone = true;
                         _gridUtils.FadeOut(e.RowIndex);

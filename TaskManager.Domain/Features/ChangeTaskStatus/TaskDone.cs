@@ -2,11 +2,11 @@
 
 namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
-    public class TaskClosed : Event
+    public class TaskDone : Event
     {
         public string TaskId { get; private set; }
 
-        public TaskClosed(string taskId)
+        public TaskDone(string taskId)
         {
             TaskId = taskId;
         }

@@ -15,7 +15,7 @@ namespace TaskManager.Test
         public void Can_Reopen_Task()
         {
             var task = new Task(new ProjectId("my project"), new Title("my task"), TaskPriority.Low);
-            task.Close();
+            task.Done();
             task.Reopen();
             IList<Event> uncommittedEvents = task.GetUncommittedEvents();
             Assert.IsTrue(uncommittedEvents.Contains(new TaskReopened(task.Id)));
