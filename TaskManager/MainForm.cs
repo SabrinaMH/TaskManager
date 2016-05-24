@@ -192,7 +192,7 @@ namespace TaskManager
             
             if (!_allTasksInProject.Any()) return;
 
-            for (int i = 0; i < taskGridView.RowCount; i++)
+            for (int i = 0; i < taskGridView.RowCount - 1; i++)
             {
                 taskGridView.Rows[i].Cells[indexOfPriorityColumn].Value = _allTasksInProject[i].Priority;
                 var task = (TaskInGridView) taskGridView.Rows[i].DataBoundItem;
