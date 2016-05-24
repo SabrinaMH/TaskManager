@@ -57,23 +57,6 @@ namespace TaskManager
             }
         }
 
-        public void ArrangeColumnsInTasksGridView()
-        {
-            _gridUtils.RemoveColumn("Id");
-            _gridUtils.RemoveColumn("ProjectId");
-            _gridUtils.RemoveColumn("Priority");
-            if (taskGridView.Columns.Contains("IsDone"))
-            {
-                taskGridView.Columns["IsDone"].HeaderText = "Done";
-                taskGridView.Columns["IsDone"].Name = "Done";
-            }
-            DataGridViewComboBoxColumn priorityColumn = new DataGridViewComboBoxColumn();
-            priorityColumn.HeaderText = "Priority";
-            priorityColumn.Name = "Priority";
-            taskGridView.Columns.Add(priorityColumn);
-            priorityColumn.DataSource = TaskPriority.GetAll().Select(x => x.DisplayName).ToList();
-        }
-
         private void projectTreeNodeContextMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (_selectedProjectId == null) return;
@@ -187,16 +170,31 @@ namespace TaskManager
 
         private void PopulateTasksInGridView(string projectId)
         {
+            // Second time in this method, we need to remove the priority combobox column, because it's added again later
+            _gridUtils.RemoveColumn("Priority");
+
             _allTasksInProject = new BindingList<TaskInGridView>(_taskUtils.RetrieveAllTasksInProject(projectId));
             taskGridView.DataSource = _allTasksInProject;
-            ArrangeColumnsInTasksGridView();
+
+            _gridUtils.RemoveColumn("Id");
+            _gridUtils.RemoveColumn("ProjectId");
+            _gridUtils.RemoveColumn("Priority");
+            if (taskGridView.Columns.Contains("IsDone"))
+            {
+                taskGridView.Columns["IsDone"].HeaderText = "Done";
+                taskGridView.Columns["IsDone"].Name = "Done";
+            }
+            DataGridViewComboBoxColumn priorityColumn = new DataGridViewComboBoxColumn();
+            priorityColumn.HeaderText = "Priority";
+            priorityColumn.Name = "Priority";
+            var indexOfPriorityColumn = taskGridView.Columns.Add(priorityColumn);
+            priorityColumn.DataSource = TaskPriority.GetAll().Select(x => x.DisplayName).ToList();
             
             if (!_allTasksInProject.Any()) return;
 
-            int priorityColumn = taskGridView.Columns["Priority"].Index;
             for (int i = 0; i < taskGridView.RowCount; i++)
             {
-                taskGridView.Rows[i].Cells[priorityColumn].Value = _allTasksInProject[i].Priority;
+                taskGridView.Rows[i].Cells[indexOfPriorityColumn].Value = _allTasksInProject[i].Priority;
                 var task = (TaskInGridView) taskGridView.Rows[i].DataBoundItem;
                 if (task != null && task.IsDone)
                 {
