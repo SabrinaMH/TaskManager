@@ -216,15 +216,14 @@ namespace TaskManager
         {
             if (_gridUtils.TouchesColumn("Done", e.ColumnIndex, e.RowIndex))
             {
-                bool previousValue;
-                if (Boolean.TryParse(taskGridView.CurrentRow.Cells["Done"].Value.ToString(), out previousValue))
+                bool isTaskDone;
+                if (Boolean.TryParse(taskGridView.CurrentRow.Cells["Done"].Value.ToString(), out isTaskDone))
                 {
                     var task = (TaskInGridView) (taskGridView.SelectedCells[0].OwningRow.DataBoundItem);
 
                     // Doesn't retrieve task using id, because id might be null if it's a task that has been added after application start up.
                     TaskInGridView taskInGridView = _allTasksInProject.First(x => x.Title == task.Title);
 
-                    var isTaskDone = !previousValue;
                     if (isTaskDone)
                     {
                         var markTaskAsDone = new MarkTaskAsDone(task.Id);
@@ -281,6 +280,7 @@ namespace TaskManager
 
                 var reprioritizeTask = new ReprioritizeTask(selectedTask.Id, newPriority);
                 _mediator.Send(reprioritizeTask);
+                selectedTask.Priority = newPriority;
             }
         }
 

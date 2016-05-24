@@ -26,6 +26,7 @@ namespace TaskManager.Domain.Features.ReprioritizeTask
             if (TaskPriority.TryParse(command.Priority.ToLower(), out priority))
             {
                 task.Reprioritize(priority);
+                _eventStoreRepository.Save(task);
             }
             else
             {
