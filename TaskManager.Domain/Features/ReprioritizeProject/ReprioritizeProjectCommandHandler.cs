@@ -18,7 +18,7 @@ namespace TaskManager.Domain.Features.ReprioritizeProject
         /// <exception cref="ProjectDoesNotExistException">Condition.</exception>
         protected override void HandleCore(ReprioritizeProject command)
         {
-            Project project = _eventStoreRepository.GetById(command.ProjectId.ToString());
+            Project project = _eventStoreRepository.GetById(command.ProjectId);
             if (project == null)
                 throw new ProjectDoesNotExistException();
 
@@ -26,6 +26,7 @@ namespace TaskManager.Domain.Features.ReprioritizeProject
             if (ProjectPriority.TryParse(command.Priority.ToLower(), out priority))
             {
                 project.Reprioritize(priority);
+                _eventStoreRepository.Save(project);
             }
             else
             {

@@ -38,13 +38,12 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.richTextBox = new System.Windows.Forms.RichTextBox();
             this.projectTreeNodeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.priorityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.rightSideSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.newProjectButton = new System.Windows.Forms.Button();
             this.projectTreeContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.taskGridView)).BeginInit();
             this.taskInGridViewContextMenuStrip.SuspendLayout();
-            this.projectTreeNodeContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.Panel2.SuspendLayout();
@@ -61,9 +60,10 @@
             this.projectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectTreeView.Location = new System.Drawing.Point(0, 0);
             this.projectTreeView.Name = "projectTreeView";
-            this.projectTreeView.Size = new System.Drawing.Size(304, 544);
+            this.projectTreeView.Size = new System.Drawing.Size(304, 506);
             this.projectTreeView.TabIndex = 0;
             this.projectTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projectTreeView_AfterSelect);
+            this.projectTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.projectTreeView_MouseUp);
             // 
             // projectTreeContextMenuStrip
             // 
@@ -87,9 +87,11 @@
             this.taskGridView.Location = new System.Drawing.Point(0, 0);
             this.taskGridView.MultiSelect = false;
             this.taskGridView.Name = "taskGridView";
-            this.taskGridView.Size = new System.Drawing.Size(612, 173);
+            this.taskGridView.Size = new System.Drawing.Size(612, 160);
             this.taskGridView.TabIndex = 3;
             this.taskGridView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.taskGridView_CellMouseUp);
+            this.taskGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.taskGridView_CellValueChanged);
+            this.taskGridView.CurrentCellDirtyStateChanged += new System.EventHandler(this.taskGridView_CurrentCellDirtyStateChanged);
             // 
             // taskInGridViewContextMenuStrip
             // 
@@ -110,26 +112,18 @@
             this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox.Location = new System.Drawing.Point(0, 0);
             this.richTextBox.Name = "richTextBox";
-            this.richTextBox.Size = new System.Drawing.Size(612, 367);
+            this.richTextBox.Size = new System.Drawing.Size(612, 342);
             this.richTextBox.TabIndex = 4;
             this.richTextBox.Text = "";
             // 
             // projectTreeNodeContextMenuStrip
             // 
-            this.projectTreeNodeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.priorityMenuItem});
             this.projectTreeNodeContextMenuStrip.Name = "projectTreeNodeContextMenuStrip";
-            this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(113, 26);
-            // 
-            // priorityMenuItem
-            // 
-            this.priorityMenuItem.Name = "priorityMenuItem";
-            this.priorityMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.priorityMenuItem.Text = "Priority";
+            this.projectTreeNodeContextMenuStrip.Size = new System.Drawing.Size(61, 4);
             // 
             // mainSplitContainer
             // 
-            this.mainSplitContainer.Location = new System.Drawing.Point(12, 12);
+            this.mainSplitContainer.Location = new System.Drawing.Point(12, 50);
             this.mainSplitContainer.Name = "mainSplitContainer";
             // 
             // mainSplitContainer.Panel1
@@ -140,7 +134,7 @@
             // mainSplitContainer.Panel2
             // 
             this.mainSplitContainer.Panel2.Controls.Add(this.rightSideSplitContainer);
-            this.mainSplitContainer.Size = new System.Drawing.Size(920, 544);
+            this.mainSplitContainer.Size = new System.Drawing.Size(920, 506);
             this.mainSplitContainer.SplitterDistance = 304;
             this.mainSplitContainer.TabIndex = 5;
             // 
@@ -160,15 +154,26 @@
             // 
             this.rightSideSplitContainer.Panel2.AccessibleName = "noteViewPanel";
             this.rightSideSplitContainer.Panel2.Controls.Add(this.richTextBox);
-            this.rightSideSplitContainer.Size = new System.Drawing.Size(612, 544);
-            this.rightSideSplitContainer.SplitterDistance = 173;
+            this.rightSideSplitContainer.Size = new System.Drawing.Size(612, 506);
+            this.rightSideSplitContainer.SplitterDistance = 160;
             this.rightSideSplitContainer.TabIndex = 0;
+            // 
+            // newProjectButton
+            // 
+            this.newProjectButton.Location = new System.Drawing.Point(12, 12);
+            this.newProjectButton.Name = "newProjectButton";
+            this.newProjectButton.Size = new System.Drawing.Size(75, 23);
+            this.newProjectButton.TabIndex = 6;
+            this.newProjectButton.Text = "New Project";
+            this.newProjectButton.UseVisualStyleBackColor = true;
+            this.newProjectButton.Click += new System.EventHandler(this.newProjectButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 568);
+            this.Controls.Add(this.newProjectButton);
             this.Controls.Add(this.mainSplitContainer);
             this.Name = "MainForm";
             this.Text = "Task Manager";
@@ -176,7 +181,6 @@
             this.projectTreeContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.taskGridView)).EndInit();
             this.taskInGridViewContextMenuStrip.ResumeLayout(false);
-            this.projectTreeNodeContextMenuStrip.ResumeLayout(false);
             this.mainSplitContainer.Panel1.ResumeLayout(false);
             this.mainSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).EndInit();
@@ -198,11 +202,11 @@
         private System.Windows.Forms.ContextMenuStrip projectTreeContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addProjectToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip projectTreeNodeContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem priorityMenuItem;
         private System.Windows.Forms.SplitContainer mainSplitContainer;
         private System.Windows.Forms.SplitContainer rightSideSplitContainer;
         private System.Windows.Forms.ContextMenuStrip taskInGridViewContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addTaskToolStripMenuItem;
+        private System.Windows.Forms.Button newProjectButton;
     }
 }
 

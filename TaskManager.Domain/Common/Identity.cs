@@ -8,5 +8,10 @@
         {
             return id.Value;
         }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }

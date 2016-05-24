@@ -4,11 +4,11 @@ using TaskManager.Domain.Features.ReprioritizeProject;
 
 namespace TaskManager.Domain.Features.ProjectTreeView
 {
-    public class ProjectPrioritizedEventHandler : INotificationHandler<ProjectReprioritized>
+    public class ProjectReprioritizedEventHandler : INotificationHandler<ProjectReprioritized>
     {
         private readonly IDocumentStore _documentStore;
 
-        public ProjectPrioritizedEventHandler(IDocumentStore documentStore)
+        public ProjectReprioritizedEventHandler(IDocumentStore documentStore)
         {
             _documentStore = documentStore;
         }
@@ -17,7 +17,7 @@ namespace TaskManager.Domain.Features.ProjectTreeView
         {
             using (var session = _documentStore.OpenSession())
             {
-                var projectTreeNode = session.Load<ProjectTreeNode>(@event.ProjectId.ToString());
+                var projectTreeNode = session.Load<ProjectTreeNode>(@event.ProjectId);
                 projectTreeNode.Priority = @event.NewPriority;
                 session.SaveChanges();
             }

@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -106,6 +107,10 @@
     <Compile Include="Features\ReprioritizeProject\ReprioritizeProjectCommandHandler.cs" />
     <Compile Include="Features\ReprioritizeProject\ProjectPriorityQueryHandler.cs" />
     <Compile Include="Features\ReprioritizeProject\ProjectDoesNotExistException.cs" />
+    <Compile Include="Features\ReprioritizeTask\TaskProjectDoesNotExistException.cs" />
+    <Compile Include="Features\ReprioritizeTask\ReprioritizeTaskCommandHandler.cs" />
+    <Compile Include="Features\ReprioritizeTask\ReprioritizeTask.cs" />
+    <Compile Include="Features\TaskGridView\TaskReprioritizedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskDoneEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskIdByTitleQuery.cs" />
     <Compile Include="Features\TaskGridView\TaskRegisteredEventHandler.cs" />
@@ -122,7 +127,7 @@
     <Compile Include="Features\RegisterTask\RegisterTask.cs" />
     <Compile Include="Features\RegisterTask\TaskRegistered.cs" />
     <Compile Include="Features\ChangeTaskStatus\TaskDone.cs" />
-    <Compile Include="Features\ProjectTreeView\ProjectPrioritizedEventHandler.cs" />
+    <Compile Include="Features\ProjectTreeView\ProjectReprioritizedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\AllTasksInProjectQuery.cs" />
     <Compile Include="Features\TaskGridView\TaskInGridViewQueryHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskInGridView.cs" />

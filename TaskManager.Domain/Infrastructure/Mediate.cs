@@ -6,6 +6,7 @@ using TaskManager.Domain.Features.ProjectTreeView;
 using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Features.ReprioritizeProject;
+using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
@@ -54,6 +55,14 @@ namespace TaskManager.Domain.Infrastructure
             {
                 instances.Add(new TaskReopenedEventHandler(documentStore));
             }
+            if (serviceType.IsAssignableFrom(typeof(TaskReprioritizedEventHandler)))
+            {
+                instances.Add(new TaskReprioritizedEventHandler(documentStore));
+            }
+            if (serviceType.IsAssignableFrom(typeof(ProjectReprioritizedEventHandler)))
+            {
+                instances.Add(new ProjectReprioritizedEventHandler(documentStore));
+            }
             return instances;
         }
 
@@ -81,6 +90,10 @@ namespace TaskManager.Domain.Infrastructure
             if (serviceType.IsAssignableFrom(typeof(ReopenTaskCommandHandler)))
             {
                 return new ReopenTaskCommandHandler(taskEventStoreRepository);
+            }
+            if (serviceType.IsAssignableFrom(typeof(ReprioritizeTaskCommandHandler)))
+            {
+                return new ReprioritizeTaskCommandHandler(taskEventStoreRepository);
             }
             throw new ArgumentException(serviceType.ToString());
         }

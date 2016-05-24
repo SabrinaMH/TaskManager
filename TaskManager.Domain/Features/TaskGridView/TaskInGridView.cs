@@ -6,7 +6,7 @@
         public string ProjectId { get; private set; }
         public string Title { get; private set; }
         public string Deadline { get; private set; }
-        public string Priority { get; private set; }
+        public string Priority { get; set; }
         public bool IsDone { get; set; }
 
         public TaskInGridView()

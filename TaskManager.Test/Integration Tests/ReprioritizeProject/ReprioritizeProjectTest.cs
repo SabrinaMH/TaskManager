@@ -4,13 +4,13 @@ using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 
-namespace TaskManager.Test.PrioritizeProject
+namespace TaskManager.Test.ReprioritizeProject
 {
     [TestFixture]
     public class PrioritizeProjectTest : BaseIntegrationTest
     {
         [Test]
-        public void Can_Prioritize_Project()
+        public void Reprioritizing_Project_Raises_Event()
         {
             var project = new Project(new Title("my project"), new Deadline(DateTime.UtcNow));
             project.Reprioritize(ProjectPriority.Medium);
