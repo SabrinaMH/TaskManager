@@ -177,6 +177,7 @@
             this.Controls.Add(this.mainSplitContainer);
             this.Name = "MainForm";
             this.Text = "Task Manager";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.projectTreeContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.taskGridView)).EndInit();

@@ -14,12 +14,25 @@ namespace TaskManager.Domain.Infrastructure
         public RavenDbStore(bool runInMemory = false, bool allowStaleQueries = true)
         {
             string dataDirectory = ConfigurationManager.GetAppSetting("ravendb.data.directory");
+            int port = int.Parse(ConfigurationManager.GetAppSetting("ravendb.server.port"));
+           
+#if DEBUG
             _embeddableDocumentStore = new EmbeddableDocumentStore
             {
                 RunInMemory = runInMemory,
                 UseEmbeddedHttpServer = true,
-                DataDirectory =dataDirectory
+                DataDirectory = dataDirectory,
+                Configuration = { Port = port }
             };
+#else
+            _embeddableDocumentStore = new EmbeddableDocumentStore
+            {
+                RunInMemory = runInMemory,
+                UseEmbeddedHttpServer = false,
+                DataDirectory = dataDirectory,
+                Configuration = { Port = port }
+            };
+#endif
 
             if (!allowStaleQueries)
             {
@@ -54,5 +67,11 @@ namespace TaskManager.Domain.Infrastructure
             }
         }
 
+        public static void CleanUp()
+        {
+            if (_documentStore == null) return;
+
+            _documentStore.Dispose();
+        }
     }
 }

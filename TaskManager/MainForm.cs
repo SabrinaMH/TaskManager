@@ -328,5 +328,10 @@ namespace TaskManager
                 menuItem.Font = new Font(menuItem.Font, fontStyle);
             }
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RavenDbStore.CleanUp();
+        }
     }
 }
