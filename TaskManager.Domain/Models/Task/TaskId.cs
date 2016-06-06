@@ -1,4 +1,5 @@
 ﻿using TaskManager.Domain.Common;
+using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Models.Task
 {
@@ -9,9 +10,9 @@ namespace TaskManager.Domain.Models.Task
             Value = id;
         }
 
-        public static TaskId Create(string title)
+        public static TaskId Create(ProjectId projectId, string title)
         {
-            return new TaskId(string.Format("{0}/{1}", "task", title));
+            return new TaskId(string.Format("{0}/{1}/{2}", projectId, "task", title));
         }
     }
 }

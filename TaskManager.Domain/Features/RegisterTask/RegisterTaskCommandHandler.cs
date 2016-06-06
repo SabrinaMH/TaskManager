@@ -9,12 +9,12 @@ namespace TaskManager.Domain.Features.RegisterTask
     public class RegisterTaskCommandHandler : RequestHandler<RegisterTask>
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
-        private readonly TaskQueryHandler _taskQueryHandler;
+        private readonly TaskQueryService _taskQueryHandler;
 
         public RegisterTaskCommandHandler(EventStoreRepository<Task> eventStoreRepository)
         {
             _eventStoreRepository = eventStoreRepository;
-            _taskQueryHandler = new TaskQueryHandler();
+            _taskQueryHandler = new TaskQueryService();
         }
 
         /// <exception cref="UnknownPriorityException">Condition.</exception>
@@ -38,7 +38,7 @@ namespace TaskManager.Domain.Features.RegisterTask
                 task = new Task(projectId, title, priority);
             }
 
-            var query = new DoesTaskWithTitleAlreadyExistUnderSameProjectQuery(title);
+            var query = new DoesTaskWithTitleAlreadyExistUnderSameProjectQuery(title, projectId);
             bool taskWithSameTitleExists = _taskQueryHandler.Handle(query);
 
             if (taskWithSameTitleExists)

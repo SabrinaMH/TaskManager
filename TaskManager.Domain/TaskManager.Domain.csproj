@@ -100,7 +100,7 @@
     <Compile Include="Features\RegisterTask\AllTaskPrioritiesQuery.cs" />
     <Compile Include="Features\RegisterTask\DoesTaskWithTitleAlreadyExistUnderSameProjectQuery.cs" />
     <Compile Include="Features\RegisterTask\ProjectPriorityQueryHandler.cs" />
-    <Compile Include="Features\RegisterTask\TaskQueryHandler.cs" />
+    <Compile Include="Features\RegisterTask\TaskQueryService.cs" />
     <Compile Include="Features\RegisterTask\TaskWithSameTitleExistsInProjectException.cs" />
     <Compile Include="Features\ReprioritizeProject\AllProjectPrioritiesQuery.cs" />
     <Compile Include="Features\ReprioritizeProject\ReprioritizeProject.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Infrastructure\RavenDbStore.cs" />
     <Compile Include="Models\Common\UnknownPriorityException.cs" />
     <Compile Include="Features\RegisterProject\DoesProjectWithTitleExistQuery.cs" />
-    <Compile Include="Features\RegisterProject\ProjectQueryHandler.cs" />
+    <Compile Include="Features\RegisterProject\ProjectQueryService.cs" />
     <Compile Include="Features\RegisterProject\ProjectWithSameTitleExistsException.cs" />
     <Compile Include="Features\RegisterTask\RegisterTaskCommandHandler.cs" />
     <Compile Include="Features\RegisterTask\RegisterTask.cs" />

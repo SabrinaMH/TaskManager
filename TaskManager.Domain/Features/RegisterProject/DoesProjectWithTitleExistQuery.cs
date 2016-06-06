@@ -1,14 +1,16 @@
 ﻿using System;
+using TaskManager.Domain.Models.Common;
 
 namespace TaskManager.Domain.Features.RegisterProject
 {
     public class DoesProjectWithTitleExistQuery
     {
-        public string Title { get; private set; }
+        public Title Title { get; private set; }
 
-        public DoesProjectWithTitleExistQuery(string title)
+        /// <exception cref="ArgumentNullException"><paramref name="title"/> is <see langword="null" />.</exception>
+        public DoesProjectWithTitleExistQuery(Title title)
         {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("title cannot be null or empty", "title");
+            if (title == null) throw new ArgumentNullException("title");
             Title = title;
         }
     }

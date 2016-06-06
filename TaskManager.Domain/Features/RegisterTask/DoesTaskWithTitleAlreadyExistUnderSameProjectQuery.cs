@@ -1,15 +1,21 @@
 ﻿using System;
+using TaskManager.Domain.Models.Common;
+using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.RegisterTask
 {
     public class DoesTaskWithTitleAlreadyExistUnderSameProjectQuery
     {
-        public string Title { get; private set; }
+        public Title Title { get; private set; }
+        public ProjectId ProjectId { get; set; }
 
-        public DoesTaskWithTitleAlreadyExistUnderSameProjectQuery(string title)
+        /// <exception cref="ArgumentNullException"><paramref name="projectId"/> is <see langword="null" />.</exception>
+        public DoesTaskWithTitleAlreadyExistUnderSameProjectQuery(Title title, ProjectId projectId)
         {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("title cannot be null or empty", "title");
+            if (title == null) throw new ArgumentNullException("title");
+            if (projectId == null) throw new ArgumentNullException("projectId");
             Title = title;
+            ProjectId = projectId;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
@@ -22,6 +23,20 @@ namespace TaskManager.Test.RegisterTask
         {
             _eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
             _projectId = new ProjectId(Fixture.Create<string>());
+        }
+
+        [Test]
+        public void Can_Register_A_Task_With_Same_Title_Under_Several_Projects()
+        {
+            var firstProjectId = new ProjectId(Fixture.Create<string>());
+            var secondProjectId = new ProjectId(Fixture.Create<string>());
+            var taskTitle = Fixture.Create<string>();
+            var registerTaskUnderFirstProject = new Domain.Features.RegisterTask.RegisterTask(firstProjectId, taskTitle, TaskPriority.Low.DisplayName, null);
+            var registerTaskUnderSecondProject = new Domain.Features.RegisterTask.RegisterTask(secondProjectId, taskTitle, TaskPriority.Low.DisplayName, null);
+
+            var registerTaskCommandHandler = new RegisterTaskCommandHandler(_eventStoreRepository);
+            Assert.DoesNotThrow(() => registerTaskCommandHandler.Handle(registerTaskUnderFirstProject));
+            Assert.DoesNotThrow(() => registerTaskCommandHandler.Handle(registerTaskUnderSecondProject));
         }
 
         [Test]
