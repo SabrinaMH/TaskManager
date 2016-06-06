@@ -42,7 +42,7 @@
             this.addTaskButton.Location = new System.Drawing.Point(228, 98);
             this.addTaskButton.Name = "addTaskButton";
             this.addTaskButton.Size = new System.Drawing.Size(75, 23);
-            this.addTaskButton.TabIndex = 5;
+            this.addTaskButton.TabIndex = 3;
             this.addTaskButton.Text = "Add";
             this.addTaskButton.UseVisualStyleBackColor = true;
             this.addTaskButton.Click += new System.EventHandler(this.addTaskButton_Click);
@@ -52,7 +52,7 @@
             this.titleTextBox.Location = new System.Drawing.Point(68, 11);
             this.titleTextBox.Name = "titleTextBox";
             this.titleTextBox.Size = new System.Drawing.Size(238, 20);
-            this.titleTextBox.TabIndex = 4;
+            this.titleTextBox.TabIndex = 0;
             // 
             // titleLabel
             // 
@@ -68,7 +68,7 @@
             this.deadlineDateTimePicker.Location = new System.Drawing.Point(106, 72);
             this.deadlineDateTimePicker.Name = "deadlineDateTimePicker";
             this.deadlineDateTimePicker.Size = new System.Drawing.Size(200, 20);
-            this.deadlineDateTimePicker.TabIndex = 6;
+            this.deadlineDateTimePicker.TabIndex = 2;
             // 
             // hasDeadlineCheckBox
             // 
@@ -96,7 +96,7 @@
             this.taskPriorityComboBox.Location = new System.Drawing.Point(185, 42);
             this.taskPriorityComboBox.Name = "taskPriorityComboBox";
             this.taskPriorityComboBox.Size = new System.Drawing.Size(121, 21);
-            this.taskPriorityComboBox.TabIndex = 10;
+            this.taskPriorityComboBox.TabIndex = 1;
             // 
             // AddTaskForm
             // 

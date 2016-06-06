@@ -40,7 +40,7 @@
             this.addProjectButton.Location = new System.Drawing.Point(228, 92);
             this.addProjectButton.Name = "addProjectButton";
             this.addProjectButton.Size = new System.Drawing.Size(75, 23);
-            this.addProjectButton.TabIndex = 5;
+            this.addProjectButton.TabIndex = 2;
             this.addProjectButton.Text = "Add";
             this.addProjectButton.UseVisualStyleBackColor = true;
             this.addProjectButton.Click += new System.EventHandler(this.addProjectButton_Click);
@@ -50,7 +50,7 @@
             this.titleTextBox.Location = new System.Drawing.Point(68, 11);
             this.titleTextBox.Name = "titleTextBox";
             this.titleTextBox.Size = new System.Drawing.Size(238, 20);
-            this.titleTextBox.TabIndex = 4;
+            this.titleTextBox.TabIndex = 0;
             // 
             // titleLabel
             // 
@@ -66,7 +66,7 @@
             this.deadlineDateTimePicker.Location = new System.Drawing.Point(106, 43);
             this.deadlineDateTimePicker.Name = "deadlineDateTimePicker";
             this.deadlineDateTimePicker.Size = new System.Drawing.Size(200, 20);
-            this.deadlineDateTimePicker.TabIndex = 6;
+            this.deadlineDateTimePicker.TabIndex = 1;
             // 
             // hasDeadlineCheckBox
             // 

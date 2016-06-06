@@ -8,12 +8,12 @@ namespace TaskManager.Domain.Features.RegisterProject
     public class RegisterProjectCommandHandler : RequestHandler<RegisterProject>
     {
         private readonly EventStoreRepository<Project> _eventStoreRepository;
-        private readonly ProjectQueryHandler _projectQueryHandler;
+        private readonly ProjectQueryService _projectQueryHandler;
 
         public RegisterProjectCommandHandler(EventStoreRepository<Project> eventStoreRepository)
         {
             _eventStoreRepository = eventStoreRepository;
-            _projectQueryHandler = new ProjectQueryHandler();
+            _projectQueryHandler = new ProjectQueryService();
         }
 
         /// <exception cref="ProjectWithSameTitleExistsException">Condition.</exception>

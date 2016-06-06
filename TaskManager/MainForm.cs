@@ -159,7 +159,7 @@ namespace TaskManager
 
         private void AddTaskToGridView(string projectId, string title, string priority, DateTime? deadline)
         {
-            var taskId = TaskId.Create(title);
+            var taskId = TaskId.Create(new ProjectId(projectId), title);
             string possibleDeadline = deadline.HasValue ? deadline.Value.ToShortDateString() : null;
             _allTasksInProject.Add(new TaskInGridView(taskId, projectId, title, possibleDeadline, priority, false));
 
@@ -221,13 +221,12 @@ namespace TaskManager
                 {
                     var task = (TaskInGridView) (taskGridView.SelectedCells[0].OwningRow.DataBoundItem);
 
-                    // Doesn't retrieve task using id, because id might be null if it's a task that has been added after application start up.
-                    TaskInGridView taskInGridView = _allTasksInProject.First(x => x.Title == task.Title);
-
+                    TaskInGridView taskInGridView = _allTasksInProject.First(x => x.Id == task.Id);
                     if (isTaskDone)
                     {
                         var markTaskAsDone = new MarkTaskAsDone(task.Id);
                         _mediator.Send(markTaskAsDone);
+                        // Fake in UI to increase user experience
                         taskInGridView.IsDone = true;
                         _gridUtils.FadeOut(e.RowIndex);
                     }
@@ -235,6 +234,7 @@ namespace TaskManager
                     {
                         var reopenTask = new ReopenTask(task.Id);
                         _mediator.Send(reopenTask);
+                        // Fake in UI to increase user experience
                         taskInGridView.IsDone = false;
                         _gridUtils.FadeIn(e.RowIndex);
                     }

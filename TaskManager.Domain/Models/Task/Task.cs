@@ -21,7 +21,7 @@ namespace TaskManager.Domain.Models.Task
         {
         }
 
-        public Task(ProjectId projectId, Title title, TaskPriority priority) : base(TaskId.Create(title))
+        public Task(ProjectId projectId, Title title, TaskPriority priority) : base(TaskId.Create(projectId, title))
         {
             if (title == null) throw new ArgumentNullException("title");
             if (priority == null) throw new ArgumentNullException("priority");
@@ -29,7 +29,7 @@ namespace TaskManager.Domain.Models.Task
         }
 
         public Task(ProjectId projectId, Title title, TaskPriority priority, Deadline deadline)
-            : base(TaskId.Create(title))
+            : base(TaskId.Create(projectId, title))
         {
             if (title == null) throw new ArgumentNullException("title");
             if (priority == null) throw new ArgumentNullException("priority");

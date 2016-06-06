@@ -23,9 +23,11 @@ namespace TaskManager.TasksInGridViewUI
 
         public void FadeOut(int rowIndex)
         {
-            for (int i = 0; i < _grid.Columns.Count; i++)
+            var selectedRow = _grid.Rows[rowIndex];
+            var numberOfColumns = _grid.Columns.Count;
+            for (int i = 0; i < numberOfColumns; i++)
             {
-                _grid.Rows[rowIndex].Cells[i].Style.ForeColor = Color.DarkGray;
+                selectedRow.Cells[i].Style.ForeColor = Color.DarkGray;
             }
         }
 
