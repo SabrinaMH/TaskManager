@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Raven.Client;
+﻿using Raven.Client;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {
-    public class NoteSavedEventHandler : INotificationHandler<NoteSaved>
+    public class NoteSavedEventHandler 
     {
         private readonly IDocumentStore _documentStore;
 

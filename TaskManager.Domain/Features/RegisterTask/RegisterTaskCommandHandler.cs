@@ -1,12 +1,11 @@
-﻿using MediatR;
-using TaskManager.Domain.Infrastructure;
+﻿using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.RegisterTask
 {
-    public class RegisterTaskCommandHandler : RequestHandler<RegisterTask>
+    public class RegisterTaskCommandHandler
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
         private readonly TaskQueryService _taskQueryHandler;
@@ -19,7 +18,7 @@ namespace TaskManager.Domain.Features.RegisterTask
 
         /// <exception cref="UnknownPriorityException">Condition.</exception>
         /// <exception cref="TaskWithSameTitleExistsInProjectException">Condition.</exception>
-        protected override void HandleCore(RegisterTask command)
+        public void Handle(RegisterTask command)
         {
             var title = new Title(command.Title);
             var projectId = new ProjectId(command.ProjectId);

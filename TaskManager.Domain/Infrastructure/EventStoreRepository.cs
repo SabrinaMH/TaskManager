@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EventStore.ClientAPI;
-using MediatR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TaskManager.Domain.Common;
@@ -14,19 +12,19 @@ namespace TaskManager.Domain.Infrastructure
 {
     public class EventStoreRepository<TAggregate> where TAggregate : AggregateRoot
     {
-        private readonly IMediator _mediator;
+        private readonly EventBus _eventBus;
         private readonly IEventStoreConnectionBuilder _eventStoreConnectionBuilder;
         private const string EventClrTypeHeader = "EventClrTypeName";
         private const string AggregateClrTypeHeader = "AggregateClrTypeName";
         private const string CommitIdHeader = "CommitId";
         private const int ReadPageSize = 200;
 
-        public EventStoreRepository(IMediator mediator, IEventStoreConnectionBuilder eventStoreConnectionBuilder)
+        public EventStoreRepository(EventBus eventBus, IEventStoreConnectionBuilder eventStoreConnectionBuilder)
         {
-            if (mediator == null) throw new ArgumentNullException("mediator");
+            if (eventBus == null) throw new ArgumentNullException("eventBus");
             if (eventStoreConnectionBuilder == null) throw new ArgumentNullException("eventStoreConnectionBuilder");
+            _eventBus = eventBus;
             _eventStoreConnectionBuilder = eventStoreConnectionBuilder;
-            _mediator = mediator;
         }
         
         public TAggregate GetById(string id)
@@ -97,7 +95,7 @@ namespace TaskManager.Domain.Infrastructure
 
             foreach (var eventToPublish in newEvents)
             {
-                ThreadPool.QueueUserWorkItem(x =>  _mediator.Publish(eventToPublish));
+                ThreadPool.QueueUserWorkItem(x =>  _eventBus.Publish(eventToPublish));
             }
 
             aggregate.MarkChangesAsCommitted();

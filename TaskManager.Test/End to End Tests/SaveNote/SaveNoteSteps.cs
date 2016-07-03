@@ -20,7 +20,7 @@ namespace TaskManager.Test.SaveNote
             var projectId = Base.Fixture.Create<ProjectId>();
             var registerTask = new Domain.Features.RegisterTask.RegisterTask(projectId, title,
                 TaskPriority.Low.DisplayName, Base.Fixture.Create<DateTime>());
-            Base.Mediator.Send(registerTask);
+            Base.CommandDispatcher.Send(registerTask);
             ScenarioContext.Current.ProjectId(new ProjectId(projectId));
             ScenarioContext.Current.TaskId(TaskId.Create(projectId, title));
         }
@@ -31,7 +31,7 @@ namespace TaskManager.Test.SaveNote
             var taskId = ScenarioContext.Current.TaskId();
             var content = Base.Fixture.Create<string>();
             var saveNote = new Domain.Features.SaveNote.SaveNote(taskId, content);
-            Base.Mediator.Send(saveNote);
+            Base.CommandDispatcher.Send(saveNote);
             ScenarioContext.Current.NoteContent(content);
         }
 

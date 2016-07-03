@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Raven.Client;
+﻿using Raven.Client;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {
-    public class TaskReopenedEventHandler : INotificationHandler<TaskReopened>
+    public class TaskReopenedEventHandler
     {
         private readonly IDocumentStore _documentStore;
 

@@ -1,11 +1,10 @@
-﻿using MediatR;
-using TaskManager.Domain.Features.ReprioritizeTask;
+﻿using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.EraseNote
 {
-    public class EraseNoteCommandHandler : RequestHandler<EraseNote>
+    public class EraseNoteCommandHandler
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
 
@@ -15,7 +14,7 @@ namespace TaskManager.Domain.Features.EraseNote
         }
 
         /// <exception cref="TaskDoesNotExistException">Condition.</exception>
-        protected override void HandleCore(EraseNote command)
+        public void Handle(EraseNote command)
         {
             Task task = _eventStoreRepository.GetById(command.TaskId);
             if (task == null)

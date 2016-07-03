@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Ploeh.AutoFixture;
+﻿using Ploeh.AutoFixture;
 using Raven.Client;
 using TaskManager.Domain.Infrastructure;
 using TechTalk.SpecFlow;
@@ -10,7 +9,8 @@ namespace TaskManager.Test
     public class Base
     {
         public static IDocumentStore DocumentStore;
-        public static IMediator Mediator;
+        public static CommandDispatcher CommandDispatcher;
+        public static EventBus EventBus;
         public static IEventStoreConnectionBuilder InMemoryEventStoreConnectionBuilder;
         public static Fixture Fixture;
 
@@ -19,7 +19,8 @@ namespace TaskManager.Test
         {
             DocumentStore = new RavenDbStore(true, false).Instance;
             InMemoryEventStoreConnectionBuilder = new InMemoryEventStoreConnectionBuilder();
-            Mediator = new Mediate(InMemoryEventStoreConnectionBuilder).Mediator;
+            EventBus = new EventBus(null);
+            CommandDispatcher = new CommandDispatcher(InMemoryEventStoreConnectionBuilder, EventBus);
             Fixture = new Fixture();
         }
 

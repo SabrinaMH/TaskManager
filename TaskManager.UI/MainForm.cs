@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using MediatR;
 using Serilog;
+using TaskManager.Domain.Common;
 using TaskManager.Domain.Features.ChangeTaskStatus;
 using TaskManager.Domain.Features.ProjectTreeView;
 using TaskManager.Domain.Features.ReprioritizeProject;
@@ -22,7 +22,7 @@ namespace TaskManager
 {
     public partial class MainForm : Form
     {
-        IMediator _mediator;
+        private CommandDispatcher _commandDispatcher;
         private List<ProjectTreeNode> _projects;
         private BindingList<TaskInGridView> _allTasksInProject;
         private string _selectedProjectId;
@@ -35,16 +35,17 @@ namespace TaskManager
         public MainForm()
         {
             InitializeComponent();
-            var eventStoreConnectionBuilder = new EventStoreConnectionBuilder();
-            var mediate = new Mediate(eventStoreConnectionBuilder);
             _logger = Logging.Logger;
-            _mediator = mediate.Mediator;
+            var eventStoreConnectionBuilder = new EventStoreConnectionBuilder();
+            var eventBus = new EventBus((@event, next) =>
+                new ExceptionDecorator<Event>(next).Handle(@event));
+            _commandDispatcher = new CommandDispatcher(eventStoreConnectionBuilder, eventBus);
             _projects = new List<ProjectTreeNode>();
             _projectUtils = new ProjectUtils();
             _treeUtils = new TreeUtils(projectTreeView);
             _taskUtils = new TaskUtils();
             _gridUtils = new GridUtils(taskGridView);
-            noteControl.Initialize(_mediator);
+            noteControl.Initialize(_commandDispatcher);
             noteControl.NoteSaved += noteControl_NoteSaved;
             noteControl.NoteErased += noteControl_NoteErased;
         }
@@ -81,7 +82,7 @@ namespace TaskManager
             try
             {
                 var reprioritizeProject = new ReprioritizeProject(_selectedProjectId, e.ClickedItem.Text);
-                _mediator.Send(reprioritizeProject);
+                _commandDispatcher.Send(reprioritizeProject);
                 ProjectTreeNode projectTreeNode = _projects.First(x => x.Id == _selectedProjectId);
                 projectTreeNode.Priority = e.ClickedItem.Text;
                 RefreshProjectTree();
@@ -182,7 +183,9 @@ namespace TaskManager
 
             int priorityColumn = taskGridView.Columns["Priority"].Index;
             var indexOfNewRow = taskGridView.Rows.GetLastRow(DataGridViewElementStates.None);
-            taskGridView.Rows[indexOfNewRow].Cells[priorityColumn].Value = priority;
+            var newRow = taskGridView.Rows[indexOfNewRow];
+            newRow.Cells[priorityColumn].Value = priority;
+            newRow.Selected = true;
         }
 
         private void PopulateTasksInGridView(string projectId)
@@ -234,9 +237,13 @@ namespace TaskManager
             priorityColumn.Name = "Priority";
             var indexOfPriorityColumn = taskGridView.Columns.Add(priorityColumn);
             priorityColumn.DataSource = TaskPriority.GetAll().Select(x => x.DisplayName).ToList();
-            
 
-            if (!_allTasksInProject.Any()) return;
+
+            if (!_allTasksInProject.Any())
+            {
+                noteControl.Clear();
+                return;
+            }
 
             RenderNote((TaskInGridView)taskGridView.Rows[0].DataBoundItem);
             for (int i = 0; i < taskGridView.RowCount; i++)
@@ -254,7 +261,7 @@ namespace TaskManager
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var addTaskForm = new AddTaskForm(_selectedProjectId, _mediator);
+            var addTaskForm = new AddTaskForm(_selectedProjectId, _commandDispatcher);
             addTaskForm.TaskRegistered += addTaskForm_TaskRegistered;
             addTaskForm.StartPosition = FormStartPosition.CenterParent;
             addTaskForm.ShowDialog(this);
@@ -279,7 +286,7 @@ namespace TaskManager
                     if (isTaskDone)
                     {
                         var markTaskAsDone = new MarkTaskAsDone(task.Id);
-                        _mediator.Send(markTaskAsDone);
+                        _commandDispatcher.Send(markTaskAsDone);
                         // Fake in UI to increase user experience
                         taskInGridView.IsDone = true;
                         _gridUtils.FadeOut(e.RowIndex);
@@ -287,7 +294,7 @@ namespace TaskManager
                     else
                     {
                         var reopenTask = new ReopenTask(task.Id);
-                        _mediator.Send(reopenTask);
+                        _commandDispatcher.Send(reopenTask);
                         // Fake in UI to increase user experience
                         taskInGridView.IsDone = false;
                         _gridUtils.FadeIn(e.RowIndex);
@@ -307,7 +314,7 @@ namespace TaskManager
 
         private void OpenAddProjectForm()
         {
-            var addProjectForm = new AddProjectForm(_mediator);
+            var addProjectForm = new AddProjectForm(_commandDispatcher);
             addProjectForm.ProjectRegistered += addProjectForm_ProjectRegistered;
             addProjectForm.StartPosition = FormStartPosition.CenterParent;
             addProjectForm.ShowDialog(this);
@@ -333,7 +340,7 @@ namespace TaskManager
                 if (selectedTask.Priority == newPriority) return;
 
                 var reprioritizeTask = new ReprioritizeTask(selectedTask.Id, newPriority);
-                _mediator.Send(reprioritizeTask);
+                _commandDispatcher.Send(reprioritizeTask);
                 selectedTask.Priority = newPriority;
             }
         }
@@ -392,6 +399,12 @@ namespace TaskManager
         {
             if (e.StateChanged != DataGridViewElementStates.Selected) 
                 return;
+
+            if (!_allTasksInProject.Any())
+            {
+                noteControl.Clear();
+                return;
+            }
 
             var selectedTask = _allTasksInProject[e.Row.Index];
             RenderNote(selectedTask);

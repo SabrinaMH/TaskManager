@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Configuration;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
-using MediatR;
 using TaskManager.Domain.Features.EraseNote;
 using TaskManager.Domain.Features.SaveNote;
+using TaskManager.Domain.Infrastructure;
 using TaskManager.NoteEditorUI;
 using Timer = System.Windows.Forms.Timer;
 
@@ -13,34 +11,34 @@ namespace TaskManager
 {
     public partial class NoteControl : UserControl
     {
-        private IMediator _mediator;
         private string _taskId;
         private int _interval;
         Timer _timer;
-        private string _initialContent;
+        private string _content;
+        private CommandDispatcher _commandDispatcher;
         public event EventHandler<NoteSavedEventArgs> NoteSaved;
         public event EventHandler<NoteErasedEventArgs> NoteErased;
-
 
         internal NoteControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(IMediator mediator)
+        public void Initialize(CommandDispatcher commandDispatcher)
         {
-            _mediator = mediator;
+            if (commandDispatcher == null) throw new ArgumentNullException("commandDispatcher");
+            _commandDispatcher = commandDispatcher;
             if (!int.TryParse(ConfigurationManager.AppSettings["notes.saveinterval.milliseconds"], out _interval))
             {
-                _interval = 2000;
+                _interval = 1000;
             }
         }
         
-        public void RenderNote(string taskId, string initialContent)
+        public void RenderNote(string taskId, string content)
         {
             _taskId = taskId;
-            _initialContent = initialContent;
-            noteRichTextBox.Text = _initialContent ?? "";
+            _content = content;
+            noteRichTextBox.Text = _content ?? "";
         }
 
         private void _timer_Tick(object sender, EventArgs e)
@@ -64,14 +62,15 @@ namespace TaskManager
             _timer.Start();
         }
 
-        private void SaveNote(string noteContent)
+        private void SaveNote(string newContent)
         {
-            if (_initialContent == noteContent) return;
+            if (_content == newContent) return;
 
-            if (noteContent == "")
+            if (newContent == "")
             {
                 var eraseNote = new EraseNote(_taskId);
-                _mediator.Send(eraseNote);
+                _commandDispatcher.Send(eraseNote);
+                _content = newContent;
                 if (NoteErased != null)
                 {
                     var eventArgs = new NoteErasedEventArgs(_taskId);
@@ -80,11 +79,12 @@ namespace TaskManager
                 return;
             }
 
-            var saveNote = new SaveNote(_taskId, noteContent);
-            _mediator.Send(saveNote);
+            var saveNote = new SaveNote(_taskId, newContent);
+            _commandDispatcher.Send(saveNote);
+            _content = newContent;
             if (NoteSaved != null)
             {
-                var eventArgs = new NoteSavedEventArgs(noteContent, _taskId);
+                var eventArgs = new NoteSavedEventArgs(newContent, _taskId);
                 NoteSaved(this, eventArgs);
             }
         }
@@ -93,6 +93,12 @@ namespace TaskManager
         {
             _timer.Dispose();
             SaveNote(noteRichTextBox.Text);
+        }
+
+        public void Clear()
+        {
+            _content = "";
+            noteRichTextBox.Text = "";
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using MediatR;
-using TaskManager.Domain.Infrastructure;
+﻿using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.ReprioritizeTask
 {
-    public class ReprioritizeTaskCommandHandler : RequestHandler<ReprioritizeTask>
+    public class ReprioritizeTaskCommandHandler 
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
 
@@ -16,7 +15,7 @@ namespace TaskManager.Domain.Features.ReprioritizeTask
 
         /// <exception cref="UnknownPriorityException"></exception>
         /// <exception cref="TaskDoesNotExistException">Condition.</exception>
-        protected override void HandleCore(ReprioritizeTask command)
+        public void Handle(ReprioritizeTask command)
         {
             Task task = _eventStoreRepository.GetById(command.TaskId.ToString());
             if (task == null)

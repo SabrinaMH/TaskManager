@@ -1,8 +1,7 @@
-﻿using MediatR;
-
+﻿
 namespace TaskManager.Domain.Common
 {
-    public abstract class Event : INotification
+    public abstract class Event 
     {
         public int Version { get; set; }
     }

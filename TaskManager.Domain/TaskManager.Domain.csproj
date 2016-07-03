@@ -42,10 +42,6 @@
       <HintPath>..\packages\EventStore.Client.Embedded.3.7.0\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -95,6 +91,8 @@
     <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDoneCommandHandler.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTask.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTaskCommandHandler.cs" />
+    <Compile Include="Infrastructure\EventBus.cs" />
+    <Compile Include="Infrastructure\ExceptionDecorator.cs" />
     <Compile Include="Models\Task\NoteErased.cs" />
     <Compile Include="Models\Task\TaskReopened.cs" />
     <Compile Include="Features\EraseNote\EraseNote.cs" />
@@ -156,7 +154,7 @@
     <Compile Include="Models\Project\ProjectReprioritized.cs" />
     <Compile Include="Models\Common\Title.cs" />
     <Compile Include="Infrastructure\HelperMethods.cs" />
-    <Compile Include="Infrastructure\Mediate.cs" />
+    <Compile Include="Infrastructure\CommandDispatcher.cs" />
     <Compile Include="Models\Task\TaskReprioritized.cs" />
     <Compile Include="Models\Task\NoteSaved.cs" />
     <Compile Include="Models\Task\TaskPriority.cs" />

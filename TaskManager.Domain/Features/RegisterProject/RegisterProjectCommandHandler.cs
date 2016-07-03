@@ -1,11 +1,10 @@
-﻿using MediatR;
-using TaskManager.Domain.Infrastructure;
+﻿using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.RegisterProject
 {
-    public class RegisterProjectCommandHandler : RequestHandler<RegisterProject>
+    public class RegisterProjectCommandHandler 
     {
         private readonly EventStoreRepository<Project> _eventStoreRepository;
         private readonly ProjectQueryService _projectQueryHandler;
@@ -17,7 +16,7 @@ namespace TaskManager.Domain.Features.RegisterProject
         }
 
         /// <exception cref="ProjectWithSameTitleExistsException">Condition.</exception>
-        protected override void HandleCore(RegisterProject command)
+        public void Handle(RegisterProject command)
         {
             var title = new Title(command.Title);
             Project project;

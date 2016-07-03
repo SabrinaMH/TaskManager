@@ -21,7 +21,7 @@ namespace TaskManager.Test.TaskIntegrationTests
         [SetUp]
         public void SetUp()
         {
-            _eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);
+            _eventStoreRepository = new EventStoreRepository<Task>(EventBus, InMemoryEventStoreConnectionBuilder);
             _projectId = new ProjectId(Fixture.Create<string>());
         }
 

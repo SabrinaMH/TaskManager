@@ -14,7 +14,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
         {
             var project = new Project(new Title("my project"), new Deadline(DateTime.UtcNow));
             project.Reprioritize(ProjectPriority.Medium);
-            var eventStoreRepository = new EventStoreRepository<Project>(Mediator, InMemoryEventStoreConnectionBuilder);
+            var eventStoreRepository = new EventStoreRepository<Project>(EventBus, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(project);
 
             Project projectFromEventStore = eventStoreRepository.GetById(project.Id);

@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Raven.Client;
+﻿using Raven.Client;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {
-    public class NoteErasedEventHandler : INotificationHandler<NoteErased>
+    public class NoteErasedEventHandler 
     {
         private readonly IDocumentStore _documentStore;
 

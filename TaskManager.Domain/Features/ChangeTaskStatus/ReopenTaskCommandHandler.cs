@@ -1,10 +1,9 @@
-﻿using MediatR;
-using TaskManager.Domain.Infrastructure;
+﻿using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
-    public class ReopenTaskCommandHandler : RequestHandler<ReopenTask>
+    public class ReopenTaskCommandHandler
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
 
@@ -13,7 +12,7 @@ namespace TaskManager.Domain.Features.ChangeTaskStatus
             _eventStoreRepository = eventStoreRepository;
         }
 
-        protected override void HandleCore(ReopenTask command)
+        public void Handle(ReopenTask command)
         {
             Task task = _eventStoreRepository.GetById(command.Id.ToString());
             task.Reopen();

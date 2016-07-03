@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Raven.Client;
+﻿using Raven.Client;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.ProjectTreeView
 {
-    public class ProjectReprioritizedEventHandler : INotificationHandler<ProjectReprioritized>
+    public class ProjectReprioritizedEventHandler
     {
         private readonly IDocumentStore _documentStore;
 

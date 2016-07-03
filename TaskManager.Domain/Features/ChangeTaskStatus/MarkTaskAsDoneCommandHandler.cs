@@ -1,10 +1,9 @@
-﻿using MediatR;
-using TaskManager.Domain.Infrastructure;
+﻿using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.ChangeTaskStatus
 {
-    public class MarkTaskAsDoneCommandHandler : RequestHandler<MarkTaskAsDone>
+    public class MarkTaskAsDoneCommandHandler 
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
 
@@ -13,7 +12,7 @@ namespace TaskManager.Domain.Features.ChangeTaskStatus
             _eventStoreRepository = eventStoreRepository;
         }
 
-        protected override void HandleCore(MarkTaskAsDone command)
+        public void Handle(MarkTaskAsDone command)
         {
             Task task = _eventStoreRepository.GetById(command.Id);
             task.Done();

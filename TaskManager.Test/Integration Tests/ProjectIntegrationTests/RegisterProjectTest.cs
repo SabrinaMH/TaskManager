@@ -13,22 +13,22 @@ namespace TaskManager.Test.ProjectIntegrationTests
     [TestFixture]
     public class RegisterProjectTest : BaseIntegrationTest
     {
-        EventStoreRepository<Domain.Models.Project.Project> _eventStoreRepository;
+        EventStoreRepository<Project> _eventStoreRepository;
 
         [SetUp]
         public void SetUp()
         {
-            _eventStoreRepository = new EventStoreRepository<Domain.Models.Project.Project>(Mediator, InMemoryEventStoreConnectionBuilder);
+            _eventStoreRepository = new EventStoreRepository<Project>(EventBus, InMemoryEventStoreConnectionBuilder);
         }
 
         [Test]
         public void Register_Project_Can_Be_Saved_In_Event_Store()
         {
             var title = Fixture.Create<string>();
-            var project = new Domain.Models.Project.Project(new Title(title));
+            var project = new Project(new Title(title));
             _eventStoreRepository.Save(project);
 
-            Domain.Models.Project.Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
+            Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
             Assert.That(projectFromEventStore, Is.Not.Null);
         }
 
@@ -36,10 +36,10 @@ namespace TaskManager.Test.ProjectIntegrationTests
         public void Register_Project_With_Deadline_Can_Be_Saved_In_Event_Store()
         {
             var title = Fixture.Create<string>();
-            var project = new Domain.Models.Project.Project(new Title(title), new Deadline(DateTime.UtcNow));
+            var project = new Project(new Title(title), new Deadline(DateTime.UtcNow));
             _eventStoreRepository.Save(project);
 
-            Domain.Models.Project.Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
+            Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
             Assert.That(projectFromEventStore, Is.Not.Null);
         }
 

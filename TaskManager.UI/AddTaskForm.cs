@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using MediatR;
 using Serilog;
 using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Infrastructure;
@@ -12,17 +11,19 @@ namespace TaskManager
     public partial class AddTaskForm : Form
     {
         private readonly string _projectId;
-        private readonly IMediator _mediator;
+        private readonly CommandDispatcher _commandDispatcher;
         private ILogger _logger;
         public event EventHandler<TaskEventArgs> TaskRegistered;
 
-        public AddTaskForm(string projectId, IMediator mediator)
+        public AddTaskForm(string projectId, CommandDispatcher commandDispatcher)
         {
+            if (string.IsNullOrWhiteSpace(projectId)) throw new ArgumentException("projectId cannot be null or empty", "projectId");
+            if (commandDispatcher == null) throw new ArgumentNullException("commandDispatcher");
             InitializeComponent();
             PopulatePriorityDropDown();
             _logger = Logging.Logger;
             _projectId = projectId;
-            _mediator = mediator;
+            _commandDispatcher = commandDispatcher;
             deadlineDateTimePicker.Visible = false;
         }
 
@@ -48,7 +49,7 @@ namespace TaskManager
             var registerTask = new RegisterTask(_projectId, title, priority, deadline);
             try
             {
-                _mediator.Send(registerTask);
+                _commandDispatcher.Send(registerTask);
                 if (TaskRegistered != null)
                 {
                     var eventArgs = new TaskEventArgs(_projectId, title, priority, deadline);

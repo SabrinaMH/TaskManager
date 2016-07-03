@@ -21,7 +21,7 @@ namespace TaskManager.Test.NoteIntegrationTests
             var deadline = new Deadline(DateTime.UtcNow);
             var task = new Task(projectId, title, TaskPriority.Low, deadline);
             task.SaveNote(new Note(Fixture.Create<string>()));
-            var eventStoreRepository = new EventStoreRepository<Task>(Mediator, InMemoryEventStoreConnectionBuilder);            
+            var eventStoreRepository = new EventStoreRepository<Task>(EventBus, InMemoryEventStoreConnectionBuilder);            
             eventStoreRepository.Save(task);
 
             Task taskFromEventStore = eventStoreRepository.GetById(task.Id);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using MediatR;
 using Serilog;
 using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Infrastructure;
@@ -10,13 +9,14 @@ namespace TaskManager
 {
     public partial class AddProjectForm : Form
     {
-        private readonly IMediator _mediator;
+        private readonly CommandDispatcher _commandDispatcher;
         private ILogger _logger;
         public event EventHandler<ProjectEventArgs> ProjectRegistered;
 
-        public AddProjectForm(IMediator mediator)
+        public AddProjectForm(CommandDispatcher commandDispatcher)
         {
-            _mediator = mediator;
+            if (commandDispatcher == null) throw new ArgumentNullException("commandDispatcher");
+            _commandDispatcher = commandDispatcher;
             _logger = Logging.Logger;
             InitializeComponent();
             deadlineDateTimePicker.Visible = false;
@@ -33,7 +33,7 @@ namespace TaskManager
             var registerProject = new RegisterProject(title, deadline);
             try
             {
-                _mediator.Send(registerProject);
+                _commandDispatcher.Send(registerProject);
 
                 if (ProjectRegistered != null)
                 {

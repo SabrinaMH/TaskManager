@@ -1,8 +1,7 @@
-﻿using MediatR;
-
+﻿
 namespace TaskManager.Domain.Common
 {
-    public abstract class Command : IRequest
+    public abstract class Command 
     {
     }
 }

@@ -1,11 +1,10 @@
-﻿using MediatR;
-using TaskManager.Domain.Features.ReprioritizeTask;
+﻿using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.SaveNote
 {
-    public class SaveNoteCommandHandler : RequestHandler<SaveNote>
+    public class SaveNoteCommandHandler 
     {
         private readonly EventStoreRepository<Task> _eventStoreRepository;
 
@@ -15,7 +14,7 @@ namespace TaskManager.Domain.Features.SaveNote
         }
 
         /// <exception cref="TaskDoesNotExistException">Condition.</exception>
-        protected override void HandleCore(SaveNote command)
+        public void Handle(SaveNote command)
         {
             Task task = _eventStoreRepository.GetById(command.TaskId);
             if (task == null)

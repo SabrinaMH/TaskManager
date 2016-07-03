@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Raven.Client;
+﻿using Raven.Client;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.ProjectTreeView
 {
-    public class ProjectRegisteredEventHandler : INotificationHandler<ProjectRegistered>
+    public class ProjectRegisteredEventHandler
     {
         private readonly IDocumentStore _documentStore;
 
