@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Raven.Client;
-using TaskManager.Domain.Features.ProjectTreeView;
-using TaskManager.Domain.Features.ReprioritizeProject;
-using TaskManager.Domain.Features.ReprioritizeTask;
+using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {

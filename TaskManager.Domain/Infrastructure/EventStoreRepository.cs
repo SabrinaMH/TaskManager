@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using MediatR;
 using Newtonsoft.Json;
@@ -92,9 +94,10 @@ namespace TaskManager.Domain.Infrastructure
                     newEvents.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
                 connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
             }
+
             foreach (var eventToPublish in newEvents)
             {
-                _mediator.Publish(eventToPublish);
+                ThreadPool.QueueUserWorkItem(x =>  _mediator.Publish(eventToPublish));
             }
 
             aggregate.MarkChangesAsCommitted();

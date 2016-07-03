@@ -11,7 +11,7 @@
     <AssemblyName>TaskManager.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>aa0102b2</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>40f5c9da</NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\TaskManager\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -34,44 +34,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EventStore.ClientAPI, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\EventStore.Client.3.5.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI">
+      <HintPath>..\packages\EventStore.Client.3.7.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EventStore.ClientAPI.Embedded, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI.Embedded">
+      <HintPath>..\packages\EventStore.Client.Embedded.3.7.0\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MediatR, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\MediatR.2.0.2\lib\net45\MediatR.dll</HintPath>
+    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.3.0.30143\lib\net45\Raven.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\TaskManager\packages\RavenDB.Client.3.0.30115\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\packages\RavenDB.Client.3.0.30143\lib\net45\Raven.Client.Lightweight.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.3.0.30143\lib\net45\Raven.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Serilog.1.5.14\lib\net45\Serilog.dll</HintPath>
+      <HintPath>..\packages\Serilog.1.5.14\lib\net45\Serilog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Exceptions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Serilog.Exceptions.1.1.0\lib\net45\Serilog.Exceptions.dll</HintPath>
+    <Reference Include="Serilog.Exceptions, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Exceptions.1.2.0\lib\net45\Serilog.Exceptions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Serilog.1.5.14\lib\net45\Serilog.FullNetFx.dll</HintPath>
+      <HintPath>..\packages\Serilog.1.5.14\lib\net45\Serilog.FullNetFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -95,7 +95,10 @@
     <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDoneCommandHandler.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTask.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTaskCommandHandler.cs" />
-    <Compile Include="Features\ChangeTaskStatus\TaskReopened.cs" />
+    <Compile Include="Models\Task\NoteErased.cs" />
+    <Compile Include="Models\Task\TaskReopened.cs" />
+    <Compile Include="Features\EraseNote\EraseNote.cs" />
+    <Compile Include="Features\EraseNote\EraseNoteCommandHandler.cs" />
     <Compile Include="Features\ProjectTreeView\ProjectIdByTitleQuery.cs" />
     <Compile Include="Features\RegisterTask\AllTaskPrioritiesQuery.cs" />
     <Compile Include="Features\RegisterTask\DoesTaskWithTitleAlreadyExistUnderSameProjectQuery.cs" />
@@ -110,6 +113,10 @@
     <Compile Include="Features\ReprioritizeTask\TaskProjectDoesNotExistException.cs" />
     <Compile Include="Features\ReprioritizeTask\ReprioritizeTaskCommandHandler.cs" />
     <Compile Include="Features\ReprioritizeTask\ReprioritizeTask.cs" />
+    <Compile Include="Features\SaveNote\SaveNoteCommandHandler.cs" />
+    <Compile Include="Features\SaveNote\SaveNote.cs" />
+    <Compile Include="Features\TaskGridView\NoteErasedEventHandler.cs" />
+    <Compile Include="Features\TaskGridView\NoteSavedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskReprioritizedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskDoneEventHandler.cs" />
     <Compile Include="Features\TaskGridView\TaskIdByTitleQuery.cs" />
@@ -125,8 +132,8 @@
     <Compile Include="Features\RegisterProject\ProjectWithSameTitleExistsException.cs" />
     <Compile Include="Features\RegisterTask\RegisterTaskCommandHandler.cs" />
     <Compile Include="Features\RegisterTask\RegisterTask.cs" />
-    <Compile Include="Features\RegisterTask\TaskRegistered.cs" />
-    <Compile Include="Features\ChangeTaskStatus\TaskDone.cs" />
+    <Compile Include="Models\Task\TaskRegistered.cs" />
+    <Compile Include="Models\Task\TaskDone.cs" />
     <Compile Include="Features\ProjectTreeView\ProjectReprioritizedEventHandler.cs" />
     <Compile Include="Features\TaskGridView\AllTasksInProjectQuery.cs" />
     <Compile Include="Features\TaskGridView\TaskInGridViewQueryHandler.cs" />
@@ -140,16 +147,18 @@
     <Compile Include="Infrastructure\EventStoreRepository.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\Event.cs" />
+    <Compile Include="Models\Task\Note.cs" />
     <Compile Include="Models\Project\ProjectPriority.cs" />
     <Compile Include="Models\Project\Project.cs" />
     <Compile Include="Models\Project\ProjectId.cs" />
     <Compile Include="Features\ProjectTreeView\ProjectRegisteredEventHandler.cs" />
-    <Compile Include="Features\RegisterProject\ProjectRegistered.cs" />
-    <Compile Include="Features\ReprioritizeProject\ProjectReprioritized.cs" />
+    <Compile Include="Models\Project\ProjectRegistered.cs" />
+    <Compile Include="Models\Project\ProjectReprioritized.cs" />
     <Compile Include="Models\Common\Title.cs" />
     <Compile Include="Infrastructure\HelperMethods.cs" />
     <Compile Include="Infrastructure\Mediate.cs" />
-    <Compile Include="Features\ReprioritizeTask\TaskReprioritized.cs" />
+    <Compile Include="Models\Task\TaskReprioritized.cs" />
+    <Compile Include="Models\Task\NoteSaved.cs" />
     <Compile Include="Models\Task\TaskPriority.cs" />
     <Compile Include="Models\Task\TaskId.cs" />
     <Compile Include="Models\Task\Task.cs" />
@@ -170,9 +179,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets'))" />
+    <Error Condition="!Exists('..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets'))" />
   </Target>
   <Import Project="..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets" Condition="Exists('..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets')" />
+  <Import Project="..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets" Condition="Exists('..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

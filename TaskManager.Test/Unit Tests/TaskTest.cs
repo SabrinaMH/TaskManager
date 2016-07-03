@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using TaskManager.Domain.Common;
 using TaskManager.Domain.Features.ChangeTaskStatus;
+using TaskManager.Domain.Features.SaveNote;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
@@ -12,13 +13,23 @@ namespace TaskManager.Test
     public class TaskTest
     {
         [Test]
-        public void Can_Reopen_Task()
+        public void Reopen_Task_Raises_Event()
         {
             var task = new Task(new ProjectId("my project"), new Title("my task"), TaskPriority.Low);
             task.Done();
             task.Reopen();
             IList<Event> uncommittedEvents = task.GetUncommittedEvents();
             Assert.IsTrue(uncommittedEvents.Contains(new TaskReopened(task.Id)));
+        }
+
+        [Test]
+        public void Save_Note_Raises_Event()
+        {
+            var task = new Task(new ProjectId("my project"), new Title("my task"), TaskPriority.Low);
+            var note = new Note("this is my note");
+            task.SaveNote(note);
+            IList<Event> uncommittedEvents = task.GetUncommittedEvents();
+            Assert.IsTrue(uncommittedEvents.Contains(new NoteSaved(task.Id, note.Content)));
         }
     }
 }

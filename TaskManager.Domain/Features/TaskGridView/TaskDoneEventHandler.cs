@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Raven.Client;
-using TaskManager.Domain.Features.ChangeTaskStatus;
+using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView
 {

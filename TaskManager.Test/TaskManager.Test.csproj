@@ -11,7 +11,7 @@
     <AssemblyName>TaskManager.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>df04dcdd</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>0b975cca</NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\TaskManager\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -34,48 +34,47 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EventStore.ClientAPI, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\EventStore.Client.3.5.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI">
+      <HintPath>..\packages\EventStore.Client.3.7.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EventStore.ClientAPI.Embedded, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI.Embedded">
+      <HintPath>..\packages\EventStore.Client.Embedded.3.7.0\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MediatR, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\MediatR.2.0.2\lib\net45\MediatR.dll</HintPath>
+    <Reference Include="MediatR">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.44.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\AutoFixture.3.44.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture, Version=3.48.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.3.48.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.3.0.30143\lib\net45\Raven.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Client.3.0.30115\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.3.0.30143\lib\net45\Raven.Client.Lightweight.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Database.3.0.30115\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.3.0.30143\lib\net45\Raven.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Server, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Server.exe</HintPath>
+      <HintPath>..\packages\RavenDB.Tests.Helpers.3.0.30143\lib\net45\Raven.Server.exe</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Tests.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\RavenDB.Tests.Helpers.3.0.30115\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Tests.Helpers.3.0.30143\lib\net45\Raven.Tests.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -89,35 +88,49 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.SpecFlow, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\TaskManager\packages\SpecFlow.2.0.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
+    <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="End to End Tests\Base.cs" />
+    <Compile Include="End to End Tests\SaveNote\SaveNote.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaveNote.feature</DependentUpon>
+    </Compile>
+    <Compile Include="End to End Tests\SaveNote\SaveNoteSteps.cs" />
+    <Compile Include="End to End Tests\ScenarioContextExtensions.cs" />
     <Compile Include="Integration Tests\BaseIntegrationTest.cs" />
     <Compile Include="Integration Tests\InMemoryEventStoreConnectionBuilder.cs" />
-    <Compile Include="Integration Tests\ReprioritizeProject\ReprioritizeProjectTest.cs" />
+    <Compile Include="Integration Tests\ProjectIntegrationTests\ReprioritizeProjectTest.cs" />
     <Compile Include="Integration Tests\RavenDbStoreTest.cs" />
-    <Compile Include="Integration Tests\RegisterProject\ProjectQueryHandlerTest.cs" />
-    <Compile Include="Integration Tests\RegisterProject\RegisterProjectTest.cs" />
-    <Compile Include="Integration Tests\RegisterTask\TaskQueryHandlerTest.cs" />
-    <Compile Include="Integration Tests\RegisterTask\RegisterTaskTest.cs" />
-    <Compile Include="Integration Tests\TasksInGridViewTest\ReprioritizeTaskUpdatesGridTest.cs" />
-    <Compile Include="Integration Tests\TasksInGridViewTest\TaskInGridViewQueryHandlerTest.cs" />
-    <Compile Include="Integration Tests\TasksInGridViewTest\TaskStatusChangesTest.cs" />
-    <Compile Include="Integration Tests\ViewProjectTreeTest\ProjectTreeViewQueryHandlerTest.cs" />
-    <Compile Include="Integration Tests\ViewProjectTreeTest\ReprioritizeProjectUpdatesTreeTest.cs" />
+    <Compile Include="Integration Tests\ProjectIntegrationTests\ProjectQueryHandlerTest.cs" />
+    <Compile Include="Integration Tests\ProjectIntegrationTests\RegisterProjectTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\TaskQueryServiceTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\RegisterTaskTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\ReprioritizeTaskTest.cs" />
+    <Compile Include="Integration Tests\NoteIntegrationTests\SaveNoteTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\TaskDoneTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\TaskInGridViewQueryHandlerTest.cs" />
+    <Compile Include="Integration Tests\TaskIntegrationTests\ReopenTaskTest.cs" />
+    <Compile Include="Integration Tests\ProjectIntegrationTests\ProjectTreeViewQueryHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration Tests\InMemoryEventStore.cs" />
+    <Compile Include="Unit Tests\ProjectTest.cs" />
     <Compile Include="Unit Tests\SorterTest.cs" />
     <Compile Include="Unit Tests\TaskTest.cs" />
     <Compile Include="Unit Tests\TreeUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="End to End Tests\SaveNote\SaveNote.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SaveNote.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Raven.Studio.Html5.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -128,22 +141,25 @@
       <Project>{f1e78ce4-cb06-48c2-9380-64a42099002b}</Project>
       <Name>TaskManager.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TaskManager\TaskManager.UI.csproj">
+    <ProjectReference Include="..\TaskManager.UI\TaskManager.UI.csproj">
       <Project>{4dcd7717-3aa1-48a9-9be1-3932979c4de5}</Project>
       <Name>TaskManager.UI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets" Condition="Exists('..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\TaskManager\packages\EventStore.Client.Embedded.3.5.2\build\EventStore.Client.Embedded.targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets'))" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets" Condition="Exists('..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
