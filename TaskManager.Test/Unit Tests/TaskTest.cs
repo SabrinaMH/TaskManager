@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TaskManager.Domain.Common;
-using TaskManager.Domain.Features.ChangeTaskStatus;
-using TaskManager.Domain.Features.SaveNote;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
