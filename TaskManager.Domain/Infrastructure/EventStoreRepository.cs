@@ -66,6 +66,10 @@ namespace TaskManager.Domain.Infrastructure
             var eventClrTypeName =
                 JObject.Parse(Encoding.UTF8.GetString(e.OriginalEvent.Metadata)).Property(EventClrTypeHeader).Value;
             string data = Encoding.UTF8.GetString(e.OriginalEvent.Data);
+
+            //var eventClrTypeNameSplitUp = eventClrTypeName.ToString().Split(',');
+            //var eventType = eventClrTypeNameSplitUp[0] + "," + eventClrTypeNameSplitUp[1];
+            //Type type = Type.GetType(eventType);
             Type type = Type.GetType((string) eventClrTypeName);
             var obj = JsonConvert.DeserializeObject(data, type);
             return (Event) obj;

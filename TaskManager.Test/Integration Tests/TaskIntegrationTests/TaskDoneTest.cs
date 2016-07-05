@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Ploeh.AutoFixture;
+using TaskManager.Domain.Features.ChangeTaskStatus;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Task;

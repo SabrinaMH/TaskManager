@@ -406,7 +406,13 @@ namespace TaskManager
                 return;
             }
 
-            var selectedTask = _allTasksInProject[e.Row.Index];
+            var rowIndex = 0;
+            if (_allTasksInProject.First().ProjectId == _selectedProjectId)
+            {
+                rowIndex = e.Row.Index;
+            }
+
+            var selectedTask = _allTasksInProject[rowIndex];
             RenderNote(selectedTask);
         }
 

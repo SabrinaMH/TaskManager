@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskManager.Domain.Common;
+using TaskManager.Domain.Features.ChangeTaskStatus;
+using TaskManager.Domain.Features.EraseNote;
+using TaskManager.Domain.Features.RegisterTask;
+using TaskManager.Domain.Features.ReprioritizeTask;
+using TaskManager.Domain.Features.SaveNote;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
 

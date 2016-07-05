@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.ProjectTreeView

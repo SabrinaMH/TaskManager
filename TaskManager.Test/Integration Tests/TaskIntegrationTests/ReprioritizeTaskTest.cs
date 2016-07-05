@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;

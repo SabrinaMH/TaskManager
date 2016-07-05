@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using TaskManager.Domain.Features.EraseNote;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Domain.Features.TaskGridView

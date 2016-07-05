@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ProjectTreeView;
+using TaskManager.Domain.Features.RegisterProject;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
 using TaskManager.Domain.Models.Project;
