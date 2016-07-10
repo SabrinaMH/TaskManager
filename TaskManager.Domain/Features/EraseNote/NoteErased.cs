@@ -10,5 +10,23 @@ namespace TaskManager.Domain.Features.EraseNote
         {
             TaskId = taskId;
         }
+
+        protected bool Equals(NoteErased other)
+        {
+            return string.Equals(TaskId, other.TaskId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((NoteErased) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (TaskId != null ? TaskId.GetHashCode() : 0);
+        }
     }
 }

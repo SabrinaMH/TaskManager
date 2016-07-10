@@ -3,9 +3,7 @@ using NUnit.Framework;
 using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Features.TaskGridView;
-using TaskManager.Domain.Infrastructure;
 using TaskManager.Domain.Models.Common;
-using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Test.TaskIntegrationTests

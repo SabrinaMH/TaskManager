@@ -2,10 +2,11 @@
 
 namespace TaskManager.ProjectTreeViewUI
 {
-    public class ProjectEventArgs : EventArgs
+    public class ProjectRegisteredEventArgs : EventArgs
     {
-        public ProjectEventArgs(string title, DateTime? deadline)
+        public ProjectRegisteredEventArgs(string title, DateTime? deadline)
         {
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("title cannot be null or empty", "title");
             Title = title;
             Deadline = deadline;
         }

@@ -180,15 +180,30 @@
     <Compile Include="NoteEditorUI\NoteErasedEventArgs.cs" />
     <Compile Include="NoteEditorUI\NoteSavedEventArgs.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectTreeViewUI\ProjectEventArgs.cs" />
+    <Compile Include="ProjectTreeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectTreeControl.Designer.cs">
+      <DependentUpon>ProjectTreeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectTreeViewUI\ProjectSelectedEventArgs.cs" />
+    <Compile Include="ProjectTreeViewUI\ProjectRegisteredEventArgs.cs" />
     <Compile Include="ProjectTreeViewUI\ProjectUtils.cs" />
     <Compile Include="ProjectTreeViewUI\TreeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProjectTreeViewUI\Sort.cs" />
     <Compile Include="ProjectTreeViewUI\SortFailedException.cs" />
     <Compile Include="ProjectTreeViewUI\StringFormatter.cs" />
+    <Compile Include="TaskGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TaskGridControl.Designer.cs">
+      <DependentUpon>TaskGridControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TasksInGridViewUI\GridUtils.cs" />
-    <Compile Include="TasksInGridViewUI\TaskEventArgs.cs" />
+    <Compile Include="TasksInGridViewUI\NoTaskSelectedEventArgs.cs" />
+    <Compile Include="TasksInGridViewUI\TaskSelectedEventArgs.cs" />
+    <Compile Include="TasksInGridViewUI\TaskRegisteredEventArgs.cs" />
     <Compile Include="TasksInGridViewUI\TaskUtils.cs" />
     <EmbeddedResource Include="AddTaskForm.resx">
       <DependentUpon>AddTaskForm.cs</DependentUpon>
@@ -201,6 +216,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NoteControl.resx">
       <DependentUpon>NoteControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectTreeControl.resx">
+      <DependentUpon>ProjectTreeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TaskGridControl.resx">
+      <DependentUpon>TaskGridControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

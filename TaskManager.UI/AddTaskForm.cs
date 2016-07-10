@@ -13,7 +13,7 @@ namespace TaskManager
         private readonly string _projectId;
         private readonly CommandDispatcher _commandDispatcher;
         private ILogger _logger;
-        public event EventHandler<TaskEventArgs> TaskRegistered;
+        public event EventHandler<TaskRegisteredEventArgs> TaskRegistered;
 
         public AddTaskForm(string projectId, CommandDispatcher commandDispatcher)
         {
@@ -52,7 +52,7 @@ namespace TaskManager
                 _commandDispatcher.Send(registerTask);
                 if (TaskRegistered != null)
                 {
-                    var eventArgs = new TaskEventArgs(_projectId, title, priority, deadline);
+                    var eventArgs = new TaskRegisteredEventArgs(_projectId, title, priority, deadline);
                     TaskRegistered(this, eventArgs);
                 }
                 Close();

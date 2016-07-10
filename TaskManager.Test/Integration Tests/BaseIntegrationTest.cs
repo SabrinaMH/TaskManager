@@ -9,8 +9,7 @@ namespace TaskManager.Test
     public class BaseIntegrationTest
     {
         protected IDocumentStore DocumentStore;
-        public static CommandDispatcher CommandDispatcher;
-        public static EventBus EventBus;
+        protected static EventBus EventBus;
         protected IEventStoreConnectionBuilder InMemoryEventStoreConnectionBuilder;
         protected Fixture Fixture;
 
@@ -20,7 +19,6 @@ namespace TaskManager.Test
             DocumentStore = new RavenDbStore(true, false).Instance;
             InMemoryEventStoreConnectionBuilder = new InMemoryEventStoreConnectionBuilder();
             EventBus = new EventBus(null);
-            CommandDispatcher = new CommandDispatcher(InMemoryEventStoreConnectionBuilder, EventBus);
             Fixture = new Fixture();
         }
 

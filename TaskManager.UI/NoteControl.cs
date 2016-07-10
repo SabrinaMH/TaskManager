@@ -5,6 +5,7 @@ using TaskManager.Domain.Features.EraseNote;
 using TaskManager.Domain.Features.SaveNote;
 using TaskManager.Domain.Infrastructure;
 using TaskManager.NoteEditorUI;
+using TaskManager.TasksInGridViewUI;
 using Timer = System.Windows.Forms.Timer;
 
 namespace TaskManager
@@ -19,23 +20,40 @@ namespace TaskManager
         public event EventHandler<NoteSavedEventArgs> NoteSaved;
         public event EventHandler<NoteErasedEventArgs> NoteErased;
 
-        internal NoteControl()
+        public NoteControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(CommandDispatcher commandDispatcher)
+        public void Initialize(CommandDispatcher commandDispatcher, TaskGridControl taskGridControl)
         {
             if (commandDispatcher == null) throw new ArgumentNullException("commandDispatcher");
+            if (taskGridControl == null) throw new ArgumentNullException("taskGridControl");
+
             _commandDispatcher = commandDispatcher;
             if (!int.TryParse(ConfigurationManager.AppSettings["notes.saveinterval.milliseconds"], out _interval))
             {
                 _interval = 1000;
             }
+            taskGridControl.TaskSelected += taskGridControl_TaskSelected;
+            taskGridControl.NoTaskSelected += taskGridControl_NoTaskSelected;
+        }
+
+        void taskGridControl_TaskSelected(object sender, TaskSelectedEventArgs e)
+        {
+            _taskId = e.TaskId;
+            RenderNote(_taskId, e.NoteContent);
+        }
+
+        void taskGridControl_NoTaskSelected(object sender, NoTaskSelectedEventArgs e)
+        {
+            Clear();
         }
         
         public void RenderNote(string taskId, string content)
         {
+            if (string.IsNullOrWhiteSpace(taskId)) throw new ArgumentException("taskId cannot be null or empty", "taskId");
+            
             _taskId = taskId;
             _content = content;
             noteRichTextBox.Text = _content ?? "";

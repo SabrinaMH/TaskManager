@@ -15,24 +15,29 @@ namespace TaskManager.Domain.Infrastructure
         {
             string dataDirectory = ConfigurationManager.GetAppSetting("ravendb.data.directory");
             int port = int.Parse(ConfigurationManager.GetAppSetting("ravendb.server.port"));
-           
-#if DEBUG
-            _embeddableDocumentStore = new EmbeddableDocumentStore
+
+            if (runInMemory)
             {
-                RunInMemory = runInMemory,
-                UseEmbeddedHttpServer = true,
-                DataDirectory = dataDirectory,
-                Configuration = { Port = port }
-            };
-#else
-            _embeddableDocumentStore = new EmbeddableDocumentStore
+                _embeddableDocumentStore = new EmbeddableDocumentStore
+                {
+                    RunInMemory = true,
+                    UseEmbeddedHttpServer = true,
+                    DataDirectory = dataDirectory,
+                    Configuration = {Port = port}
+                };
+                // Necessary to run tests in the FSharp project.
+                _embeddableDocumentStore.Configuration.Storage.Voron.AllowOn32Bits = true;
+            }
+            else
             {
-                RunInMemory = runInMemory,
-                UseEmbeddedHttpServer = false,
-                DataDirectory = dataDirectory,
-                Configuration = { Port = port }
-            };
-#endif
+                _embeddableDocumentStore = new EmbeddableDocumentStore
+                {
+                    RunInMemory = false,
+                    UseEmbeddedHttpServer = false,
+                    DataDirectory = dataDirectory,
+                    Configuration = {Port = port}
+                };
+            }
 
             if (!allowStaleQueries)
             {

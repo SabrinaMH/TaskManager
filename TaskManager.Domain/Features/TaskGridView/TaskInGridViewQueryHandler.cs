@@ -33,5 +33,14 @@ namespace TaskManager.Domain.Features.TaskGridView
                 return taskInGridView.Id;
             }
         }
+
+        public List<TaskInGridView> Handle(AllTasksQuery allTasksQuery)
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                var taskInGridViews = session.Query<TaskInGridView>().ToList();
+                return taskInGridViews;
+            }
+        }
     }
 }

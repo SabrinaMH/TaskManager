@@ -42,7 +42,7 @@
             this.addTaskButton.Location = new System.Drawing.Point(228, 98);
             this.addTaskButton.Name = "addTaskButton";
             this.addTaskButton.Size = new System.Drawing.Size(75, 23);
-            this.addTaskButton.TabIndex = 5;
+            this.addTaskButton.TabIndex = 4;
             this.addTaskButton.Text = "Add";
             this.addTaskButton.UseVisualStyleBackColor = true;
             this.addTaskButton.Click += new System.EventHandler(this.addTaskButton_Click);
@@ -60,7 +60,7 @@
             this.titleLabel.Location = new System.Drawing.Point(9, 14);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(27, 13);
-            this.titleLabel.TabIndex = 3;
+            this.titleLabel.TabIndex = 6;
             this.titleLabel.Text = "Title";
             // 
             // deadlineDateTimePicker
@@ -68,7 +68,7 @@
             this.deadlineDateTimePicker.Location = new System.Drawing.Point(106, 72);
             this.deadlineDateTimePicker.Name = "deadlineDateTimePicker";
             this.deadlineDateTimePicker.Size = new System.Drawing.Size(200, 20);
-            this.deadlineDateTimePicker.TabIndex = 4;
+            this.deadlineDateTimePicker.TabIndex = 3;
             // 
             // hasDeadlineCheckBox
             // 
@@ -76,7 +76,7 @@
             this.hasDeadlineCheckBox.Location = new System.Drawing.Point(12, 74);
             this.hasDeadlineCheckBox.Name = "hasDeadlineCheckBox";
             this.hasDeadlineCheckBox.Size = new System.Drawing.Size(88, 17);
-            this.hasDeadlineCheckBox.TabIndex = 3;
+            this.hasDeadlineCheckBox.TabIndex = 2;
             this.hasDeadlineCheckBox.Text = "Has deadline";
             this.hasDeadlineCheckBox.UseVisualStyleBackColor = true;
             this.hasDeadlineCheckBox.CheckedChanged += new System.EventHandler(this.hasDeadlineCheckBox_CheckedChanged);
@@ -87,7 +87,7 @@
             this.taskPriorityLabel.Location = new System.Drawing.Point(9, 45);
             this.taskPriorityLabel.Name = "taskPriorityLabel";
             this.taskPriorityLabel.Size = new System.Drawing.Size(38, 13);
-            this.taskPriorityLabel.TabIndex = 9;
+            this.taskPriorityLabel.TabIndex = 6;
             this.taskPriorityLabel.Text = "Priority";
             // 
             // taskPriorityComboBox

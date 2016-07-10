@@ -91,6 +91,7 @@
     <Compile Include="Features\ChangeTaskStatus\MarkTaskAsDoneCommandHandler.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTask.cs" />
     <Compile Include="Features\ChangeTaskStatus\ReopenTaskCommandHandler.cs" />
+    <Compile Include="Features\TaskGridView\AllTasksQuery.cs" />
     <Compile Include="Infrastructure\EventBus.cs" />
     <Compile Include="Infrastructure\ExceptionDecorator.cs" />
     <Compile Include="Features\EraseNote\NoteErased.cs" />

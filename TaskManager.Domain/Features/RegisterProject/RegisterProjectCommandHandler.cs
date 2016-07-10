@@ -7,12 +7,12 @@ namespace TaskManager.Domain.Features.RegisterProject
     public class RegisterProjectCommandHandler 
     {
         private readonly EventStoreRepository<Project> _eventStoreRepository;
-        private readonly ProjectQueryService _projectQueryHandler;
+        private readonly ProjectQueryService _projectQueryService;
 
         public RegisterProjectCommandHandler(EventStoreRepository<Project> eventStoreRepository)
         {
             _eventStoreRepository = eventStoreRepository;
-            _projectQueryHandler = new ProjectQueryService();
+            _projectQueryService = new ProjectQueryService();
         }
 
         /// <exception cref="ProjectWithSameTitleExistsException">Condition.</exception>
@@ -31,7 +31,7 @@ namespace TaskManager.Domain.Features.RegisterProject
             }
 
             var doesProjectWithTitleExistQuery = new DoesProjectWithTitleExistQuery(title);
-            bool projectWithSameTitleExists = _projectQueryHandler.Handle(doesProjectWithTitleExistQuery);
+            bool projectWithSameTitleExists = _projectQueryService.Handle(doesProjectWithTitleExistQuery);
 
             if (projectWithSameTitleExists)
                 throw new ProjectWithSameTitleExistsException();

@@ -11,7 +11,7 @@ namespace TaskManager
     {
         private readonly CommandDispatcher _commandDispatcher;
         private ILogger _logger;
-        public event EventHandler<ProjectEventArgs> ProjectRegistered;
+        public event EventHandler<ProjectRegisteredEventArgs> ProjectRegistered;
 
         public AddProjectForm(CommandDispatcher commandDispatcher)
         {
@@ -37,7 +37,7 @@ namespace TaskManager
 
                 if (ProjectRegistered != null)
                 {
-                    var eventArgs = new ProjectEventArgs(title, deadline);
+                    var eventArgs = new ProjectRegisteredEventArgs(title, deadline);
                     ProjectRegistered(this, eventArgs);
                 }
                 Close();

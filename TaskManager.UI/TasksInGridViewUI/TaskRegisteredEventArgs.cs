@@ -2,14 +2,14 @@
 
 namespace TaskManager.TasksInGridViewUI
 {
-    public class TaskEventArgs : EventArgs
+    public class TaskRegisteredEventArgs : EventArgs
     {
         public string Title { get; private set; }
         public string Priority { get; private set; }
         public DateTime? Deadline { get; private set; }
         public string ProjectId { get; private set; }
 
-        public TaskEventArgs(string projectId, string title, string priority, DateTime? deadline)
+        public TaskRegisteredEventArgs(string projectId, string title, string priority, DateTime? deadline)
         {
             ProjectId = projectId;
             Title = title;

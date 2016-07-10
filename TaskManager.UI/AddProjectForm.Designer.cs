@@ -40,7 +40,7 @@
             this.addProjectButton.Location = new System.Drawing.Point(228, 92);
             this.addProjectButton.Name = "addProjectButton";
             this.addProjectButton.Size = new System.Drawing.Size(75, 23);
-            this.addProjectButton.TabIndex = 2;
+            this.addProjectButton.TabIndex = 3;
             this.addProjectButton.Text = "Add";
             this.addProjectButton.UseVisualStyleBackColor = true;
             this.addProjectButton.Click += new System.EventHandler(this.addProjectButton_Click);
@@ -58,7 +58,7 @@
             this.titleLabel.Location = new System.Drawing.Point(9, 14);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(27, 13);
-            this.titleLabel.TabIndex = 3;
+            this.titleLabel.TabIndex = 4;
             this.titleLabel.Text = "Title";
             // 
             // deadlineDateTimePicker
@@ -66,7 +66,7 @@
             this.deadlineDateTimePicker.Location = new System.Drawing.Point(106, 43);
             this.deadlineDateTimePicker.Name = "deadlineDateTimePicker";
             this.deadlineDateTimePicker.Size = new System.Drawing.Size(200, 20);
-            this.deadlineDateTimePicker.TabIndex = 1;
+            this.deadlineDateTimePicker.TabIndex = 2;
             // 
             // hasDeadlineCheckBox
             // 
@@ -74,7 +74,7 @@
             this.hasDeadlineCheckBox.Location = new System.Drawing.Point(12, 45);
             this.hasDeadlineCheckBox.Name = "hasDeadlineCheckBox";
             this.hasDeadlineCheckBox.Size = new System.Drawing.Size(88, 17);
-            this.hasDeadlineCheckBox.TabIndex = 8;
+            this.hasDeadlineCheckBox.TabIndex = 1;
             this.hasDeadlineCheckBox.Text = "Has deadline";
             this.hasDeadlineCheckBox.UseVisualStyleBackColor = true;
             this.hasDeadlineCheckBox.CheckedChanged += new System.EventHandler(this.hasDeadlineCheckBox_CheckedChanged);

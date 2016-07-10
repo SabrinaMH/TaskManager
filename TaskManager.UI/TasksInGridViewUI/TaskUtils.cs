@@ -13,5 +13,13 @@ namespace TaskManager.TasksInGridViewUI
             List<TaskInGridView> tasksInProject = taskInGridViewQueryHandler.Handle(allTasksInProjectQuery);
             return tasksInProject;
         }
+
+        public List<TaskInGridView> RetrieveAllTasks()
+        {
+            var allTasksQuery = new AllTasksQuery();
+            var taskInGridViewQueryHandler = new TaskInGridViewQueryHandler();
+            List<TaskInGridView> allTasks = taskInGridViewQueryHandler.Handle(allTasksQuery);
+            return allTasks;
+        }
     }
 }
