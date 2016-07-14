@@ -40,6 +40,8 @@
             // 
             this.taskGrid.AllowUserToDeleteRows = false;
             this.taskGrid.AllowUserToResizeRows = false;
+            this.taskGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.taskGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.taskGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.taskGrid.ContextMenuStrip = this.taskGridContextMenuStrip;
             this.taskGrid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -71,6 +73,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.taskGrid);
             this.Name = "TaskGridControl";
             this.Size = new System.Drawing.Size(791, 276);

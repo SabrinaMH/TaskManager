@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-
+﻿
 namespace TaskManager.Domain.Features.TaskGridView
 {
     public class TaskInGridView

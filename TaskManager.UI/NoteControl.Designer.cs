@@ -33,9 +33,10 @@
             // 
             // noteRichTextBox
             // 
-            this.noteRichTextBox.Location = new System.Drawing.Point(3, 36);
+            this.noteRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.noteRichTextBox.Location = new System.Drawing.Point(0, 0);
             this.noteRichTextBox.Name = "noteRichTextBox";
-            this.noteRichTextBox.Size = new System.Drawing.Size(575, 149);
+            this.noteRichTextBox.Size = new System.Drawing.Size(581, 217);
             this.noteRichTextBox.TabIndex = 0;
             this.noteRichTextBox.Text = "";
             this.noteRichTextBox.TextChanged += new System.EventHandler(this.noteRichTextBox_TextChanged);

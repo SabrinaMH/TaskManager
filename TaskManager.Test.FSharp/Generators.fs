@@ -1,7 +1,6 @@
 ﻿module Generators
 
 open FsCheck
-open NUnit.Framework
 open System
 open TaskManager.Domain.Models.Task
 open TaskManager.Domain.Features.RegisterTask
@@ -23,10 +22,11 @@ let taskRegisteredGen =
         let! taskId = Arb.generate<NonEmptyString> 
         let! projectId = Arb.generate<NonEmptyString>
         let! title = Arb.generate<NonEmptyString>
-        let! deadline = Arb.generate<DateTime>
+        let! deadline = Arb.generate<DateTime> 
         let! priority = Gen.constant taskPriority
+        let formattedDeadline = deadline.ToString("MM-dd-yyyy")
 
-        return new TaskRegistered(taskId |> string, projectId |> string, title |> string, priority, deadline |> string)
+        return new TaskRegistered(taskId |> string, projectId |> string, title |> string, priority, formattedDeadline)
     }
 
 let noteSavedGen =
