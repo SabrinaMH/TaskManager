@@ -1,6 +1,5 @@
 ﻿using Raven.Client;
 using TaskManager.Domain.Features.RegisterProject;
-using TaskManager.Domain.Models.Project;
 
 namespace TaskManager.Domain.Features.ProjectTreeView
 {
@@ -18,7 +17,7 @@ namespace TaskManager.Domain.Features.ProjectTreeView
             using (var session = _documentStore.OpenSession())
             {
                 var projectTreeNode = new ProjectTreeNode(@event.ProjectId, @event.Title, @event.Deadline,
-                    @event.Priority);
+                    @event.Priority, 0);
                 session.Store(projectTreeNode);
                 session.SaveChanges();
             }

@@ -18,7 +18,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
             {
                 string id = fixture.Create<Guid>().ToString();
                 var projectTreeNode = new ProjectTreeNode(id, fixture.Create<string>(), fixture.Create<DateTime>().ToShortDateString(),
-                    ProjectPriority.Medium.DisplayName);
+                    ProjectPriority.Medium.DisplayName, 0);
                 session.Store(projectTreeNode);
                 session.SaveChanges();
             }

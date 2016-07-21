@@ -65,7 +65,9 @@
             // 
             // deadlineDateTimePicker
             // 
+            this.deadlineDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.deadlineDateTimePicker.Location = new System.Drawing.Point(106, 72);
+            this.deadlineDateTimePicker.MinDate = new System.DateTime(2016, 7, 16, 0, 0, 0, 0);
             this.deadlineDateTimePicker.Name = "deadlineDateTimePicker";
             this.deadlineDateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.deadlineDateTimePicker.TabIndex = 3;

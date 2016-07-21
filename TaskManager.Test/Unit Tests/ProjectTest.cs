@@ -25,7 +25,7 @@ namespace TaskManager.Test
         public void Register_Project_With_Deadline_Raises_Event()
         {
             var title = _fixture.Create<Title>();
-            var deadline = _fixture.Create<Deadline>();
+            var deadline = _fixture.Create<ProjectDeadline>();
             var project = new Project(title, deadline);
             var uncommittedEvents = project.GetUncommittedEvents();
             Assert.IsTrue(uncommittedEvents.Contains(new ProjectRegistered(project.Id, title, ProjectPriority.None.DisplayName, deadline)));

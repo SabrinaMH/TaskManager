@@ -21,6 +21,8 @@ namespace TaskManager
             if (commandDispatcher == null) throw new ArgumentNullException("commandDispatcher");
             InitializeComponent();
             PopulatePriorityDropDown();
+            deadlineDateTimePicker.Format = DateTimePickerFormat.Custom;
+            deadlineDateTimePicker.CustomFormat = "dd-MM-yyyy HH:mm";  
             _logger = Logging.Logger;
             _projectId = projectId;
             _commandDispatcher = commandDispatcher;

@@ -29,7 +29,7 @@ namespace TaskManager.Domain.Features.RegisterTask
             Task task;
             if (command.Deadline.HasValue)
             {
-                var deadline = new Deadline(command.Deadline.Value);
+                var deadline = new TaskDeadline(command.Deadline.Value);
                 task = new Task(projectId, title, priority, deadline);
             }
             else

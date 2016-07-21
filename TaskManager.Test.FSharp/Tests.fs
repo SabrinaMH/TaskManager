@@ -1,18 +1,25 @@
-﻿module TaskManager.Test.FSharp
+﻿module Tests
 
 open FsCheck
 open FsUnit
-open Raven.Client;
 open NUnit.Framework
 open TaskManager.Domain.Infrastructure
 open TaskManager.Domain.Models.Task
 open TaskManager.Domain.Models.Project
-open TaskManager.Domain.Models.Common
 open TaskManager.Domain.Features.EraseNote
-open TaskManager.Domain.Features.RegisterTask
-open TaskManager.Domain.Features.SaveNote
 open TaskManager.Domain.Features.TaskGridView
+open System
 open Generators
+
+[<Test>]
+let ``Deadline on tasks include time`` () =
+    let taskDeadline = new TaskDeadline(new DateTime(2010, 10, 5, 11, 55, 45))
+    taskDeadline.ToString() |> should equal "05-10-2010 11:55:45"
+
+[<Test>]
+let ``Deadline on projects only include date`` () =
+    let projectDeadline = new ProjectDeadline(new DateTime(2010, 10, 5, 11, 55, 45))
+    projectDeadline.ToString() |> should equal "05-10-2010"
 
 
 [<Test>] 

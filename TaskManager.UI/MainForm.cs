@@ -12,7 +12,8 @@ namespace TaskManager
             var eventStoreConnectionBuilder = new EventStoreConnectionBuilder();
             var eventBus = new EventBus((@event, next) =>
                 new ExceptionDecorator<Event>(next).Handle(@event));
-            var commandDispatcher = new CommandDispatcher(eventStoreConnectionBuilder, eventBus);
+            var commandDispatcher = new CommandDispatcher(eventStoreConnectionBuilder, eventBus,
+                (command, next) => new ExceptionDecorator<Command>(next).Handle(command));
 
             projectTreeControl.Initialize(commandDispatcher);
             noteControl.Initialize(commandDispatcher, taskGridControl);

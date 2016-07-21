@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskManager.Domain.Common;
+using TaskManager.Domain.Features.ChangeDeadlineOnTask;
 using TaskManager.Domain.Features.ChangeTaskStatus;
+using TaskManager.Domain.Features.ChangeTitleOnTask;
 using TaskManager.Domain.Features.EraseNote;
 using TaskManager.Domain.Features.RegisterTask;
 using TaskManager.Domain.Features.ReprioritizeTask;
@@ -13,7 +15,7 @@ namespace TaskManager.Domain.Models.Task
 {
     public class Task : AggregateRoot
     {
-        private Deadline _deadline;
+        private TaskDeadline _deadline;
         private Title _title;
         private TaskPriority _priority;
         private ProjectId _projectId;
@@ -31,7 +33,7 @@ namespace TaskManager.Domain.Models.Task
             ApplyChange(new TaskRegistered(Id, projectId, title, priority.DisplayName));
         }
 
-        public Task(ProjectId projectId, Title title, TaskPriority priority, Deadline deadline)
+        public Task(ProjectId projectId, Title title, TaskPriority priority, TaskDeadline deadline)
             : base(TaskId.Create(projectId, title))
         {
             if (title == null) throw new ArgumentNullException("title");
@@ -61,16 +63,30 @@ namespace TaskManager.Domain.Models.Task
             ApplyChange(new NoteErased(Id));
         }
 
+        /// <exception cref="DeadlineIsInThePastException">Condition.</exception>
+        public void ChangeDeadline(TaskDeadline deadline)
+        {
+            if (deadline.InThePast) throw new DeadlineIsInThePastException();
+            ApplyChange(new DeadlineOnTaskChanged(Id, deadline));
+        }
+
         public void Done()
         {
             if (!_isDone)
-                ApplyChange(new TaskDone(Id));
+                ApplyChange(new TaskDone(Id, _projectId));
         }
 
         public void Reopen()
         {
             if (_isDone)
-                ApplyChange(new TaskReopened(Id));
+                ApplyChange(new TaskReopened(Id, _projectId));
+        }
+
+        /// <exception cref="ArgumentNullException"><paramref name="newTitle"/> is <see langword="null" />.</exception>
+        public void ChangeTitle(Title newTitle)
+        {
+            if (newTitle == null) throw new ArgumentNullException("newTitle");
+            ApplyChange(new TitleOnTaskChanged(Id, newTitle));
         }
 
         private void Apply(TaskReopened @event)
@@ -91,14 +107,14 @@ namespace TaskManager.Domain.Models.Task
             _priority = TaskPriority.Parse(@event.Priority);
             if (!string.IsNullOrWhiteSpace(@event.Deadline))
             {
-                _deadline = new Deadline(DateTime.Parse(@event.Deadline));
+                _deadline = new TaskDeadline(DateTime.Parse(@event.Deadline));
             }
         }
 
         private void Apply(TaskReprioritized @event)
         {
             Id = new TaskId(@event.TaskId);
-            TaskPriority.TryParse(@event.NewPriority, out _priority);
+            _priority = TaskPriority.Parse(@event.NewPriority);
         }
 
         private void Apply(NoteSaved @event)
@@ -109,6 +125,16 @@ namespace TaskManager.Domain.Models.Task
         private void Apply(NoteErased @event)
         {
             _note = null;
+        }
+
+        private void Apply(TitleOnTaskChanged @event)
+        {
+            _title = new Title(@event.NewTitle);
+        }
+
+        private void Apply(DeadlineOnTaskChanged @event)
+        {
+            _deadline = new TaskDeadline(DateTime.Parse(@event.NewDeadline));
         }
     }
 }

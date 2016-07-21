@@ -5,10 +5,12 @@ namespace TaskManager.Domain.Features.ChangeTaskStatus
     public class TaskReopened : Event
     {
         public string TaskId { get; private set; }
+        public string ProjectId { get; private set; }
 
-        public TaskReopened(string taskId)
+        public TaskReopened(string taskId, string projectId)
         {
             TaskId = taskId;
+            ProjectId = projectId;
         }
 
         protected bool Equals(TaskReopened other)

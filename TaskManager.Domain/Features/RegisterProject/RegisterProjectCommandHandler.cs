@@ -22,7 +22,7 @@ namespace TaskManager.Domain.Features.RegisterProject
             Project project;
             if (command.Deadline.HasValue)
             {
-                var deadline = new Deadline(command.Deadline.Value);
+                var deadline = new ProjectDeadline(command.Deadline.Value);
                 project = new Project(title, deadline);
             }
             else

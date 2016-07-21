@@ -54,7 +54,7 @@ namespace TaskManager.Test.TaskIntegrationTests
         public void Register_Task_With_Deadline_Can_Be_Saved_In_Event_Store()
         {
             var title = new Title(Fixture.Create<string>());
-            var deadline = new Deadline(DateTime.UtcNow);
+            var deadline = new TaskDeadline(DateTime.UtcNow);
             var task = new Task(_projectId, title, TaskPriority.Low, deadline);
             _eventStoreRepository.Save(task);
 
@@ -82,7 +82,7 @@ namespace TaskManager.Test.TaskIntegrationTests
         {
             var eventHandler = new TaskRegisteredEventHandler(DocumentStore);
             var taskId = Fixture.Create<string>();
-            var taskRegistered = new TaskRegistered(taskId, _projectId, Fixture.Create<string>(), TaskPriority.Low.DisplayName, Fixture.Create<Deadline>());
+            var taskRegistered = new TaskRegistered(taskId, _projectId, Fixture.Create<string>(), TaskPriority.Low.DisplayName, Fixture.Create<TaskDeadline>());
             eventHandler.Handle(taskRegistered);
 
             var taskGridViewQueryHandler = new TaskInGridViewQueryHandler();

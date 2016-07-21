@@ -18,7 +18,7 @@ namespace TaskManager.Test
         {
             DocumentStore = new RavenDbStore(true, false).Instance;
             InMemoryEventStoreConnectionBuilder = new InMemoryEventStoreConnectionBuilder();
-            EventBus = new EventBus(null);
+            EventBus = new EventBus();
             Fixture = new Fixture();
         }
 

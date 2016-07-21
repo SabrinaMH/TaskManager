@@ -118,7 +118,7 @@ namespace TaskManager
 
             string deadline = e.Deadline.HasValue ? e.Deadline.ToString() : null;
             var projectId = ProjectId.Create(e.Title);
-            _projects.Add(new ProjectTreeNode(projectId, e.Title, deadline, "none"));
+            _projects.Add(new ProjectTreeNode(projectId, e.Title, deadline, "none", 0));
 
             if (projectTree.SelectedNode == null)
             {

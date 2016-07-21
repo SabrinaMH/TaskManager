@@ -37,7 +37,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
         public void Register_Project_With_Deadline_Can_Be_Saved_In_Event_Store()
         {
             var title = Fixture.Create<string>();
-            var project = new Project(new Title(title), new Deadline(DateTime.UtcNow));
+            var project = new Project(new Title(title), new ProjectDeadline(DateTime.UtcNow));
             _eventStoreRepository.Save(project);
 
             Project projectFromEventStore = _eventStoreRepository.GetById(project.Id);
@@ -65,7 +65,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
         {
             var eventHandler = new ProjectRegisteredEventHandler(DocumentStore);
             var projectId = Fixture.Create<string>();
-            var projectRegistered = new ProjectRegistered(projectId, Fixture.Create<string>(), ProjectPriority.Low.DisplayName, Fixture.Create<Deadline>());
+            var projectRegistered = new ProjectRegistered(projectId, Fixture.Create<string>(), ProjectPriority.Low.DisplayName, Fixture.Create<ProjectDeadline>());
             eventHandler.Handle(projectRegistered);
 
             var projectTreeViewQueryHandler = new ProjectTreeViewQueryHandler();

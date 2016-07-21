@@ -9,7 +9,7 @@ namespace TaskManager.Domain.Models.Project
 {
     public class Project : AggregateRoot
     {
-        private Deadline _deadline;
+        private ProjectDeadline _deadline;
         private Title _title;
         private ProjectPriority _priority;
 
@@ -21,7 +21,8 @@ namespace TaskManager.Domain.Models.Project
             ApplyChange(new ProjectRegistered(Id, title, ProjectPriority.None.DisplayName));
         }
 
-        public Project(Title title, Deadline deadline) : base(ProjectId.Create(title))
+        public Project(Title title, ProjectDeadline deadline)
+            : base(ProjectId.Create(title))
         {
             if (title == null) throw new ArgumentNullException("title");
             if (deadline == null) throw new ArgumentNullException("deadline");
@@ -43,7 +44,7 @@ namespace TaskManager.Domain.Models.Project
             _priority = ProjectPriority.Parse(@event.Priority);
             if (!string.IsNullOrWhiteSpace(@event.Deadline))
             {
-                _deadline = new Deadline(DateTime.Parse(@event.Deadline));
+                _deadline = new ProjectDeadline(DateTime.Parse(@event.Deadline));
             }
         }
 

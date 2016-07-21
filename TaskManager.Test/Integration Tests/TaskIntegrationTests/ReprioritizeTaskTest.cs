@@ -4,6 +4,7 @@ using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ReprioritizeTask;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Models.Common;
+using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Test.TaskIntegrationTests
@@ -20,7 +21,7 @@ namespace TaskManager.Test.TaskIntegrationTests
 
             using (var session = DocumentStore.OpenSession())
             {
-                var taskInGridView = new TaskInGridView(taskId, projectId, Fixture.Create<string>(), Fixture.Create<Deadline>(), oldPriority, false);
+                var taskInGridView = new TaskInGridView(taskId, projectId, Fixture.Create<string>(), Fixture.Create<TaskDeadline>(), oldPriority, false);
                 session.Store(taskInGridView);
                 session.SaveChanges();
             }

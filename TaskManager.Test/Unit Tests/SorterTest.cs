@@ -18,9 +18,9 @@ namespace TaskManager.Test
             var sorter = new Sorter();
             string deadline = DateTime.UtcNow.ToString();
             var title = fixture.Create<string>();
-            var node1 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.None.DisplayName);
-            var node2 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.High.DisplayName);
-            var node3 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.Medium.DisplayName);
+            var node1 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.None.DisplayName, 0);
+            var node2 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.High.DisplayName, 0);
+            var node3 = new ProjectTreeNode(fixture.Create<string>(), title, deadline, ProjectPriority.Medium.DisplayName, 0);
             var treeNodes = new List<ProjectTreeNode> {node1, node2, node3};
 
             var sortedTreeNodes = sorter.ByPriority(treeNodes);
@@ -36,9 +36,9 @@ namespace TaskManager.Test
               var fixture = new Fixture();
             var sorter = new Sorter();
             string deadline = DateTime.UtcNow.ToString();
-            var node1 = new ProjectTreeNode(fixture.Create<string>(), "abc", deadline, ProjectPriority.None.DisplayName);
-            var node2 = new ProjectTreeNode(fixture.Create<string>(), "abb", deadline, ProjectPriority.Medium.DisplayName);
-            var node3 = new ProjectTreeNode(fixture.Create<string>(), "aad", deadline, ProjectPriority.High.DisplayName);
+            var node1 = new ProjectTreeNode(fixture.Create<string>(), "abc", deadline, ProjectPriority.None.DisplayName, 0);
+            var node2 = new ProjectTreeNode(fixture.Create<string>(), "abb", deadline, ProjectPriority.Medium.DisplayName, 0);
+            var node3 = new ProjectTreeNode(fixture.Create<string>(), "aad", deadline, ProjectPriority.High.DisplayName, 0);
             var treeNodes = new List<ProjectTreeNode> {node1, node2, node3};
 
             var sortedTreeNodes = sorter.ByPriority(treeNodes);

@@ -12,7 +12,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
         [Test]
         public void Reprioritized_Project_Can_Be_Saved_In_Event_Store()
         {
-            var project = new Project(new Title("my project"), new Deadline(DateTime.UtcNow));
+            var project = new Project(new Title("my project"), new ProjectDeadline(DateTime.UtcNow));
             project.Reprioritize(ProjectPriority.Medium);
             var eventStoreRepository = new EventStoreRepository<Project>(EventBus, InMemoryEventStoreConnectionBuilder);
             eventStoreRepository.Save(project);

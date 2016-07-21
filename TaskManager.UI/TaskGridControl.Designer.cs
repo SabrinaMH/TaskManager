@@ -54,6 +54,7 @@
             this.taskGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.taskGrid_CellValueChanged);
             this.taskGrid.CurrentCellDirtyStateChanged += new System.EventHandler(this.taskGrid_CurrentCellDirtyStateChanged);
             this.taskGrid.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.taskGrid_RowStateChanged);
+            this.taskGrid.DoubleClick += new System.EventHandler(this.taskGrid_DoubleClick);
             // 
             // taskGridContextMenuStrip
             // 

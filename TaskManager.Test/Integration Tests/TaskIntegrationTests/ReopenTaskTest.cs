@@ -3,6 +3,7 @@ using Ploeh.AutoFixture;
 using TaskManager.Domain.Features.ChangeTaskStatus;
 using TaskManager.Domain.Features.TaskGridView;
 using TaskManager.Domain.Models.Common;
+using TaskManager.Domain.Models.Project;
 using TaskManager.Domain.Models.Task;
 
 namespace TaskManager.Test.TaskIntegrationTests
@@ -19,13 +20,13 @@ namespace TaskManager.Test.TaskIntegrationTests
             using (var session = DocumentStore.OpenSession())
             {
                 var taskInGridView = new TaskInGridView(taskId, projectId,
-                    Fixture.Create<string>(), Fixture.Create<Deadline>(), TaskPriority.Low.DisplayName, true);
+                    Fixture.Create<string>(), Fixture.Create<TaskDeadline>(), TaskPriority.Low.DisplayName, true);
                 session.Store(taskInGridView);
                 session.SaveChanges();
             }
 
             var eventHandler = new TaskReopenedEventHandler(DocumentStore);
-            var taskReopened = new TaskReopened(taskId);
+            var taskReopened = new TaskReopened(taskId, projectId);
             eventHandler.Handle(taskReopened);
 
             var allTasksInProjectQuery = new AllTasksInProjectQuery(projectId);

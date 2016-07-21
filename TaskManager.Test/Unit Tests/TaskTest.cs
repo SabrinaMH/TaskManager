@@ -15,11 +15,12 @@ namespace TaskManager.Test
         [Test]
         public void Reopen_Task_Raises_Event()
         {
-            var task = new Task(new ProjectId("my project"), new Title("my task"), TaskPriority.Low);
+            var projectId = new ProjectId("my project");
+            var task = new Task(projectId, new Title("my task"), TaskPriority.Low);
             task.Done();
             task.Reopen();
             IList<Event> uncommittedEvents = task.GetUncommittedEvents();
-            Assert.IsTrue(uncommittedEvents.Contains(new TaskReopened(task.Id)));
+            Assert.IsTrue(uncommittedEvents.Contains(new TaskReopened(task.Id, projectId)));
         }
 
         [Test]

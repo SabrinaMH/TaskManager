@@ -35,7 +35,7 @@ namespace TaskManager.Test.ProjectIntegrationTests
             {
                 var projectId = Fixture.Create<ProjectId>();
                 var projectTreeNode = new ProjectTreeNode(projectId, _title, Fixture.Create<DateTime>().ToShortDateString(),
-                    ProjectPriority.Low.DisplayName);
+                    ProjectPriority.Low.DisplayName, 0);
                 session.Store(projectTreeNode);
                 session.SaveChanges();
             }
