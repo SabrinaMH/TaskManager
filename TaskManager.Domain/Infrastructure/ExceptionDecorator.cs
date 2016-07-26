@@ -29,6 +29,7 @@ namespace TaskManager.Domain.Infrastructure
                 var notificationAsJson = JsonConvert.SerializeObject(notification);
                 _logger.ForContext("notification", notificationAsJson)
                     .Error(ex, "Error occurred while processing message");
+                throw;
             }
         }
     }

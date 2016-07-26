@@ -124,5 +124,23 @@ namespace TaskManager.Domain.Features.TaskGridView
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected bool Equals(TaskInGridView other)
+        {
+            return string.Equals(_id, other._id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TaskInGridView) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_id != null ? _id.GetHashCode() : 0);
+        }
     }
 }
