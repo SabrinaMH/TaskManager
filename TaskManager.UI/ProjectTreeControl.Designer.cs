@@ -40,11 +40,11 @@
             // projectTree
             // 
             this.projectTree.ContextMenuStrip = this.projectTreeContextMenuStrip;
-            this.projectTree.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.projectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectTree.HideSelection = false;
-            this.projectTree.Location = new System.Drawing.Point(0, 156);
+            this.projectTree.Location = new System.Drawing.Point(0, 0);
             this.projectTree.Name = "projectTree";
-            this.projectTree.Size = new System.Drawing.Size(367, 500);
+            this.projectTree.Size = new System.Drawing.Size(367, 656);
             this.projectTree.TabIndex = 1;
             this.projectTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projectTree_AfterSelect);
             this.projectTree.MouseUp += new System.Windows.Forms.MouseEventHandler(this.projectTree_MouseUp);

@@ -12,7 +12,7 @@ namespace TaskManager.Domain.Models.Project
 
         public static ProjectId Create(string title)
         {
-            return new ProjectId(string.Format("{0}/{1}", "project", title));
+            return new ProjectId(string.Format("{0}_{1}", "project", title));
         }
     }
 }

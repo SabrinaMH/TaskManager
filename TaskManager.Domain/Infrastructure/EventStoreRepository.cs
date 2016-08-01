@@ -26,8 +26,16 @@ namespace TaskManager.Domain.Infrastructure
             _eventBus = eventBus;
             _eventStoreConnectionBuilder = eventStoreConnectionBuilder;
         }
-        
+
         public TAggregate GetById(string id)
+        {
+            var eventStream = GetEventStream(id);
+            var constructor = typeof (TAggregate).GetConstructor(new Type[] {typeof (IList<Event>)});
+            var aggregate = (TAggregate)constructor.Invoke(new object[] { eventStream });
+            return aggregate;
+        }
+
+        public List<Event> GetEventStream(string id)
         {
             using (var connection = _eventStoreConnectionBuilder.Build())
             {
@@ -35,7 +43,7 @@ namespace TaskManager.Domain.Infrastructure
                 var events = new List<Event>();
                 StreamEventsSlice currentSlice;
                 var nextSliceStart = StreamPosition.Start;
-                var streamName = GetStreamName(typeof (TAggregate), id);
+                var streamName = GetStreamName(typeof(TAggregate), id);
 
                 do
                 {
@@ -50,9 +58,7 @@ namespace TaskManager.Domain.Infrastructure
                     return null;
                 }
 
-                var constructor = typeof (TAggregate).GetConstructor(new Type[] {typeof (IList<Event>)});
-                var aggregate = (TAggregate) constructor.Invoke(new object[] {events});
-                return aggregate;
+                return events;
             }
         }
 
@@ -72,27 +78,31 @@ namespace TaskManager.Domain.Infrastructure
             return (Event) obj;
         }
 
-        public void Save(AggregateRoot aggregate)
+        public void SaveEventStream(Event[] eventStream, Type aggregateType, string aggregateId)
         {
-            List<Event> newEvents = aggregate.GetUncommittedEvents().ToList();
+            if (!eventStream.Any()) return;
             using (var connection = _eventStoreConnectionBuilder.Build())
             {
                 connection.ConnectAsync().Wait();
-                string streamName = GetStreamName(aggregate.GetType(), aggregate.Id);
-                int originalVersion = aggregate.Version - newEvents.Count;
-                int expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;
+                string streamName = GetStreamName(aggregateType, aggregateId);
 
                 var commitId = Guid.NewGuid();
                 var commitHeaders = new Dictionary<string, object>
                 {
                     {CommitIdHeader, commitId},
-                    {AggregateClrTypeHeader, aggregate.GetType().AssemblyQualifiedName}
+                    {AggregateClrTypeHeader, aggregateType.AssemblyQualifiedName}
                 };
 
                 List<EventData> eventsToSave =
-                    newEvents.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
-                connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
+                    eventStream.Select(e => ToEventData(Guid.NewGuid(), e, commitHeaders)).ToList();
+                connection.AppendToStreamAsync(streamName, ExpectedVersion.NoStream, eventsToSave).Wait();
             }
+        }
+
+        public void Save(AggregateRoot aggregate)
+        {
+            List<Event> newEvents = aggregate.GetUncommittedEvents().ToList();
+            SaveEventStream(newEvents.ToArray(), aggregate.GetType(), aggregate.Id);
 
             foreach (var eventToPublish in newEvents)
             {

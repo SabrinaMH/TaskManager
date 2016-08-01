@@ -12,7 +12,7 @@ namespace TaskManager.Domain.Models.Task
 
         public static TaskId Create(ProjectId projectId, string title)
         {
-            return new TaskId(string.Format("{0}/{1}/{2}", projectId, "task", title));
+            return new TaskId(string.Format("{0}_{1}_{2}", projectId, "task", title));
         }
     }
 }

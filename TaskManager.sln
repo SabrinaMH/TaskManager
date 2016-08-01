@@ -14,11 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{28CC9F
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.Test.FSharp", "TaskManager.Test.FSharp\TaskManager.Test.FSharp.fsproj", "{AA54B60B-90C9-40E2-88F8-3202CDEA86CF}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.Domain.FSharp", "TaskManager.Domain.FSharp\TaskManager.Domain.FSharp.fsproj", "{C27249BA-E2C8-42D5-A71B-4178686ED162}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.API", "TaskManager.API\TaskManager.API.fsproj", "{3BF0F362-451A-4004-943F-0CF908A85E0E}"
 EndProject
@@ -44,10 +43,6 @@ Global
 		{AA54B60B-90C9-40E2-88F8-3202CDEA86CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA54B60B-90C9-40E2-88F8-3202CDEA86CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA54B60B-90C9-40E2-88F8-3202CDEA86CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
