@@ -20,6 +20,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.Test.FSharp", "
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.Domain.FSharp", "TaskManager.Domain.FSharp\TaskManager.Domain.FSharp.fsproj", "{C27249BA-E2C8-42D5-A71B-4178686ED162}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TaskManager.API", "TaskManager.API\TaskManager.API.fsproj", "{3BF0F362-451A-4004-943F-0CF908A85E0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C27249BA-E2C8-42D5-A71B-4178686ED162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BF0F362-451A-4004-943F-0CF908A85E0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

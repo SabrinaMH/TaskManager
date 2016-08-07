@@ -82,7 +82,7 @@ namespace TaskManager
 
         private void PopulateTasksInGridView()
         {
-            var allTasksInProject = FindTasksInProject(_selectedProjectId);
+            var allTasksInProject = FindTasksInProject(_selectedProjectId).OrderBy(x => x.IsDone).ToList();
             _allTasksInProject = new BindingList<TaskInGridView>(allTasksInProject);
             taskGrid.DataSource = _allTasksInProject;
             taskGrid.AutoGenerateColumns = false;
@@ -106,8 +106,9 @@ namespace TaskManager
 
             if (taskGrid.Columns.Contains("IsDone"))
             {
-                taskGrid.Columns["IsDone"].HeaderText = "Done";
-                taskGrid.Columns["IsDone"].Name = "Done";
+                DataGridViewColumn isDoneColumn = taskGrid.Columns["IsDone"];
+                isDoneColumn.HeaderText = "Done";
+                isDoneColumn.Name = "Done";
             }
 
             int indexOfHasNoteColumn;
@@ -157,7 +158,6 @@ namespace TaskManager
             taskGrid.Rows[0].Selected = true;
         }
 
-
         private void addTaskForm_TaskRegistered(object sender, TaskRegisteredEventArgs e)
         {
             AddTaskToGridView(e.ProjectId, e.Title, e.Priority, e.Deadline);
@@ -168,14 +168,37 @@ namespace TaskManager
             var taskId = TaskId.Create(new ProjectId(projectId), title);
             string possibleDeadline = deadline.HasValue ? deadline.Value.ToShortDateString() : null;
             var newTask = new TaskInGridView(taskId, projectId, title, possibleDeadline, priority, false);
-            _allTasks.Add(newTask);
-            _allTasksInProject.Add(newTask);
+            AddTaskToGridView(newTask);
+        }
+
+        private void AddTaskToGridView(TaskInGridView newTask)
+        {
+            if (!_allTasks.Contains(newTask))
+            {
+                _allTasks.Add(newTask);
+            }
+
+            InsertTaskRightAboveTasksThatAreDone(newTask);
 
             int priorityColumn = taskGrid.Columns["Priority"].Index;
-            var indexOfNewRow = taskGrid.Rows.GetLastRow(DataGridViewElementStates.None);
+            int indexOfNewRow = _allTasksInProject.IndexOf(newTask);
             var newRow = taskGrid.Rows[indexOfNewRow];
-            newRow.Cells[priorityColumn].Value = priority;
+            newRow.Cells[priorityColumn].Value = newTask.Priority;
             newRow.Selected = true; 
+        }
+
+        private void InsertTaskRightAboveTasksThatAreDone(TaskInGridView task)
+        {
+            var firstDoneTask = _allTasksInProject.FirstOrDefault(x => x.Id != task.Id && x.IsDone);
+            if (firstDoneTask == null)
+            {
+                _allTasksInProject.Add(task);
+            }
+            else
+            {
+                int indexOfFirstDoneTask = _allTasksInProject.IndexOf(firstDoneTask);
+                _allTasksInProject.Insert(indexOfFirstDoneTask, task);
+            }
         }
 
         private void taskGrid_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
@@ -197,7 +220,11 @@ namespace TaskManager
                         _commandDispatcher.Send(markTaskAsDone);
                         // Fake in UI to increase user experience
                         taskInGridView.IsDone = true;
-                        _gridUtils.FadeOut(e.RowIndex);
+
+                        _allTasksInProject.Remove(taskInGridView);
+                        AddTaskToGridView(taskInGridView);
+                        int indexOfAddedTask = _allTasksInProject.IndexOf(taskInGridView);
+                        _gridUtils.FadeOut(indexOfAddedTask);
                     }
                     else
                     {
@@ -205,7 +232,11 @@ namespace TaskManager
                         _commandDispatcher.Send(reopenTask);
                         // Fake in UI to increase user experience
                         taskInGridView.IsDone = false;
-                        _gridUtils.FadeIn(e.RowIndex);
+
+                         _allTasksInProject.Remove(taskInGridView);
+                        AddTaskToGridView(taskInGridView);
+                        int indexOfAddedTask = _allTasksInProject.IndexOf(taskInGridView);
+                        _gridUtils.FadeIn(indexOfAddedTask);
                     }
                 }
             }

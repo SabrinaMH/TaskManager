@@ -3,6 +3,8 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using HelloWorldApi;
+using Microsoft.Owin.Hosting;
 using NuGet;
 using Squirrel;
 using TaskManager.Domain.Infrastructure;
@@ -27,8 +29,13 @@ namespace TaskManager
                 (sender, args) => HandleUnhandledException(args.ExceptionObject as Exception);
             Application.ThreadException +=
                 (sender, args) => HandleUnhandledException(args.Exception);
-            Application.Run(new MainForm());
 
+            using (WebApp.Start<Startup>("http://localhost:8081"))
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+            }
         }
 
         private static void HandleUnhandledException(Exception exception)
