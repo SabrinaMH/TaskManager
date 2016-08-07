@@ -12,12 +12,12 @@ namespace TaskManager
     {
         private readonly string _taskId;
         private readonly string _title;
-        private readonly DateTime _deadline;
+        private readonly DateTime? _deadline;
         private readonly CommandDispatcher _commandDispatcher;
         private ILogger _logger;
         public event EventHandler<TaskChangedEventArgs> TaskChanged;
 
-        public ChangeTaskForm(string taskId, string title, DateTime deadline, CommandDispatcher commandDispatcher)
+        public ChangeTaskForm(string taskId, string title, DateTime? deadline, CommandDispatcher commandDispatcher)
         {
             if (string.IsNullOrWhiteSpace(taskId)) throw new ArgumentException("taskId cannot be null or empty", "taskId");
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("title cannot be null or empty", "title");
@@ -32,7 +32,7 @@ namespace TaskManager
             InitializeComponent();
             deadlineDateTimePicker.Format = DateTimePickerFormat.Custom;
             deadlineDateTimePicker.CustomFormat = "dd-MM-yyyy HH:mm";
-            deadlineDateTimePicker.Value = deadline;
+            deadlineDateTimePicker.Value = deadline.HasValue ? deadline.Value : DateTime.Now;
             titleTextBox.Text = title;
         }
 

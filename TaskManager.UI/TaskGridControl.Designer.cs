@@ -44,6 +44,7 @@
             this.taskGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.taskGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.taskGrid.ContextMenuStrip = this.taskGridContextMenuStrip;
+            this.taskGrid.Cursor = System.Windows.Forms.Cursors.Default;
             this.taskGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.taskGrid.Location = new System.Drawing.Point(0, 0);
             this.taskGrid.MultiSelect = false;
@@ -53,6 +54,7 @@
             this.taskGrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.taskGrid_CellMouseUp);
             this.taskGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.taskGrid_CellValueChanged);
             this.taskGrid.CurrentCellDirtyStateChanged += new System.EventHandler(this.taskGrid_CurrentCellDirtyStateChanged);
+            this.taskGrid.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.taskGrid_RowEnter);
             this.taskGrid.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.taskGrid_RowStateChanged);
             this.taskGrid.DoubleClick += new System.EventHandler(this.taskGrid_DoubleClick);
             // 

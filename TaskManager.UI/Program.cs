@@ -30,7 +30,8 @@ namespace TaskManager
             Application.ThreadException +=
                 (sender, args) => HandleUnhandledException(args.Exception);
 
-            using (WebApp.Start<Startup>("http://localhost:8081"))
+            // httplistenerexception process cannot access file. used by another process.
+            //using (WebApp.Start<Startup>("http://localhost:8081"))
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

@@ -155,7 +155,9 @@ namespace TaskManager
                 }
             }
 
-            taskGrid.Rows[0].Selected = true;
+            var rowToBeSelected = taskGrid.Rows[0];
+            rowToBeSelected.Selected = true;
+            taskGrid.CurrentCell = rowToBeSelected.Cells[0];
         }
 
         private void addTaskForm_TaskRegistered(object sender, TaskRegisteredEventArgs e)
@@ -184,7 +186,8 @@ namespace TaskManager
             int indexOfNewRow = _allTasksInProject.IndexOf(newTask);
             var newRow = taskGrid.Rows[indexOfNewRow];
             newRow.Cells[priorityColumn].Value = newTask.Priority;
-            newRow.Selected = true; 
+            newRow.Selected = true;
+            taskGrid.CurrentCell = newRow.Cells[0];
         }
 
         private void InsertTaskRightAboveTasksThatAreDone(TaskInGridView task)
@@ -212,7 +215,6 @@ namespace TaskManager
                 if (Boolean.TryParse(selectedRow.Cells["Done"].Value.ToString(), out isTaskDone))
                 {
                     var task = (TaskInGridView)(taskGrid.SelectedCells[0].OwningRow.DataBoundItem);
-
                     TaskInGridView taskInGridView = _allTasks.First(x => x.Id == task.Id);
                     if (isTaskDone)
                     {
@@ -249,10 +251,9 @@ namespace TaskManager
 
             DataGridViewColumn priorityColumn = taskGrid.Columns["Priority"];
             var priorityCell = (DataGridViewComboBoxCell)taskGrid.Rows[e.RowIndex].Cells[priorityColumn.Index];
-            var tasksInProject = FindTasksInProject(_selectedProjectId);
             if (priorityCell.Value != null)
             {
-                var selectedTask = tasksInProject[e.RowIndex];
+                var selectedTask = _allTasksInProject[e.RowIndex];
                 string newPriority = priorityCell.Value.ToString();
                 if (selectedTask.Priority != newPriority)
                 {
@@ -285,8 +286,7 @@ namespace TaskManager
             if (e.StateChanged != DataGridViewElementStates.Selected)
                 return;
 
-            var allTasksInProject = FindTasksInProject(_selectedProjectId);
-            if (!allTasksInProject.Any())
+            if (!_allTasksInProject.Any()) 
             {
                 if (NoTaskSelected != null)
                 {
@@ -296,7 +296,7 @@ namespace TaskManager
                 return;
             }
 
-            var selectedTask = FindTaskByRowIndex(allTasksInProject, e.Row.Index);
+            var selectedTask = FindTaskByRowIndex(_allTasksInProject.ToList(), e.Row.Index);
             if (TaskSelected != null)
             {
                 var eventArgs = new TaskSelectedEventArgs(selectedTask.Id, selectedTask.Note);
@@ -327,13 +327,13 @@ namespace TaskManager
             var selectedRow = taskGrid.CurrentRow;
             if (selectedRow == null) return;
 
-            var tasksInProject = FindTasksInProject(_selectedProjectId);
-            var selectedTask = FindTaskByRowIndex(tasksInProject, selectedRow.Index);
+            var selectedTask = FindTaskByRowIndex(_allTasksInProject.ToList(), selectedRow.Index);
 
-            DateTime deadline;
-            if (DateTime.TryParse(selectedTask.Deadline, out deadline))
+            DateTime deadline = DateTime.MinValue;
+            var noDeadline = string.IsNullOrWhiteSpace(selectedTask.Deadline);
+            if (noDeadline || DateTime.TryParse(selectedTask.Deadline, out deadline))
             {
-                var changeTaskForm = new ChangeTaskForm(selectedTask.Id, selectedTask.Title, deadline, _commandDispatcher);
+                var changeTaskForm = new ChangeTaskForm(selectedTask.Id, selectedTask.Title, noDeadline ? null : (DateTime?)deadline, _commandDispatcher);
                 changeTaskForm.TaskChanged += changeTaskForm_TaskChanged;
                 changeTaskForm.StartPosition = FormStartPosition.CenterParent;
                 changeTaskForm.ShowDialog(this);
@@ -363,8 +363,8 @@ namespace TaskManager
 
                     var deadlineColumn = taskGrid.Columns["Deadline"];
                     var deadlineCell = taskGrid.Rows[rowIndex].Cells[deadlineColumn.Index];
-                    var existingDeadline = DateTime.Parse(deadlineCell.Value.ToString());
-                    if (existingDeadline != e.NewDeadline)
+                    var currentDeadline = deadlineCell.Value;
+                    if (currentDeadline == null || e.NewDeadline != DateTime.Parse(currentDeadline.ToString()))
                     {
                         deadlineCell.Value = e.NewDeadline;
                     }
@@ -379,6 +379,16 @@ namespace TaskManager
                     .Error("Something went wrong updating the UI with new title and/or deadline of task");
                 MessageBox.Show("Sorry, something went wrong showing the updated task title and/or deadline", "Error",
                     MessageBoxButtons.OK);
+            }
+        }
+
+        private void taskGrid_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedTask = FindTaskByRowIndex(_allTasksInProject.ToList(), e.RowIndex);
+            if (TaskSelected != null)
+            {
+                var eventArgs = new TaskSelectedEventArgs(selectedTask.Id, selectedTask.Note);
+                TaskSelected(this, eventArgs);
             }
         }
     }
